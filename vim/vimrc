@@ -4,9 +4,7 @@ call pathogen#helptags()
 " ---------------------------------------------------------------------------
 " General
 " ---------------------------------------------------------------------------
-
-
-
+"
 syntax on
 filetype plugin indent on
 
@@ -19,7 +17,7 @@ set background=dark
 set guifont=Monaco:h13			" Set the font
 
 " ---------------------------------------------------------------------------
-"  UI
+" UI
 " ---------------------------------------------------------------------------
 
 set guioptions-=T 				" Hide the toolbar
@@ -34,7 +32,7 @@ set guioptions-=r				" Disable right scrollbar
 set ruler						" Turn on row,column dislay on status bar
 
 " ---------------------------------------------------------------------------
-"  Shortcut Keys
+" Shortcut Keys
 " ---------------------------------------------------------------------------
 
 " Map tab to indent
@@ -43,19 +41,22 @@ vmap <Tab> >gv
 " Map shift+tab to unindent
 vmap <S-Tab> <gv
 
+" Toggle nerdtree
+map <F2> :NERDTreeToggle<CR>
+
  " Quick write session with F2
-map <F2> :mksession! ~/.vim/session <cr>
+map <F3> :mksession! ~/.vim/session <cr>
 
 " And load session with F3
-map <F3> :source ~/.vim/session <cr>     
+map <F4> :source ~/.vim/session <cr>     
 
 " ----------------------------------------------------------------------------
-"  Backups
+" Backups
 " ----------------------------------------------------------------------------
 
 set nobackup                           " do not keep backups after close
-set nowritebackup                      " do not keep a backup while working
-set noswapfile                         " don't keep swp files either
+"set nowritebackup                     " do not keep a backup while working
+"set noswapfile                        " don't keep swp files either
 set backupdir=~/.vim/backup  	       " store backups under ~/.vim/backup
 set backupcopy=yes                     " keep attributes of original file
 set directory=~/.vim/swap		       " keep swp files under ~/.vim/swap
