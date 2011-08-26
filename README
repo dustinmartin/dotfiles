@@ -6,7 +6,10 @@ Create symlinks:
     
     ln -s ~/dotfiles/vim/vimrc ~/.vimrc
     ln -s ~/dotfiles/vim ~/.vim
+    ln -s ~/dotfiles/git/gitignore ~/.gitignore
 
+Setup Git configuration
+    git config --global core.excludesfile ~/.gitignore
 
 Switch to the `~/dotfiles` directory, and fetch submodules:
 
