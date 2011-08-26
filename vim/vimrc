@@ -4,7 +4,7 @@ call pathogen#helptags()
 " ---------------------------------------------------------------------------
 " General
 " ---------------------------------------------------------------------------
-"
+
 syntax on
 filetype plugin indent on
 
@@ -30,6 +30,8 @@ set showtabline=2 				" Always show the tabline
 set guioptions-=L				" Disable left scrollbar
 set guioptions-=r				" Disable right scrollbar
 set ruler						" Turn on row,column dislay on status bar
+set backspace=2           		" Allow backspacing over everything in insert mode
+set whichwrap+=<,>,h,l,[,] 		" Backspace and cursor keys wrap to
 
 " ---------------------------------------------------------------------------
 " Shortcut Keys
@@ -53,7 +55,7 @@ map <F4> :source ~/.vim/session <cr>
 " ----------------------------------------------------------------------------
 " Backups
 " ----------------------------------------------------------------------------
-
+"
 set nobackup                           " do not keep backups after close
 "set nowritebackup                     " do not keep a backup while working
 "set noswapfile                        " don't keep swp files either
