@@ -1,89 +1,61 @@
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
-syntax on
+" ---------------------------------------------------------------------------
+" General
+" ---------------------------------------------------------------------------
 
+
+
+syntax on
 filetype plugin indent on
 
-
 " ---------------------------------------------------------------------------
-" Colors / Theme
+" Colors / Theme / Font
 " ---------------------------------------------------------------------------
 
-set background=dark
 colorscheme solarized
-
-function! ToggleBackground()
-	if (g:solarized_style=="dark")
-		let g:solarized_style="light"
-		colorscheme solarized
-	else
-		let g:solarized_style="dark"
-		colorscheme solarized
-	endif
-endfunction
-
-command! Togbg call ToggleBackground()
-nnoremap <F5> :call ToggleBackground()<CR>
-inoremap <F5> <ESC>:call ToggleBackground()<CR>a
-vnoremap <F5> <ESC>:call ToggleBackground()<CR>
+set background=dark
+set guifont=Monaco:h13			" Set the font
 
 " ---------------------------------------------------------------------------
-"  GUI Options
+"  UI
 " ---------------------------------------------------------------------------
 
-" Hide the toolbar
-set guioptions-=T
-
-" Set the window size
-if has("gui_running")
-	" GUI is running or is about to start.
-	" Maximize gvim window.
-	set lines=35 columns=120
-else
-	" This is console Vim.
-	if exists("+lines")
- 		set lines=30
-	endif
-	if exists("+columns")
-		set columns=120
-	end
-endif
-
-" Turn word wrapping off. set wrap turns it back on.
-set nowrap
-
-" Set the font
-if has('gui_running')
-	set guifont=Monaco:h13
-endif
-
-" Turn on line numbers
-set nu!
-
-" Set tab width to four
-set tabstop=4
-
-" Increase the number of allowed tabs
-set tabpagemax=15
-
-" Always show the tabline
-set showtabline=2
-
-" Disable left scrollbar
-set guioptions-=L
-
-" Disable right scrollbar
-set guioptions-=r
-
-" Turn on row,column dislay on status bar
-set ruler
+set guioptions-=T 				" Hide the toolbar
+set lines=35 columns=120 		" Set the window size
+set nowrap						" Turn word wrapping off. :set wrap turns it back on.
+set nu!							" Turn on line numbers
+set tabstop=4					" Set tab width to four
+set tabpagemax=50 				" Increase the number of allowed tabs
+set showtabline=2 				" Always show the tabline
+set guioptions-=L				" Disable left scrollbar
+set guioptions-=r				" Disable right scrollbar
+set ruler						" Turn on row,column dislay on status bar
 
 " ---------------------------------------------------------------------------
 "  Shortcut Keys
 " ---------------------------------------------------------------------------
 
-" Maps tab and shift tab to indent
-vmap <Tab> >gv
+" Map tab to indent
+vmap <Tab> >gv		
+
+" Map shift+tab to unindent
 vmap <S-Tab> <gv
 
+ " Quick write session with F2
+map <F2> :mksession! ~/.vim/session <cr>
+
+" And load session with F3
+map <F3> :source ~/.vim/session <cr>     
+
+" ----------------------------------------------------------------------------
+"  Backups
+" ----------------------------------------------------------------------------
+
+set nobackup                           " do not keep backups after close
+set nowritebackup                      " do not keep a backup while working
+set noswapfile                         " don't keep swp files either
+set backupdir=~/.vim/backup  	       " store backups under ~/.vim/backup
+set backupcopy=yes                     " keep attributes of original file
+set directory=~/.vim/swap		       " keep swp files under ~/.vim/swap
