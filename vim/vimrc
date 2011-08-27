@@ -32,6 +32,7 @@ set guioptions-=r				" Disable right scrollbar
 set ruler						" Turn on row,column dislay on status bar
 set backspace=2           		" Allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,] 		" Backspace and cursor keys wrap to
+let macvim_hig_shift_movement=1 " Turn on selection via shift+arrow keys
 
 " ---------------------------------------------------------------------------
 " Shortcut Keys
@@ -46,19 +47,35 @@ vmap <S-Tab> <gv
 " Toggle nerdtree
 map <F2> :NERDTreeToggle<CR>
 
- " Quick write session with F2
-map <F3> :mksession! ~/.vim/session <cr>
-
-" And load session with F3
-map <F4> :source ~/.vim/session <cr>     
+" F12 to reload vimrc
+map <F12> :source $MYVIMRC <CR>
 
 " ----------------------------------------------------------------------------
 " Backups
 " ----------------------------------------------------------------------------
-"
+
 set nobackup                           " do not keep backups after close
-"set nowritebackup                     " do not keep a backup while working
-"set noswapfile                        " don't keep swp files either
+set nowritebackup                     " do not keep a backup while working
+set noswapfile                        " don't keep swp files either
 set backupdir=~/.vim/backup  	       " store backups under ~/.vim/backup
 set backupcopy=yes                     " keep attributes of original file
 set directory=~/.vim/swap		       " keep swp files under ~/.vim/swap
+
+" ----------------------------------------------------------------------------
+" Sessions
+" ----------------------------------------------------------------------------
+
+function! RestoreSession()
+  if argc() == 0 "vim called without arguments
+    execute 'source ~/.vim/session'
+  end
+endfunction
+
+function! SaveSession()
+  if argc() == 0 "vim called without arguments
+	execute 'mksession! ~/.vim/session'
+  end
+endfunction
+
+autocmd VimEnter * call RestoreSession()
+autocmd VimLeave * call SaveSession()
