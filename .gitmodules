@@ -54,4 +54,7 @@
 	path = vim/bundle/supertab
 	url = https://github.com/ervandew/supertab.git
 	ignore = dirty
-
+[submodule "vim/bundle/tabular"]
+	path = vim/bundle/tabular
+	url = https://github.com/godlygeek/tabular.git
+	ignore = dirty	
