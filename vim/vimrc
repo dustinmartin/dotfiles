@@ -79,3 +79,13 @@ endfunction
 
 autocmd VimEnter * call RestoreSession()
 autocmd VimLeave * call SaveSession()
+
+" -----------------------------------------------------------
+"  TABS
+" -----------------------------------------------------------
+
+set guitablabel=%t\ %m
+
+" C-TAB and C-SHIFT-TAB cycle tabs forward and backward
+nmap <c-tab> :tabnext<cr>
+nmap <c-s-tab> :tabprevious<cr>
