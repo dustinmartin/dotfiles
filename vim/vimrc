@@ -15,7 +15,7 @@ set nocompatible 				" Don't be compatible with Vi
 
 colorscheme solarized 			" Set the coloscheme
 set background=dark 			" Solarize has different color schemes.
-set guifont=Monaco:h13			" Set the font
+set guifont=Monaco:h13			" Set the font style and size
 
 " ---------------------------------------------------------------------------
 " UI
@@ -23,7 +23,7 @@ set guifont=Monaco:h13			" Set the font
 
 set autoindent 					" Copy the indent from the current line when starting a new line
 set guioptions-=T 				" Hide the toolbar
-set lines=35 columns=120 		" Set the window size
+set lines=55 columns=140 		" Set the window size
 set nowrap						" Turn word wrapping off. :set wrap turns it back on.
 set nu!							" Turn on line numbers
 set tabstop=4					" Set tab width to four
@@ -36,55 +36,48 @@ set backspace=2           		" Allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,] 		" Backspace and cursor keys wrap to
 let macvim_hig_shift_movement=1 " Turn on selection via shift+arrow keys
 set wildmenu 					" Command completion with tab
-set wildmode=list:longest 		" Better filename completion
 set visualbell 					" Disable 'beep' for wrong commands and do screen flash
 set cursorline 					" Highlights the cursor line
 set ttyfast 					" Makes scrolling smoother
 set laststatus=2 				" A more informatives status line
+set textwidth=0 				" Prevent Vim from wrapping lines
+set wrapmargin=0 				" Prevent Vim from wrapping lines
 
 " ---------------------------------------------------------------------------
-" Shortcut Keys
+" Windows
 " ---------------------------------------------------------------------------
 
-" Map tab to indent
-vmap <Tab> >gv
+" Open a new vertical split and switch to it
+noremap <leader>w <C-w>v<C-w>l
+noremap <leader>c :close<CR>
 
-" Map shift+tab to unindent
-vmap <S-Tab> <gv
-
-" Move between bracket pairs
-nnoremap <tab> %
-vnoremap <tab> %
-
-" Map ; to :
-nnoremap ; :
+" Move around the splits
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 " ---------------------------------------------------------------------------
 " Searching
 " ---------------------------------------------------------------------------
 
-"nnoremap / /\v 							" Force Vim to use standard regexes
-"vnoremap / /\v 							" Force Vim to use standard regexes
-set ignorecase 							" Makes searches case insensitive if search string is all lower case 
+set ignorecase 							" Makes searches case insensitive if search string is all lower case
 set smartcase 							" Makes searches case SENSITIVE if search string contains an uppercase letter
-set gdefault 							" Makes find and replace apply to the entire document instead of just the first occurrence
-set incsearch 							" Highlight search results (as you type)
-set showmatch 							" Highlight search results (as you type)
+set incsearch 							" Show where the pattern matches so far
+set showmatch 							" Highlight the matching bracket when one is inserted
 set hlsearch 							" Highlight search results (as you type)
 nnoremap <leader><space> :noh<cr> 		" Clear a search
-nnoremap <tab> %
-vnoremap <tab> %
 
 " ----------------------------------------------------------------------------
 " Backups
 " ----------------------------------------------------------------------------
 
-set nobackup                    " do not keep backups after close
-set nowritebackup               " do not keep a backup while working
-set noswapfile                  " don't keep swp files either
-set backupdir=~/.vim/backup  	" store backups under ~/.vim/backup
-set backupcopy=yes              " keep attributes of original file
-set directory=~/.vim/swap		" keep swp files under ~/.vim/swap
+set nobackup                   			" do not keep backups after close
+set nowritebackup               		" do not keep a backup while working
+set noswapfile                 			" don't keep swp files either
+set backupdir=~/.vim/backup  			" store backups under ~/.vim/backup
+set backupcopy=yes              		" keep attributes of original file
+set directory=~/.vim/swap				" keep swp files under ~/.vim/swap
 
 " ----------------------------------------------------------------------------
 " Sessions
@@ -112,26 +105,23 @@ autocmd VimLeave * call SaveSession()
 " Set the tab labels
 set guitablabel=%t\ %m
 
+" Open a new tab
+map <leader>t :tabnew<CR>
+
 " C-TAB and C-SHIFT-TAB cycle tabs forward and backward
 nmap <c-tab> :tabnext<cr>
 nmap <c-s-tab> :tabprevious<cr>
 
 " -----------------------------------------------------------
-"  Leader Key Shortcuts
-" -----------------------------------------------------------
-
-nnoremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
-
-" -----------------------------------------------------------
 "  Function Key Shortcuts
 " -----------------------------------------------------------
 
-" Load the previous session
+" F1 to load the previous session
 inoremap <F1> <ESC> :source ~/.vim/session<CR>
 vnoremap <F1> <ESC> :source ~/.vim/session<CR>
 nnoremap <F1> :source ~/.vim/session<CR>
 
-" Toggle nerdtree
+" F2 to toggle nerdtree
 inoremap <F2> <ESC> :NERDTreeToggle<CR>
 vnoremap <F2> <ESC> :NERDTreeToggle<CR>
 nnoremap <F2> :NERDTreeToggle<CR>
@@ -142,21 +132,32 @@ vnoremap <F12> <ESC> :source $MYVIMRC <CR>
 nnoremap <F12>  :source $MYVIMRC <CR>
 
 " -----------------------------------------------------------
-" Arrow Keys
+" Misc Mappings
 " -----------------------------------------------------------
 
-" Disable in normal mode
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
+" Trim trailing white space
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
-" Diable in insert mode
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
+" Map tab to indent
+vmap <Tab> >gv
+
+" Map shift+tab to unindent
+vmap <S-Tab> <gv
+
+" Move between bracket pairs
+nnoremap <tab> %
+vnoremap <tab> %
+
+" Map ; to :
+nnoremap ; :
+
+" Toggle between insert and normal mode
+nnoremap <C-space> a
+imap <C-space> <Esc>
+nnoremap <S-space> a
+imap <S-space> <Esc>
 
 " Movement by file line instead of screen line
 nnoremap j gj
 nnoremap k gk
+
