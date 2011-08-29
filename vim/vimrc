@@ -21,6 +21,8 @@ set guifont=Monaco:h13			" Set the font style and size
 " UI
 " ---------------------------------------------------------------------------
 
+set shiftwidth=4 				" Number of spaces to use for each step of (auto)indent
+set tabstop=4 					" Number of spaces that a <Tab> in the file counts for
 set autoindent 					" Copy the indent from the current line when starting a new line
 set guioptions-=T 				" Hide the toolbar
 set lines=55 columns=140 		" Set the window size
@@ -67,6 +69,7 @@ set incsearch 							" Show where the pattern matches so far
 set showmatch 							" Highlight the matching bracket when one is inserted
 set hlsearch 							" Highlight search results (as you type)
 nnoremap <leader><space> :noh<cr> 		" Clear a search
+set gdefault                    		" search/replace 'globally' (on a line) by default
 
 " ----------------------------------------------------------------------------
 " Backups
