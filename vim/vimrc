@@ -13,7 +13,7 @@ set nocompatible 				" Don't be compatible with Vi
 " Colors / Theme / Font
 " ---------------------------------------------------------------------------
 
-colorscheme solarized 			" Set the coloscheme
+colorscheme solarized 			" Set the colorscheme
 set background=dark 			" Solarize has different color schemes.
 set guifont=Monaco:h13			" Set the font style and size
 
@@ -21,6 +21,7 @@ set guifont=Monaco:h13			" Set the font style and size
 " UI
 " ---------------------------------------------------------------------------
 
+set autoread 					" reload files (no local changes only)
 set shiftwidth=4 				" Number of spaces to use for each step of (auto)indent
 set tabstop=4 					" Number of spaces that a <Tab> in the file counts for
 set autoindent 					" Copy the indent from the current line when starting a new line
@@ -28,7 +29,6 @@ set guioptions-=T 				" Hide the toolbar
 set lines=55 columns=140 		" Set the window size
 set nowrap						" Turn word wrapping off. :set wrap turns it back on.
 set nu!							" Turn on line numbers
-set tabstop=4					" Set tab width to four
 set tabpagemax=50 				" Increase the number of allowed tabs
 set showtabline=2 				" Always show the tabline
 set guioptions-=L				" Disable left scrollbar
@@ -49,8 +49,9 @@ set wrapmargin=0 				" Prevent Vim from wrapping lines
 " Windows
 " ---------------------------------------------------------------------------
 
-" Open a new vertical split and switch to it
-noremap <leader>w <C-w>v<C-w>l
+" Open a new split and switch to it
+noremap <leader>v <C-w>v<C-w>l
+noremap <leader>s <C-w>s<C-w>j
 noremap <leader>c :close<CR>
 
 " Move around the splits
@@ -59,17 +60,23 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
+" Move around the splits
+nnoremap <C-S-left> <C-w>h
+nnoremap <C-S-down> <C-w>j
+nnoremap <C-S-up> <C-w>k
+nnoremap <C-S-right> <C-w>l
+
 " ---------------------------------------------------------------------------
 " Searching
 " ---------------------------------------------------------------------------
 
 set ignorecase 							" Makes searches case insensitive if search string is all lower case
 set smartcase 							" Makes searches case SENSITIVE if search string contains an uppercase letter
+set gdefault                    		" search/replace 'globally' (on a line) by default
 set incsearch 							" Show where the pattern matches so far
 set showmatch 							" Highlight the matching bracket when one is inserted
 set hlsearch 							" Highlight search results (as you type)
 nnoremap <leader><space> :noh<cr> 		" Clear a search
-set gdefault                    		" search/replace 'globally' (on a line) by default
 
 " ----------------------------------------------------------------------------
 " Backups
@@ -119,15 +126,20 @@ nmap <c-s-tab> :tabprevious<cr>
 "  Function Key Shortcuts
 " -----------------------------------------------------------
 
-" F1 to load the previous session
-inoremap <F1> <ESC> :source ~/.vim/session<CR>
-vnoremap <F1> <ESC> :source ~/.vim/session<CR>
-nnoremap <F1> :source ~/.vim/session<CR>
+" F1 to toggle nerdtree
+inoremap <F1> <ESC> :NERDTreeToggle<CR>
+vnoremap <F1> <ESC> :NERDTreeToggle<CR>
+nnoremap <F1> :NERDTreeToggle<CR>
 
-" F2 to toggle nerdtree
-inoremap <F2> <ESC> :NERDTreeToggle<CR>
-vnoremap <F2> <ESC> :NERDTreeToggle<CR>
-nnoremap <F2> :NERDTreeToggle<CR>
+" F2 
+inoremap <F2> <ESC>
+vnoremap <F2> <ESC>
+nnoremap <F2>
+
+" F11 to load the previous session
+inoremap <F11> <ESC> :source ~/.vim/session<CR>
+vnoremap <F11> <ESC> :source ~/.vim/session<CR>
+nnoremap <F11> :source ~/.vim/session<CR>
 
 " F12 to reload vimrc
 inoremap <F12> <ESC> :source $MYVIMRC<CR>
@@ -139,7 +151,7 @@ nnoremap <F12>  :source $MYVIMRC <CR>
 " -----------------------------------------------------------
 
 " Trim trailing white space
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
 
 " Map tab to indent
 vmap <Tab> >gv
@@ -160,7 +172,33 @@ imap <C-space> <Esc>
 nnoremap <S-space> a
 imap <S-space> <Esc>
 
-" Movement by file line instead of screen line
+" Visually select the text that was last edited/pasted
+nmap gV `[v`]
+
+" -----------------------------------------------------------
+" Movement 
+" -----------------------------------------------------------
+
+" Movement by scree line instead of file line
 nnoremap j gj
 nnoremap k gk
 
+" Make arrow keys work in visual mode
+vnoremap <LEFT> h
+vnoremap <RIGHT> l
+vnoremap <UP> gk
+vnoremap <DOWN> gj
+
+" Make arrow keys work *properly* in normal mode
+nnoremap <LEFT> h
+nnoremap <RIGHT> l
+nnoremap <UP> gk
+nnoremap <DOWN> gj
+
+" Bubble single lines
+nmap <C-Up> [e
+nmap <C-Down> ]e
+
+" Bubble multiple lines
+vmap <C-Up> [egv
+vmap <C-Down> ]egv
