@@ -9,6 +9,10 @@ syntax on 						" Enable syntax highlighting
 filetype plugin indent on 		" Detect and handle filetypes
 set nocompatible 				" Don't be compatible with Vi
 
+if has("win32")
+	source $VIMRUNTIME/mswin.vim
+endif 
+
 " ---------------------------------------------------------------------------
 " Colors / Theme / Font
 " ---------------------------------------------------------------------------
@@ -44,6 +48,7 @@ set ttyfast 					" Makes scrolling smoother
 set laststatus=2 				" A more informatives status line
 set textwidth=0 				" Prevent Vim from wrapping lines
 set wrapmargin=0 				" Prevent Vim from wrapping lines
+set selectmode= 				" Turn off select mode
 let macvim_hig_shift_movement=1 " Turn on selection via shift+arrow keys
 
 if has("win32") 
@@ -87,10 +92,9 @@ set gdefault                    		" search/replace 'globally' (on a line) by def
 set incsearch 							" Show where the pattern matches so far
 set showmatch 							" Highlight the matching bracket when one is inserted
 set hlsearch 							" Highlight search results (as you type)
-nnoremap / /\v 							" Turn on traditional regexes
-vnoremap / /\v 							" Turn on traditional regexes
+" nnoremap / /\v 						" Turn on traditional regexes
+" vnoremap / /\v 						" Turn on traditional regexes
 nnoremap <leader><space> :noh<cr> 		" Clear a search
-
 
 " ----------------------------------------------------------------------------
 " Backups
@@ -140,7 +144,7 @@ autocmd VimLeave * call SaveSession()
 " -----------------------------------------------------------
 
 " Set the tab labels
-set guitablabel=%t\ %m
+set guitablabel=%t\ %m  
 
 " Open a new tab
 map <leader>t :tabnew<CR>
@@ -157,11 +161,6 @@ nmap <c-s-tab> :tabprevious<cr>
 inoremap <F1> <ESC> :NERDTreeToggle<CR>
 vnoremap <F1> <ESC> :NERDTreeToggle<CR>
 nnoremap <F1> :NERDTreeToggle<CR>
-
-" F2 
-inoremap <F2> <ESC>
-vnoremap <F2> <ESC>
-nnoremap <F2>
 
 " F11 to load the previous session
 if has("win32") 
@@ -183,22 +182,20 @@ nnoremap <F12>  :source $MYVIMRC <CR>
 " Misc Mappings
 " -----------------------------------------------------------
 
-" I like a better
-nnoremap i a
-vnoremap i a
-
 " Trim trailing white space
 nnoremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
 
 " Map tab to indent
-vmap <Tab> >gv
+vnoremap <Tab> >gv
+nnoremap <Tab> >>
 
 " Map shift+tab to unindent
-vmap <S-Tab> <gv
+vnoremap <S-Tab> <gv
+nnoremap <S-Tab> <<
 
 " Move between bracket pairs
-nnoremap <tab> %
-vnoremap <tab> %
+nnoremap <leader>m %
+vnoremap <leader>m %
 
 " Map ; to :
 nnoremap ; :
@@ -213,11 +210,15 @@ imap <S-space> <Esc>
 " Visually select the text that was last edited/pasted
 nmap gV `[v`]
 
+" Keep a block selected after indenting
+vnoremap < <gv
+vnoremap > >gv
+
 " -----------------------------------------------------------
 " Movement 
 " -----------------------------------------------------------
 
-" Movement by scree line instead of file line
+" Movement by screen line instead of file line
 nnoremap j gj
 nnoremap k gk
 
@@ -240,5 +241,3 @@ nmap <C-Down> ]e
 " Bubble multiple lines
 vmap <C-Up> [egv
 vmap <C-Down> ]egv
-
-
