@@ -15,7 +15,11 @@ set nocompatible 				" Don't be compatible with Vi
 
 colorscheme solarized 			" Set the colorscheme
 set background=dark 			" Solarize has different color schemes.
-set guifont=Monaco:h13			" Set the font style and size
+if has("win32") 
+	set guifont=Consolas:h11    " Set the font style and size
+else
+	set guifont=Monaco:h13		" Set the font style and size
+endif 
 
 " ---------------------------------------------------------------------------
 " UI
@@ -26,17 +30,13 @@ set shiftwidth=4 				" Number of spaces to use for each step of (auto)indent
 set tabstop=4 					" Number of spaces that a <Tab> in the file counts for
 set autoindent 					" Copy the indent from the current line when starting a new line
 set guioptions-=T 				" Hide the toolbar
-set lines=55 columns=140 		" Set the window size
 set nowrap						" Turn word wrapping off. :set wrap turns it back on.
 set nu!							" Turn on line numbers
 set tabpagemax=50 				" Increase the number of allowed tabs
 set showtabline=2 				" Always show the tabline
-set guioptions-=L				" Disable left scrollbar
-set guioptions-=r				" Disable right scrollbar
 set ruler						" Turn on row,column dislay on status bar
 set backspace=2           		" Allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,] 		" Backspace and cursor keys wrap to
-let macvim_hig_shift_movement=1 " Turn on selection via shift+arrow keys
 set wildmenu 					" Command completion with tab
 set visualbell 					" Disable 'beep' for wrong commands and do screen flash
 set cursorline 					" Highlights the cursor line
@@ -44,6 +44,17 @@ set ttyfast 					" Makes scrolling smoother
 set laststatus=2 				" A more informatives status line
 set textwidth=0 				" Prevent Vim from wrapping lines
 set wrapmargin=0 				" Prevent Vim from wrapping lines
+let macvim_hig_shift_movement=1 " Turn on selection via shift+arrow keys
+
+if has("win32") 
+	set guioptions+=b            " Enable bottom scrollbar
+	set guioptions-=t            " Disable tear-off menus
+	set lines=30 columns=115     " Set the screen size
+else
+	set lines=55 columns=140 	 " Set the window size
+	set guioptions-=L			 " Disable left scrollbar
+	set guioptions-=r			 " Disable right scrollbar
+endif 
 
 " ---------------------------------------------------------------------------
 " Windows
@@ -76,7 +87,10 @@ set gdefault                    		" search/replace 'globally' (on a line) by def
 set incsearch 							" Show where the pattern matches so far
 set showmatch 							" Highlight the matching bracket when one is inserted
 set hlsearch 							" Highlight search results (as you type)
+nnoremap / /\v 							" Turn on traditional regexes
+vnoremap / /\v 							" Turn on traditional regexes
 nnoremap <leader><space> :noh<cr> 		" Clear a search
+
 
 " ----------------------------------------------------------------------------
 " Backups
@@ -85,24 +99,37 @@ nnoremap <leader><space> :noh<cr> 		" Clear a search
 set nobackup                   			" do not keep backups after close
 set nowritebackup               		" do not keep a backup while working
 set noswapfile                 			" don't keep swp files either
-set backupdir=~/.vim/backup  			" store backups under ~/.vim/backup
 set backupcopy=yes              		" keep attributes of original file
-set directory=~/.vim/swap				" keep swp files under ~/.vim/swap
+if has("win32") 
+	set directory=~/vimfiles/swap		" keep swp files under ~/.vim/swap
+	set backupdir=~/vimfiles/backup  	" store backups under ~/.vim/backup
+else
+	set directory=~/.vim/swap			" keep swp files under ~/.vim/swap
+	set backupdir=~/.vim/backup  		" store backups under ~/.vim/backup
+endif 
 
 " ----------------------------------------------------------------------------
 " Sessions
 " ----------------------------------------------------------------------------
 
 function! RestoreSession()
-  if argc() == 0 "vim called without arguments
-    execute 'source ~/.vim/session'
-  end
+	if argc() == 0 "vim called without arguments
+		if has("win32") 
+			execute 'source ~/vimfiles/session'
+		else
+			execute 'source ~/.vim/session'
+		endif 
+	end
 endfunction
 
 function! SaveSession()
-  if argc() == 0 "vim called without arguments
-	execute 'mksession! ~/.vim/session'
-  end
+	if argc() == 0 "vim called without arguments
+		if has("win32") 
+			execute 'mksession! ~/vimfiles/session'
+		else
+			execute 'mksession! ~/.vim/session'		
+		endif 
+	end
 endfunction
 
 " autocmd VimEnter * call RestoreSession()
@@ -137,9 +164,15 @@ vnoremap <F2> <ESC>
 nnoremap <F2>
 
 " F11 to load the previous session
-inoremap <F11> <ESC> :source ~/.vim/session<CR>
-vnoremap <F11> <ESC> :source ~/.vim/session<CR>
-nnoremap <F11> :source ~/.vim/session<CR>
+if has("win32") 
+	inoremap <F11> <ESC> :source ~/vimfiles/session<CR>
+	vnoremap <F11> <ESC> :source ~/vimfiles/session<CR>
+	nnoremap <F11> :source ~/vimfiles/session<CR>
+else
+	inoremap <F11> <ESC> :source ~/.vim/session<CR>
+	vnoremap <F11> <ESC> :source ~/.vim/session<CR>
+	nnoremap <F11> :source ~/.vim/session<CR>
+endif 
 
 " F12 to reload vimrc
 inoremap <F12> <ESC> :source $MYVIMRC<CR>
@@ -149,6 +182,10 @@ nnoremap <F12>  :source $MYVIMRC <CR>
 " -----------------------------------------------------------
 " Misc Mappings
 " -----------------------------------------------------------
+
+" I like a better
+nnoremap i a
+vnoremap i a
 
 " Trim trailing white space
 nnoremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
@@ -165,6 +202,7 @@ vnoremap <tab> %
 
 " Map ; to :
 nnoremap ; :
+vnoremap ; :
 
 " Toggle between insert and normal mode
 nnoremap <C-space> a
@@ -202,3 +240,5 @@ nmap <C-Down> ]e
 " Bubble multiple lines
 vmap <C-Up> [egv
 vmap <C-Down> ]egv
+
+
