@@ -38,10 +38,6 @@
 	path = vim/bundle/terminal-colorscheme
 	url = https://github.com/godlygeek/csapprox.git
 	ignore = dirty
-[submodule "vim/bundle/gist"]
-	path = vim/bundle/gist
-	url = https://github.com/mattn/gist-vim.git
-	ignore = dirty
 [submodule "vim/bundle/delimitMate"]
 	path = vim/bundle/delimitMate
 	url = https://github.com/Raimondi/delimitMate.git
