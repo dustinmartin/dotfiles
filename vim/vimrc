@@ -241,3 +241,38 @@ nmap <C-Down> ]e
 " Bubble multiple lines
 vmap <C-Up> [egv
 vmap <C-Down> ]egv
+
+" -----------------------------------------------------------
+" Movement 
+" -----------------------------------------------------------
+
+set foldenable 							" enable folding
+set foldcolumn=0 						" add a fold column
+set foldmethod=indent 					" detect triple-{ style fold markers
+set foldlevelstart=99            		" start out with everything folded
+
+" What actions open a fold?
+set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+
+" -----------------------------------------------------------
+" NerdTree 
+" -----------------------------------------------------------
+
+" Show the bookmarks table on startup
+let NERDTreeShowBookmarks=0
+
+" Show hidden files, too
+let NERDTreeShowFiles=1
+" let NERDTreeShowHidden=1
+
+" Quit on opening files from the tree
+let NERDTreeQuitOnOpen=0
+
+" Highlight the selected entry in the tree
+let NERDTreeHighlightCursorline=1
+
+" Use a single click to fold/unfold directories and a double click to open files
+let NERDTreeMouseMode=2
+
+" Allow NerdTree to change Vim's CD
+let NERDTreeChDirMode=2
