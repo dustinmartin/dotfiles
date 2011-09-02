@@ -50,7 +50,6 @@ set textwidth=0 				" Prevent Vim from wrapping lines
 set wrapmargin=0 				" Prevent Vim from wrapping lines
 set selectmode='' 				" Turn off select mode
 set virtualedit=all,onemore     " allow the cursor to go in to invalid places
-
 " set sessionoptions
 
 let macvim_hig_shift_movement=1 " Turn on selection via shift+arrow keys
@@ -104,6 +103,8 @@ nnoremap <leader><space> :noh<cr> 		" Clear a search
 " Backups
 " ----------------------------------------------------------------------------
 
+set undolevels=1000
+set undofile
 set nobackup                   			" do not keep backups after close
 set nowritebackup               		" do not keep a backup while working
 set noswapfile                 			" don't keep swp files either
@@ -111,9 +112,11 @@ set backupcopy=yes              		" keep attributes of original file
 if has("win32") 
 	set directory=~/vimfiles/swap		" keep swp files under ~/.vim/swap
 	set backupdir=~/vimfiles/backup  	" store backups under ~/.vim/backup
+	set undodir=~/vimfiles/undo
 else
 	set directory=~/.vim/swap			" keep swp files under ~/.vim/swap
 	set backupdir=~/.vim/backup  		" store backups under ~/.vim/backup
+	set undodir=~/.vim/undo
 endif 
 
 " ----------------------------------------------------------------------------
