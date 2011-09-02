@@ -57,7 +57,4 @@
 [submodule "vim/bundle/unimpaired"]
 	path = vim/bundle/unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
-	ignore = dirty	
-[submodule "vim/bundle/colorv"]
-	path = vim/bundle/colorv
-	url = https://github.com/vim-scripts/ColorV.git
+	ignore = dirty
