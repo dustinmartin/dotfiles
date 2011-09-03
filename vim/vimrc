@@ -198,10 +198,6 @@ nnoremap <Tab> >>
 vnoremap <S-Tab> <gv
 nnoremap <S-Tab> <<
 
-" Move between bracket pairs
-nnoremap <leader>m %
-vnoremap <leader>m %
-
 " Map ; to :
 nnoremap ; :
 vnoremap ; :

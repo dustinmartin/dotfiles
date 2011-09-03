@@ -53,6 +53,9 @@
 [submodule "vim/bundle/scala"]
 	path = vim/bundle/scala
 	url = https://github.com/derekwyatt/vim-scala.git
+	ignore = dirty
 [submodule "vim/bundle/matchit"]
 	path = vim/bundle/matchit
 	url = https://github.com/vim-scripts/matchit.zip.git
+	ignore = dirty
+
