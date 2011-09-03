@@ -95,8 +95,6 @@ set gdefault                    		" search/replace 'globally' (on a line) by def
 set incsearch 							" Show where the pattern matches so far
 set showmatch 							" Highlight the matching bracket when one is inserted
 set hlsearch 							" Highlight search results (as you type)
-" nnoremap / /\v 						" Turn on traditional regexes
-" vnoremap / /\v 						" Turn on traditional regexes
 nnoremap <leader><space> :noh<cr> 		" Clear a search
 
 " ----------------------------------------------------------------------------
