@@ -48,11 +48,16 @@ set ttyfast 					" Makes scrolling smoother
 set laststatus=2 				" A more informatives status line
 set textwidth=0 				" Prevent Vim from wrapping lines
 set wrapmargin=0 				" Prevent Vim from wrapping lines
-set selectmode='' 				" Turn off select mode
+set selectmode= 				" Turn off select mode
 set virtualedit=all,onemore     " allow the cursor to go in to invalid places
+<<<<<<< HEAD
 " set sessionoptions
 set sidescroll=1 				" Number of columns to scroll horizontally
 set sidescrolloff=10            " Number of columns to keep to the left and right of cursor
+=======
+set sessionoptions=curdir,folds,help,options,tabpages,winsize
+
+>>>>>>> f2624f95fbc1bf44aa2ada2af3c0f4b5e3d19ba3
 let macvim_hig_shift_movement=1 " Turn on selection via shift+arrow keys
 
 if has("win32") 
