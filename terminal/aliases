@@ -1,0 +1,23 @@
+# Easier navigation: .., ..., ~ and -
+alias ..="cd .."
+alias ...="cd ../.."
+alias ~="cd ~" # `cd` is probably faster to type though
+
+# List all files colorized in long format, including dot files
+alias la="ls -Gla"
+
+# List only directories
+alias lsd='ls -l | grep "^d"'
+
+# List files with details
+alias ll="ls -Gl"
+
+# Show colors for ls
+alias ls="ls -G"
+
+# Show all hidden files
+alias showf="defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder"
+
+# Hide all hidden files
+alias hidef="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder"
+

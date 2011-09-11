@@ -59,3 +59,6 @@
 	url = https://github.com/vim-scripts/matchit.zip.git
 	ignore = dirty
 
+[submodule "vim/bundle/clojure"]
+	path = vim/bundle/clojure
+	url = https://github.com/vim-scripts/VimClojure.git

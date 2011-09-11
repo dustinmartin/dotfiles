@@ -1,0 +1,8 @@
+[user]
+	name = Dustin Martin
+	email = dm@dustinmartin.net
+[core]
+	excludesfile = ~/.gitignore
+[color]
+	diff = true
+	ui = true
