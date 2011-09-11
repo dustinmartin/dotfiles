@@ -11,7 +11,7 @@ set nocompatible 				" Don't be compatible with Vi
 
 if has("win32")
 	source $VIMRUNTIME/mswin.vim
-endif 
+endif
 
 " ---------------------------------------------------------------------------
 " Colors / Theme / Font
@@ -19,11 +19,11 @@ endif
 
 colorscheme solarized 			" Set the colorscheme
 set background=dark 			" Solarize has different color schemes.
-if has("win32") 
+if has("win32")
 	set guifont=Consolas:h11    " Set the font style and size
 else
 	set guifont=Monaco:h13		" Set the font style and size
-endif 
+endif
 
 " ---------------------------------------------------------------------------
 " UI
@@ -51,9 +51,9 @@ set wrapmargin=0 				" Prevent Vim from wrapping lines
 set virtualedit=block,onemore   " allow the cursor to go in to invalid places
 set sidescroll=1 				" Number of columns to scroll horizontally
 set sidescrolloff=10            " Number of columns to keep to the left and right of cursor
-set selectmode=""  				" Turn off select mode
-set selection=exclusive 		" Don't copy the character under the cursor (keep vim from copying 
-								" carriage returns. Must be used with virtualedit option of all/onemore 
+"set selectmode=key 			" Turn off select mode
+set selection=exclusive 		" Don't copy the character under the cursor (keep vim from copying
+								" carriage returns. Must be used with virtualedit option of all/onemore
 								" or the last character will never be copied"
 
 " What parts of the session should be saved?
@@ -61,7 +61,7 @@ set sessionoptions=curdir,folds,help,options,tabpages,winsize
 
 let macvim_hig_shift_movement=1 " Turn on selection via shift+arrow keys
 
-if has("win32") 
+if has("win32")
 	set guioptions+=b            " Enable bottom scrollbar
 	set guioptions-=t            " Disable tear-off menus
 	set lines=30 columns=115     " Set the screen size
@@ -69,7 +69,7 @@ else
 	set lines=55 columns=140 	 " Set the window size
 	set guioptions-=L			 " Disable left scrollbar
 	set guioptions-=r			 " Disable right scrollbar
-endif 
+endif
 
 " ---------------------------------------------------------------------------
 " Windows
@@ -114,7 +114,7 @@ set nobackup                   			" do not keep backups after close
 set nowritebackup               		" do not keep a backup while working
 set noswapfile                 			" don't keep swp files either
 set backupcopy=yes              		" keep attributes of original file
-if has("win32") 
+if has("win32")
 	set directory=~/vimfiles/swap		" keep swp files under ~/.vim/swap
 	set backupdir=~/vimfiles/backup  	" store backups under ~/.vim/backup
 	set undodir=~/vimfiles/undo
@@ -122,7 +122,7 @@ else
 	set directory=~/.vim/swap			" keep swp files under ~/.vim/swap
 	set backupdir=~/.vim/backup  		" store backups under ~/.vim/backup
 	set undodir=~/.vim/undo
-endif 
+endif
 
 " ----------------------------------------------------------------------------
 " Sessions
@@ -130,21 +130,21 @@ endif
 
 function! RestoreSession()
 	if argc() == 0 "vim called without arguments
-		if has("win32") 
+		if has("win32")
 			execute 'source ~/vimfiles/session'
 		else
 			execute 'source ~/.vim/session'
-		endif 
+		endif
 	end
 endfunction
 
 function! SaveSession()
 	if argc() == 0 "vim called without arguments
-		if has("win32") 
+		if has("win32")
 			execute 'mksession! ~/vimfiles/session'
 		else
-			execute 'mksession! ~/.vim/session'		
-		endif 
+			execute 'mksession! ~/.vim/session'
+		endif
 	end
 endfunction
 
@@ -156,7 +156,7 @@ autocmd VimLeave * call SaveSession()
 " -----------------------------------------------------------
 
 " Set the tab labels
-set guitablabel=%t\ %m  
+set guitablabel=%t\ %m
 
 " Open a new tab
 map <leader>t :tabnew<CR>
@@ -174,8 +174,12 @@ inoremap <F1> <ESC> :NERDTreeToggle<CR>
 vnoremap <F1> <ESC> :NERDTreeToggle<CR>
 nnoremap <F1> :NERDTreeToggle<CR>
 
+" F2 to toggle visual/select mode
+vnoremap <F2> <c-g>
+snoremap <F2> <c-g>
+
 " F11 to load the previous session
-if has("win32") 
+if has("win32")
 	inoremap <F11> <ESC> :source ~/vimfiles/session<CR>
 	vnoremap <F11> <ESC> :source ~/vimfiles/session<CR>
 	nnoremap <F11> :source ~/vimfiles/session<CR>
@@ -183,7 +187,7 @@ else
 	inoremap <F11> <ESC> :source ~/.vim/session<CR>
 	vnoremap <F11> <ESC> :source ~/.vim/session<CR>
 	nnoremap <F11> :source ~/.vim/session<CR>
-endif 
+endif
 
 " F12 to reload vimrc
 inoremap <F12> <ESC> :source $MYVIMRC<CR>
@@ -227,7 +231,7 @@ nnoremap / /\v
 vnoremap / /\v
 
 " -----------------------------------------------------------
-" Movement 
+" Movement
 " -----------------------------------------------------------
 
 " Movement by screen line instead of file line
@@ -246,7 +250,7 @@ vnoremap <RIGHT> l
 vnoremap <UP> gk
 vnoremap <DOWN> gj
 
-" Make arrow keys work *properly* in normal mode
+" Make arrow keys move by screen line, not file line, in normal mode
 nnoremap <LEFT> h
 nnoremap <RIGHT> l
 nnoremap <UP> gk
@@ -261,7 +265,7 @@ vmap <C-Up> [egv
 vmap <C-Down> ]egv
 
 " -----------------------------------------------------------
-" Movement 
+" Movement
 " -----------------------------------------------------------
 
 set foldenable 							" enable folding
@@ -273,7 +277,7 @@ set foldlevelstart=99            		" start out with everything folded
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 
 " -----------------------------------------------------------
-" NerdTree 
+" NerdTree
 " -----------------------------------------------------------
 
 " Show the bookmarks table on startup
