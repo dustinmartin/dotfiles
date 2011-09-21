@@ -21,6 +21,7 @@ colorscheme solarized 			" Set the colorscheme
 set background=dark 			" Solarize has different color schemes.
 if has("win32")
 	set guifont=Consolas:h11    " Set the font style and size
+	cd c:\
 else
 	set guifont=Monaco:h13		" Set the font style and size
 endif
