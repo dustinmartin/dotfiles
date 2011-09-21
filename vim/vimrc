@@ -29,6 +29,8 @@ endif
 " UI
 " ---------------------------------------------------------------------------
 
+set fileencoding=utf-8
+set fileformats=unix,mac,dos
 set autoread 					" Reload files (no local changes only)
 set shiftwidth=4 				" Number of spaces to use for each step of (auto)indent
 set tabstop=4 					" Number of spaces that a <Tab> in the file counts for
@@ -55,6 +57,8 @@ set sidescrolloff=10            " Number of columns to keep to the left and righ
 set selection=exclusive 		" Don't copy the character under the cursor (keep vim from copying
 								" carriage returns. Must be used with virtualedit option of all/onemore
 								" or the last character will never be copied"
+
+set statusline=%<%f\ %h%m%r%=%k[%{&ff}][%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
 
 " What parts of the session should be saved?
 set sessionoptions=curdir,folds,help,options,tabpages,winsize
@@ -214,10 +218,10 @@ nnoremap ; :
 vnoremap ; :
 
 " Toggle between insert and normal mode
-nnoremap <C-space> a
-imap <C-space> <Esc>
-nnoremap <S-space> a
-imap <S-space> <Esc>
+" nnoremap <C-space> a
+" imap <C-space> <Esc>
+" nnoremap <S-space> a
+" imap <S-space> <Esc>
 
 " Visually select the text that was last edited/pasted
 nmap gV `[v`]
