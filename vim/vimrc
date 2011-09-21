@@ -30,6 +30,7 @@ endif
 " ---------------------------------------------------------------------------
 
 set fileencoding=utf-8
+set fileformat=unix
 set fileformats=unix,mac,dos
 set autoread 					" Reload files (no local changes only)
 set shiftwidth=4 				" Number of spaces to use for each step of (auto)indent
