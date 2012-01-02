@@ -1,0 +1,13 @@
+# Path to your oh-my-zsh configuration.
+# oh-my-zsh
+ZSH=$HOME/.oh-my-zsh
+ZSH_THEME="dustin"
+plugins=(git osx)
+source $ZSH/oh-my-zsh.sh
+
+# include other files
+source ~/.aliases
+
+# rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"

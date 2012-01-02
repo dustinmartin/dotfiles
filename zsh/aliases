@@ -21,3 +21,5 @@ alias showf="defaults write com.apple.finder AppleShowAllFiles TRUE; killall Fin
 # Hide all hidden files
 alias hidef="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder"
 
+# Make vim open up macvim
+alias vim='mvim'

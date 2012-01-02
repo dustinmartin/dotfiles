@@ -1,8 +1,0 @@
-# Load ~/.bash_prompt, ~/.exports, ~/.aliases
-for file in bash_prompt exports aliases ; do
-  file="$HOME/.$file"
-  [ -e "$file" ] && source "$file"
-done
-
-# Load RVM
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"

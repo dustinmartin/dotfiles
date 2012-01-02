@@ -10,11 +10,9 @@
     ln -s ~/dotfiles/vim ~/.vim
     ln -s ~/dotfiles/git/gitignore ~/.gitignore
 	ln -s ~/dotfiles/git/gitconfig ~/.gitconfig
-	ln -s ~/dotfiles/terminal/bash_profile ~/.bash_profile
-	ln -s ~/dotfiles/terminal/bash_prompt ~/.bash_prompt
-	ln -s ~/dotfiles/terminal/aliases ~/.aliases
-	ln -s ~/dotfiles/terminal/exports ~/.exports
-	ln -s ~/dotfiles/terminal/inputrc ~/.inputrc
+	ln -s ~/dotfiles/zsh/aliases ~/.aliases
+	ln -s ~/dotfiles/zsh/zshrc ~/.zshrc
+	ln -s ~/dotfiles/zsh/oh-my-zsh/themes/dustin.zsh-theme ~/.oh-my-zsh/themes/dustin.zsh-theme
 
 ##Switch to the `~/dotfiles` directory, and fetch submodules:
 
