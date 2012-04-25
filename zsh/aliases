@@ -21,5 +21,8 @@ alias showf="defaults write com.apple.finder AppleShowAllFiles TRUE; killall Fin
 # Hide all hidden files
 alias hidef="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder"
 
-# Make vim open up macvim
-alias vim='mvim'
+# sudo ln -s "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl" /usr/bin/subl
+export EDITOR='subl -w'
+
+# git
+alias gs='git status -s'

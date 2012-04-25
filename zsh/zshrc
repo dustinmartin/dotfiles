@@ -11,8 +11,16 @@ source ~/.aliases
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# ColdFusion 10
+export PATH="/Applications/ColdFusion10/cfusion/bin:$PATH"
+
 # Make sure Homebrew's packages before others
 export PATH="/usr/local/bin:$PATH"
 
 # Ruby Options
 export RUBYOPT=rubygems
+
+# Autojump
+if [ -f `brew --prefix`/etc/autojump ]; then
+  . `brew --prefix`/etc/autojump
+fi
