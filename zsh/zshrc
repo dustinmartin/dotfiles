@@ -1,7 +1,7 @@
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="dustin"
-plugins=(git osx)
+plugins=(osx)
 source $ZSH/oh-my-zsh.sh
 
 # Include other files
@@ -11,8 +11,11 @@ source ~/.aliases
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# ColdFusion 9
+#export PATH="/Applications/ColdFusion9/bin:$PATH"
+
 # ColdFusion 10
-export PATH="/Applications/ColdFusion10/cfusion/bin:$PATH"
+#export PATH="/Applications/ColdFusion10/cfusion/bin:$PATH"
 
 # Make sure Homebrew's packages before others
 export PATH="/usr/local/bin:$PATH"

@@ -1,3 +1,9 @@
+# Scribbles #
+#############
+scribble.cfm
+scribble/*
+
+
 # Temporary Files #
 ###################
 *.swp

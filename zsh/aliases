@@ -3,6 +3,10 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 
+# Miscellaneous Helpers
+alias e=$EDITOR
+alias reload="source ~/.zshrc"
+
 # List all files colorized in long format, including dot files
 alias la="ls -Gla"
 
@@ -24,5 +28,27 @@ alias hidef="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Fi
 # sudo ln -s "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl" /usr/bin/subl
 export EDITOR='subl -w'
 
+# ColdFusion 9
+alias cf9="/Applications/ColdFusion9/bin/coldfusion"
+
+# ColdFusion 10
+alias cf10="/Applications/ColdFusion10/cfusion/bin/coldfusion"
+
 # git
+alias g='git'
 alias gs='git status -s'
+alias gst='git status'
+alias gpl='git pull'
+alias gpu='git push'
+alias gf='git fetch'
+alias gm='git merge'
+alias gc='git commit -v -m'
+alias gca='git commit -v -a -m'
+alias gco='git checkout'
+alias gb='git branch -a'
+alias glg='git log --stat'
+alias glgg='git hist'
+alias grb='git rebase'
+alias gd='git diff --color-words'
+alias ga='git add'
+alias gaa='git add . && git status'
