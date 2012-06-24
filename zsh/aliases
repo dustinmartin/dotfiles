@@ -51,4 +51,23 @@ alias glgg='git hist'
 alias grb='git rebase'
 alias gd='git diff --color-words'
 alias ga='git add'
-alias gaa='git add . && git status'
+
+
+alias gaa='git add -u && git add . && git status'
+alias gup='git fetch origin && git rebase origin/develop'
+alias gir='git rebase -i origin/develop'
+
+function current_branch() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  echo ${ref#refs/heads/}
+}
+
+gdone() {
+	branch=$(current_branch)
+	git fetch origin $1
+	git rebase origin/$1
+	git checkout $1
+	git pull
+	git merge $(current_branch)
+	git push origin $1
+}
