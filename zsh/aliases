@@ -68,6 +68,6 @@ gdone() {
 	git rebase origin/$1
 	git checkout $1
 	git pull
-	git merge $(current_branch)
+	git merge $branch
 	git push origin $1
 }
