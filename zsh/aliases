@@ -63,11 +63,16 @@ function current_branch() {
 }
 
 gdone() {
-	branch=$(current_branch)
-	git fetch origin $1
-	git rebase origin/$1
-	git checkout $1
+	develop_branch=$(git config --get core.develop-branch)
+	topic_branch=$(current_branch)
+
+	echo "Merging changes from '$topic_branch' into '$develop_branch'"
+	echo
+	
+	git fetch origin $develop_branch
+	git rebase origin/$develop_branch
+	git checkout $develop_branch
 	git pull
-	git merge $branch
-	git push origin $1
+	git merge $topic_branch
+	git push origin $develop_branch
 }
