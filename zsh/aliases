@@ -69,11 +69,11 @@ gdone() {
 	echo "Merging changes from '$topic_branch' into '$develop_branch'"
 	echo
 	
-	if( $develop_branch == '' ){
-		echo "Develop branch is not set in config"
-		echo "Use 'git config core.develop-branch master' to set"
+	if [[$develop_branch == '']]; then 
+		echo "Develop branch is not set in config" &&
+		echo "Use 'git config core.develop-branch master' to set" &&
 		return
-	}
+	fi
 
 	git fetch origin $develop_branch
 	git rebase origin/$develop_branch
