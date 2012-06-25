@@ -43,7 +43,7 @@ alias gpu='git push'
 alias gf='git fetch'
 alias gm='git merge'
 alias gc='git commit -v -m'
-alias gca='git commit -v -a -m'
+alias gca='git add -u && git add . && git commit -v -m'
 alias gco='git checkout'
 alias gb='git branch -a'
 alias glg='git log --stat'
@@ -51,34 +51,22 @@ alias glgg='git hist'
 alias grb='git rebase'
 alias gd='git diff --color-words'
 alias ga='git add'
-
-
 alias gaa='git add -u && git add . && git status'
+alias grm='git rm'
+alias gam='git commit --amend -C HEAD'
 alias gup='git fetch origin && git rebase origin/develop'
 alias gir='git rebase -i origin/develop'
 
-function current_branch() {
-  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  echo ${ref#refs/heads/}
+gdone() {
+	git fetch origin develop
+	git rebase origin/develop
+	git checkout develop
+	git pull
+	git merge $(current_branch)
+	git push origin develop
 }
 
-gdone() {
-	develop_branch=$(git config --get core.develop-branch)
-	topic_branch=$(current_branch)
-
-	echo "Merging changes from '$topic_branch' into '$develop_branch'"
-	echo
-	
-	if [[$develop_branch == '']]; then 
-		echo "Develop branch is not set in config" &&
-		echo "Use 'git config core.develop-branch master' to set" &&
-		return
-	fi
-
-	git fetch origin $develop_branch
-	git rebase origin/$develop_branch
-	git checkout $develop_branch
-	git pull
-	git merge $topic_branch
-	git push origin $develop_branch
+current_branch() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  echo ${ref#refs/heads/}
 }
