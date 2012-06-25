@@ -58,11 +58,12 @@ alias gup='git fetch origin && git rebase origin/develop'
 alias gir='git rebase -i origin/develop'
 
 gdone() {
+	branch = $(current_branch)
 	git fetch origin develop
 	git rebase origin/develop
 	git checkout develop
 	git pull
-	git merge $(current_branch)
+	git merge $branch
 	git push origin develop
 }
 
