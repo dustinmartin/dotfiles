@@ -45,7 +45,7 @@ alias gm='git merge'
 alias gc='git commit -v -m'
 alias gca='git add -u && git add . && git commit -v -m'
 alias gco='git checkout'
-alias gb='git branch -a'
+alias gb='git branch'
 alias glg='git log --stat'
 alias glgg='git hist'
 alias grb='git rebase'
@@ -58,7 +58,7 @@ alias gup='git fetch origin && git rebase origin/develop'
 alias gir='git rebase -i origin/develop'
 
 gdone() {
-	branch = $(current_branch)
+	branch=$(current_branch)
 	git fetch origin develop
 	git rebase origin/develop
 	git checkout develop
