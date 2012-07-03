@@ -6,17 +6,17 @@
 
 ##Create symlinks:
 
-    ln -s ~/dotfiles/vim/vimrc ~/.vimrc
-    ln -s ~/dotfiles/vim ~/.vim
-    ln -s ~/dotfiles/git/gitignore ~/.gitignore
-	ln -s ~/dotfiles/git/gitconfig ~/.gitconfig
-	ln -s ~/dotfiles/zsh/aliases ~/.aliases
-	ln -s ~/dotfiles/zsh/zshrc ~/.zshrc
-	ln -s ~/dotfiles/zsh/oh-my-zsh/themes/dustin.zsh-theme ~/.oh-my-zsh/themes/dustin.zsh-theme
+    ln -s ~/Config/vim/vimrc ~/.vimrc
+    ln -s ~/Config/vim ~/.vim
+    ln -s ~/Config/git/gitignore ~/.gitignore
+	ln -s ~/Config/git/gitconfig ~/.gitconfig
+	ln -s ~/Config/zsh/aliases ~/.aliases
+	ln -s ~/Config/zsh/zshrc ~/.zshrc
+	ln -s ~/Config/zsh/oh-my-zsh/themes/dustin.zsh-theme ~/.oh-my-zsh/themes/dustin.zsh-theme
 
-##Switch to the `~/dotfiles` directory, and fetch submodules:
+##Switch to the `~/Config` directory, and fetch submodules:
 
-    cd ~/dotfiles
+    cd ~/Config
     git submodule init
     git submodule update
 
