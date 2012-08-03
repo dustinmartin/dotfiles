@@ -1,11 +1,14 @@
 # Easier navigation: .., ..., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
-alias ~="cd ~" # `cd` is probably faster to type though
+
+# Start Mongo
+alias mongostart='mongod run --config /usr/local/etc/mongod.conf'
 
 # Miscellaneous Helpers
 alias reload="source ~/.zshrc"
-# sudo ln -s "ln -s "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl" /usr/bin/subl" /usr/bin/subl
+
+# sudo ln -s "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl" /usr/bin/subl
 export EDITOR='subl -w'
 
 # List all files colorized in long format, including dot files
@@ -32,7 +35,7 @@ alias cf9="/Applications/ColdFusion9/bin/coldfusion"
 # ColdFusion 10
 alias cf10="/Applications/ColdFusion10/cfusion/bin/coldfusion"
 
-# git
+# Git
 alias g='git'
 alias gs='git status -s'
 alias gst='git status'
@@ -40,20 +43,38 @@ alias gpl='git pull'
 alias gpu='git push'
 alias gf='git fetch'
 alias gm='git merge'
-alias gc='git commit -v -m'
-alias gca='git add -u && git add . && git commit -v -m'
 alias gco='git checkout'
-alias gcob='git checkout -b'
 alias gb='git branch'
-alias glg='git log --stat'
-alias glgg='git hist'
 alias grb='git rebase'
-alias gd='git diff --color-words'
+alias gd='git diff'
 alias ga='git add'
-alias gaa='git add -u && git add . && git status'
 alias grm='git rm'
-alias gam='git commit --amend -C HEAD'
 
+# Commit staged changed and provide some stats on the commit
+alias gc='git commit -v -m'
+
+# Stage all updated/added/deleted files and commit
+alias gca='git add -u && git add . && git commit -v -m'
+
+# Create a new branch
+alias gcob='git checkout -b'
+
+# Stage all updated/added/deleted files
+alias gaa='git add -u && git add . && git status'
+
+# Detailed Log
+alias gl='git log --stat'
+
+# Branch History
+alias glbh='git hist'
+
+# Current feature branch commits
+alias glfc='git log develop..HEAD'
+
+# My commits in last deployment (equivalent to git log --author=Dustin 20120730-04..20120801-01)
+alias glmc='git log --author "$(git config --get user.name)" "$(git tag | tail -2 | head -1)..$(git tag | tail -1)"'
+
+# Updates a branch
 gup() {
 	if [[ $(is_git_dirty) = true ]] then
 	    echo "The repo is dirty. Please commit all changes first."
@@ -66,6 +87,7 @@ gup() {
 	fi
 }
 
+# Interactive rebase
 gir() {
 	if [[ $(is_git_dirty) = true ]] then
 	    echo "The repo is dirty. Please commit all changes first."
@@ -75,6 +97,7 @@ gir() {
 	fi
 }
 
+# Merges branch back into develop
 gdone() {
 	if [[ $(is_git_dirty) = true ]] then
 	    echo "The repo is dirty. Please commit all changes first."
@@ -100,11 +123,13 @@ gdone() {
 	fi
 }
 
+# Get the current branch
 current_branch() {
 	ref=$(git symbolic-ref HEAD 2> /dev/null) || return
 	echo ${ref#refs/heads/}
 }
 
+# Returns if the git repo in the current directory is dirty
 is_git_dirty() {
 	if [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit (working directory clean)" ]] then
 		echo true

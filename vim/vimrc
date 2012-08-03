@@ -9,22 +9,12 @@ syntax on 						" Enable syntax highlighting
 filetype plugin indent on 		" Detect and handle filetypes
 set nocompatible 				" Don't be compatible with Vi
 
-if has("win32")
-	source $VIMRUNTIME/mswin.vim
-endif
-
 " ---------------------------------------------------------------------------
 " Colors / Theme / Font
 " ---------------------------------------------------------------------------
 
 colorscheme solarized 			" Set the colorscheme
 set background=dark 			" Solarize has different color schemes.
-if has("win32")
-	set guifont=Consolas:h11    " Set the font style and size
-	cd c:\
-else
-	set guifont=Monaco:h13		" Set the font style and size
-endif
 
 " ---------------------------------------------------------------------------
 " UI
@@ -33,11 +23,10 @@ endif
 set fileencoding=utf-8
 set fileformat=unix
 set fileformats=unix,mac,dos
-set autoread 					" Reload files (no local changes only)
+set autoread 					" Reload files
 set shiftwidth=4 				" Number of spaces to use for each step of (auto)indent
 set tabstop=4 					" Number of spaces that a <Tab> in the file counts for
 set autoindent 					" Copy the indent from the current line when starting a new line
-set guioptions-=T 				" Hide the toolbar
 set nowrap						" Turn word wrapping off. :set wrap turns it back on.
 set nu!							" Turn on line numbers
 set tabpagemax=50 				" Increase the number of allowed tabs
@@ -52,38 +41,45 @@ set ttyfast 					" Makes scrolling smoother
 set laststatus=2 				" A more informatives status line
 set textwidth=0 				" Prevent Vim from wrapping lines
 set wrapmargin=0 				" Prevent Vim from wrapping lines
-set virtualedit=block,onemore   " allow the cursor to go in to invalid places
 set sidescroll=1 				" Number of columns to scroll horizontally
 set sidescrolloff=10            " Number of columns to keep to the left and right of cursor
-"set selectmode=key 			" Turn off select mode
-set selection=exclusive 		" Don't copy the character under the cursor (keep vim from copying
-								" carriage returns. Must be used with virtualedit option of all/onemore
-								" or the last character will never be copied"
-
-set statusline=%<%f\ %h%m%r%=%k[%{&ff}][%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
+set mouse=a						" Enable mouse
+set showcmd						" Show command in bottom right of window
+set clipboard+=unnamed			" Enable the system clipboard
 
 " What parts of the session should be saved?
 set sessionoptions=curdir,folds,help,options,tabpages,winsize
 
-let macvim_hig_shift_movement=1 " Turn on selection via shift+arrow keys
+" Define what the statusline looks like
+set statusline=%<%f\ %h%m%r%=%k[%{&ff}][%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
 
-if has("win32")
-	set guioptions+=b            " Enable bottom scrollbar
-	set guioptions-=t            " Disable tear-off menus
-	set lines=30 columns=115     " Set the screen size
-else
-	set lines=55 columns=140 	 " Set the window size
+" ---------------------------------------------------------------------------
+" GUI/MacVim Options
+" ---------------------------------------------------------------------------
+
+if has("gui_running")
+	" Set the tab labels
+	set guitablabel=%t\ %m
+
+	" Hide the toolbar
+	set guioptions-=T 
+
+	" Set the font
+	set guifont=Monaco:h15		 " Set the font style and size
+
+	" Window options
+	set lines=39 columns=140 	 " Set the window size
 	set guioptions-=L			 " Disable left scrollbar
 	set guioptions-=r			 " Disable right scrollbar
 endif
 
 " ---------------------------------------------------------------------------
-" Windows
+" Splits 
 " ---------------------------------------------------------------------------
 
 " Open a new split and switch to it
-noremap <leader>v <C-w>v<C-w>l
-noremap <leader>s <C-w>s<C-w>j
+noremap <leader>vs <C-w>v<C-w>l
+noremap <leader>hs <C-w>s<C-w>j
 noremap <leader>c :close<CR>
 
 " Move around the splits
@@ -92,43 +88,29 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" Move around the splits
-nnoremap <C-S-left> <C-w>h
-nnoremap <C-S-down> <C-w>j
-nnoremap <C-S-up> <C-w>k
-nnoremap <C-S-right> <C-w>l
-
 " ---------------------------------------------------------------------------
 " Searching
 " ---------------------------------------------------------------------------
 
 set ignorecase 							" Makes searches case insensitive if search string is all lower case
 set smartcase 							" Makes searches case SENSITIVE if search string contains an uppercase letter
-set gdefault                    		" search/replace 'globally' (on a line) by default
+set gdefault                    		" Search/replace 'globally' (on a line) by default
 set incsearch 							" Show where the pattern matches so far
 set showmatch 							" Highlight the matching bracket when one is inserted
 set hlsearch 							" Highlight search results (as you type)
 nnoremap <leader><space> :noh<cr> 		" Clear a search
 
 " ----------------------------------------------------------------------------
-" Backups
+" Backups and Swap Files
 " ----------------------------------------------------------------------------
 
 set undolevels=1000
-set undofile
-set nobackup                   			" do not keep backups after close
-set nowritebackup               		" do not keep a backup while working
-set noswapfile                 			" don't keep swp files either
-set backupcopy=yes              		" keep attributes of original file
-if has("win32")
-	set directory=~/vimfiles/swap		" keep swp files under ~/.vim/swap
-	set backupdir=~/vimfiles/backup  	" store backups under ~/.vim/backup
-	set undodir=~/vimfiles/undo
-else
-	set directory=~/.vim/swap			" keep swp files under ~/.vim/swap
-	set backupdir=~/.vim/backup  		" store backups under ~/.vim/backup
-	set undodir=~/.vim/undo
-endif
+set nobackup                   			" Do not keep backups after close
+set nowritebackup               		" Do not keep a backup while working
+set noswapfile                 			" Don't keep swp files either
+set backupcopy=yes              		" Keep attributes of original file
+set directory=~/.vim/swap				" Keep swp files under ~/.vim/swap
+set backupdir=~/.vim/backup  			" Store backups under ~/.vim/backup
 
 " ----------------------------------------------------------------------------
 " Sessions
@@ -136,21 +118,13 @@ endif
 
 function! RestoreSession()
 	if argc() == 0 "vim called without arguments
-		if has("win32")
-			execute 'source ~/vimfiles/session'
-		else
-			execute 'source ~/.vim/session'
-		endif
+		execute 'source ~/.vim/session'
 	end
 endfunction
 
 function! SaveSession()
 	if argc() == 0 "vim called without arguments
-		if has("win32")
-			execute 'mksession! ~/vimfiles/session'
-		else
-			execute 'mksession! ~/.vim/session'
-		endif
+		execute 'mksession! ~/.vim/session'
 	end
 endfunction
 
@@ -161,55 +135,31 @@ autocmd VimLeave * call SaveSession()
 "  Tabs
 " -----------------------------------------------------------
 
-" Set the tab labels
-set guitablabel=%t\ %m
-
 " Open a new tab
 map <leader>t :tabnew<CR>
-
-" C-TAB and C-SHIFT-TAB cycle tabs forward and backward
-nmap <c-tab> :tabnext<cr>
-nmap <c-s-tab> :tabprevious<cr>
-
-" -----------------------------------------------------------
-"  Function Key Shortcuts
-" -----------------------------------------------------------
-
-" F1 to toggle nerdtree
-inoremap <F1> <ESC> :NERDTreeToggle<CR>
-vnoremap <F1> <ESC> :NERDTreeToggle<CR>
-nnoremap <F1> :NERDTreeToggle<CR>
-
-" F2 to toggle visual/select mode
-vnoremap <F2> <c-g>
-snoremap <F2> <c-g>
-
-" F11 to load the previous session
-if has("win32")
-	inoremap <F11> <ESC> :source ~/vimfiles/session<CR>
-	vnoremap <F11> <ESC> :source ~/vimfiles/session<CR>
-	nnoremap <F11> :source ~/vimfiles/session<CR>
-else
-	inoremap <F11> <ESC> :source ~/.vim/session<CR>
-	vnoremap <F11> <ESC> :source ~/.vim/session<CR>
-	nnoremap <F11> :source ~/.vim/session<CR>
-endif
-
-" F12 to reload vimrc
-inoremap <F12> <ESC> :source $MYVIMRC<CR>
-vnoremap <F12> <ESC> :source $MYVIMRC <CR>
-nnoremap <F12>  :source $MYVIMRC <CR>
 
 " -----------------------------------------------------------
 " Misc Mappings
 " -----------------------------------------------------------
 
-" Trim trailing white space
-nnoremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
+"Shortcut for editing  vimrc file in a new tab
+nmap <leader>ev :tabedit $MYVIMRC<cr>
 
 " Map tab to indent
 vnoremap <Tab> >gv
 nnoremap <Tab> >>
+
+" Bubble single lines (kicks butt)
+nmap <C-Up> ddkP
+nmap <C-Down> ddp
+
+"Bubble multiple lines
+vmap <C-Up> xkP`[V`]
+vmap <C-Down> xp`[V`]
+
+" Keep a block selected after indenting
+vnoremap < <gv
+vnoremap > >gv
 
 " Map shift+tab to unindent
 vnoremap <S-Tab> <gv
@@ -219,18 +169,11 @@ nnoremap <S-Tab> <<
 nnoremap ; :
 vnoremap ; :
 
-" Toggle between insert and normal mode
-" nnoremap <C-space> a
-" imap <C-space> <Esc>
-" nnoremap <S-space> a
-" imap <S-space> <Esc>
+" Maps the spacebar to colon
+nmap <space> :
 
 " Visually select the text that was last edited/pasted
 nmap gV `[v`]
-
-" Keep a block selected after indenting
-vnoremap < <gv
-vnoremap > >gv
 
 " Use 'real' regexes
 nnoremap / /\v
@@ -250,6 +193,16 @@ nnoremap K V gk
 vnoremap J gj
 vnoremap K gk
 
+" Map shift+arrow keys to highlight text
+nmap <S-UP> v
+nmap <S-DOWN> v
+nmap <S-LEFT> v
+nmap <S-RIGHT> v
+vmap <S-UP> k
+vmap <S-DOWN> j
+vmap <S-LEFT> h
+vmap <S-RIGHT> k
+
 " Make arrow keys work in visual mode
 vnoremap <LEFT> h
 vnoremap <RIGHT> l
@@ -262,22 +215,14 @@ nnoremap <RIGHT> l
 nnoremap <UP> gk
 nnoremap <DOWN> gj
 
-" Bubble single lines
-nmap <C-Up> [e
-nmap <C-Down> ]e
-
-" Bubble multiple lines
-vmap <C-Up> [egv
-vmap <C-Down> ]egv
-
 " -----------------------------------------------------------
-" Movement
+" Code Folding
 " -----------------------------------------------------------
 
-set foldenable 							" enable folding
-set foldcolumn=0 						" add a fold column
-set foldmethod=indent 					" detect triple-{ style fold markers
-set foldlevelstart=99            		" start out with everything folded
+set foldenable 							" Enable folding
+set foldcolumn=0 						" Add a fold column
+set foldmethod=indent 					" Fold code based on indentation level
+set foldlevelstart=99            		" Start out with everything folded
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
@@ -285,6 +230,11 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 " -----------------------------------------------------------
 " NerdTree
 " -----------------------------------------------------------
+
+" Toggle nerdtree
+inoremap <leader>nt <ESC> :NERDTreeToggle<CR>
+vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
+nnoremap <leader>nt :NERDTreeToggle<CR>
 
 " Show the bookmarks table on startup
 let NERDTreeShowBookmarks=0
@@ -304,3 +254,7 @@ let NERDTreeMouseMode=2
 
 " Allow NerdTree to change Vim's CD
 let NERDTreeChDirMode=2
+
+" Autopen NERDTree and focus cursor in new document
+autocmd VimEnter * NERDTree
+autocmd VimEnter * wincmd p

@@ -14,6 +14,9 @@ eval "$(rbenv init -)"
 # Make sure Homebrew's packages before others
 export PATH="/usr/local/bin:$PATH"
 
+# Add Haskell binaries to the path
+export PATH="$HOME/Library/Haskell/bin:$PATH"
+
 # Setup node.js modules
 export NODE_PATH="/usr/local/lib/node_modules:$NODE_PATH"
 
