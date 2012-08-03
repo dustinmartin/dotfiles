@@ -1,5 +1,17 @@
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+" ---------------------------------------------------------------------------
+" Vundle
+" ---------------------------------------------------------------------------
+ filetype off                   " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" Let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+
+" Install other bundles
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'vim-scripts/The-NERD-tree'
 
 " ---------------------------------------------------------------------------
 " General
@@ -153,7 +165,7 @@ nnoremap <Tab> >>
 nmap <C-Up> ddkP
 nmap <C-Down> ddp
 
-"Bubble multiple lines
+" Bubble multiple lines
 vmap <C-Up> xkP`[V`]
 vmap <C-Down> xp`[V`]
 
