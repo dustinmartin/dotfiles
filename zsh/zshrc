@@ -17,6 +17,10 @@ export PATH="/usr/local/bin:$PATH"
 # Add Haskell binaries to the path
 export PATH="$HOME/Library/Haskell/bin:$PATH"
 
+# Add npm modules to the path
+export PATH="$HOME/usr/local/lib/node_modules:$PATH"
+export PATH="$HOME/usr/local/share/npm/bin:$PATH"
+
 # Setup node.js modules
 export NODE_PATH="/usr/local/lib/node_modules:$NODE_PATH"
 

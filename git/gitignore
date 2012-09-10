@@ -3,6 +3,10 @@
 scribble.cfm
 scribble/*
 
+# Tincr #
+#########
+tincr.json
+
 # Temporary Files #
 ###################
 *.swp

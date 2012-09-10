@@ -1,7 +1,7 @@
 " ---------------------------------------------------------------------------
 " Vundle
 " ---------------------------------------------------------------------------
- filetype off                   " required!
+filetype off                   " required!
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -10,8 +10,31 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Install other bundles
-Bundle 'altercation/vim-colors-solarized'
+Bundle 'chriskempson/vim-tomorrow-theme'
 Bundle 'vim-scripts/The-NERD-tree'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-markdown'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'mileszs/ack.vim'
+Bundle 'davejlong/cf-utils.vim'
+Bundle 'tpope/vim-surround'
+Bundle 'garbas/vim-snipmate'
+Bundle 'mattn/zencoding-vim'
+Bundle 'scrooloose/syntastic'
+Bundle 'ervandew/supertab'
+Bundle 'honza/snipmate-snippets'
+Bundle 'tomtom/tcomment_vim'
+Bundle 'sjl/gundo.vim'
+Bundle 'kien/ctrlp.vim'
+Bundle 'Raimondi/delimitMate'
+Bundle 'https://github.com/Lokaltog/vim-powerline.git'
+Bundle 'henrik/vim-indexed-search'
+Bundle 'sjl/vitality.vim'
+
+" Utility Bundles
+Bundle 'vim-scripts/L9'
+Bundle 'tomtom/tlib_vim'
+Bundle 'MarcWeber/vim-addon-mw-utils'
 
 " ---------------------------------------------------------------------------
 " General
@@ -22,25 +45,28 @@ filetype plugin indent on 		" Detect and handle filetypes
 set nocompatible 				" Don't be compatible with Vi
 
 " ---------------------------------------------------------------------------
-" Colors / Theme / Font
+" Colors / Theme
 " ---------------------------------------------------------------------------
 
-colorscheme solarized 			" Set the colorscheme
-set background=dark 			" Solarize has different color schemes.
+colorscheme Tomorrow-Night		" Set the colorscheme
 
 " ---------------------------------------------------------------------------
-" UI
+" Files
 " ---------------------------------------------------------------------------
 
 set fileencoding=utf-8
 set fileformat=unix
 set fileformats=unix,mac,dos
+
+" ---------------------------------------------------------------------------
+" UI
+" ---------------------------------------------------------------------------
+
 set autoread 					" Reload files
 set shiftwidth=4 				" Number of spaces to use for each step of (auto)indent
 set tabstop=4 					" Number of spaces that a <Tab> in the file counts for
 set autoindent 					" Copy the indent from the current line when starting a new line
 set nowrap						" Turn word wrapping off. :set wrap turns it back on.
-set nu!							" Turn on line numbers
 set tabpagemax=50 				" Increase the number of allowed tabs
 set showtabline=2 				" Always show the tabline
 set ruler						" Turn on row,column dislay on status bar
@@ -50,20 +76,71 @@ set wildmenu 					" Command completion with tab
 set visualbell 					" Disable 'beep' for wrong commands and do screen flash
 set cursorline 					" Highlights the cursor line
 set ttyfast 					" Makes scrolling smoother
-set laststatus=2 				" A more informatives status line
+set laststatus=2 				" Always show the statusline
 set textwidth=0 				" Prevent Vim from wrapping lines
 set wrapmargin=0 				" Prevent Vim from wrapping lines
 set sidescroll=1 				" Number of columns to scroll horizontally
 set sidescrolloff=10            " Number of columns to keep to the left and right of cursor
 set mouse=a						" Enable mouse
 set showcmd						" Show command in bottom right of window
-set clipboard+=unnamed			" Enable the system clipboard
+set clipboard=unnamed			" Enable the system clipboard
+set noshowmode 					" Don't show the current Vim mode
+set lazyredraw  				" Don't update the display while executing macros
+set wrapscan 					" Set the search scan to wrap around the file
+set virtualedit=block 			" Allow the cursor to go in to "invalid" places
+set wrap linebreak nolist 		" Break/wrap lines in between words instead of the middle of a word
+let mapleader = ","				" Set leader key to comma
 
-" What parts of the session should be saved?
-set sessionoptions=curdir,folds,help,options,tabpages,winsize
+"  ---------------------------------------------------------------------------
+"  Line Numbering
+"  ---------------------------------------------------------------------------
 
-" Define what the statusline looks like
-set statusline=%<%f\ %h%m%r%=%k[%{&ff}][%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
+" Turn on relative line numbering in normal mode, regular in insert mode
+set rnu
+au BufEnter * :set rnu
+au BufLeave * :set nu
+au WinEnter * :set rnu
+au WinLeave * :set nu
+au InsertEnter * :set nu
+au InsertLeave * :set rnu
+au FocusLost * :set nu
+au FocusGained * :set rnu
+
+"  ---------------------------------------------------------------------------
+"  Status Line
+"  ---------------------------------------------------------------------------
+
+" Filename
+set statusline=\ [%t]
+
+" Modified Flag
+set statusline+=\ %m
+
+" Preview Screen Flag
+set statusline+=%w
+
+" Left / Right Alignment Separater 
+set statusline+=%=
+
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+" Git branch
+set statusline+=\ %{fugitive#statusline()}
+
+" Encoding
+set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}]
+
+" Line x of y
+set statusline+=\ [Line\ %l\/%L]
+
+" Percentage Through File
+set statusline+=\ [%P]  
+
+" Extra space
+set statusline+=\  
 
 " ---------------------------------------------------------------------------
 " GUI/MacVim Options
@@ -77,10 +154,12 @@ if has("gui_running")
 	set guioptions-=T 
 
 	" Set the font
-	set guifont=Monaco:h15		 " Set the font style and size
+	set guifont=Ubuntu\ Mono\ for\ Powerline:h18 " Set the font style and size
 
-	" Window options
+	" Window size
 	set lines=39 columns=140 	 " Set the window size
+
+	" Disable the scrollbars
 	set guioptions-=L			 " Disable left scrollbar
 	set guioptions-=r			 " Disable right scrollbar
 endif
@@ -92,7 +171,6 @@ endif
 " Open a new split and switch to it
 noremap <leader>vs <C-w>v<C-w>l
 noremap <leader>hs <C-w>s<C-w>j
-noremap <leader>c :close<CR>
 
 " Move around the splits
 nnoremap <C-h> <C-w>h
@@ -110,7 +188,6 @@ set gdefault                    		" Search/replace 'globally' (on a line) by def
 set incsearch 							" Show where the pattern matches so far
 set showmatch 							" Highlight the matching bracket when one is inserted
 set hlsearch 							" Highlight search results (as you type)
-nnoremap <leader><space> :noh<cr> 		" Clear a search
 
 " ----------------------------------------------------------------------------
 " Backups and Swap Files
@@ -128,6 +205,9 @@ set backupdir=~/.vim/backup  			" Store backups under ~/.vim/backup
 " Sessions
 " ----------------------------------------------------------------------------
 
+" What parts of the session should be saved?
+set sessionoptions=curdir,tabpages,localoptions,folds
+
 function! RestoreSession()
 	if argc() == 0 "vim called without arguments
 		execute 'source ~/.vim/session'
@@ -140,7 +220,7 @@ function! SaveSession()
 	end
 endfunction
 
-" autocmd VimEnter * call RestoreSession()
+autocmd VimEnter * call RestoreSession()
 autocmd VimLeave * call SaveSession()
 
 " -----------------------------------------------------------
@@ -154,16 +234,29 @@ map <leader>t :tabnew<CR>
 " Misc Mappings
 " -----------------------------------------------------------
 
+" Open the scratchpad
+map <Leader>sp :vs ~/Dropbox/Notes/scratchpad.md<CR>
+
+" Close panel/window
+map <leader>x :close<cr>
+
 "Shortcut for editing  vimrc file in a new tab
 nmap <leader>ev :tabedit $MYVIMRC<cr>
+nmap <leader>sv :source $MYVIMRC<cr>
 
 " Map tab to indent
 vnoremap <Tab> >gv
 nnoremap <Tab> >>
 
-" Bubble single lines (kicks butt)
+" Bubble single lines
 nmap <C-Up> ddkP
 nmap <C-Down> ddp
+imap <C-Up> <esc>ddkP
+nmap <C-Down> <esc>ddp
+
+" Map shift+tab to unindent
+vnoremap <S-Tab> <gv
+nnoremap <S-Tab> <<
 
 " Bubble multiple lines
 vmap <C-Up> xkP`[V`]
@@ -173,23 +266,15 @@ vmap <C-Down> xp`[V`]
 vnoremap < <gv
 vnoremap > >gv
 
-" Map shift+tab to unindent
-vnoremap <S-Tab> <gv
-nnoremap <S-Tab> <<
-
-" Map ; to :
-nnoremap ; :
-vnoremap ; :
-
-" Maps the spacebar to colon
-nmap <space> :
-
 " Visually select the text that was last edited/pasted
 nmap gV `[v`]
 
 " Use 'real' regexes
 nnoremap / /\v
 vnoremap / /\v
+
+" Map ESC
+imap jj <ESC>
 
 " -----------------------------------------------------------
 " Movement
@@ -205,55 +290,46 @@ nnoremap K V gk
 vnoremap J gj
 vnoremap K gk
 
-" Map shift+arrow keys to highlight text
-nmap <S-UP> v
-nmap <S-DOWN> v
-nmap <S-LEFT> v
-nmap <S-RIGHT> v
-vmap <S-UP> k
-vmap <S-DOWN> j
-vmap <S-LEFT> h
-vmap <S-RIGHT> k
-
-" Make arrow keys work in visual mode
-vnoremap <LEFT> h
-vnoremap <RIGHT> l
-vnoremap <UP> gk
-vnoremap <DOWN> gj
-
-" Make arrow keys move by screen line, not file line, in normal mode
-nnoremap <LEFT> h
-nnoremap <RIGHT> l
-nnoremap <UP> gk
-nnoremap <DOWN> gj
+" Remap ; to :
+vnoremap ; :
+nnoremap ; :
 
 " -----------------------------------------------------------
 " Code Folding
 " -----------------------------------------------------------
 
 set foldenable 							" Enable folding
-set foldcolumn=0 						" Add a fold column
-set foldmethod=indent 					" Fold code based on indentation level
-set foldlevelstart=99            		" Start out with everything folded
+set foldcolumn=0 						" Don't add a fold column
+set foldlevelstart=99            		" Start out with nothing folded
+
+" Allow the use of indent and manual folding together
+augroup vimrc
+	au BufReadPre * setlocal foldmethod=indent
+	au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+augroup END
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+
+" -----------------------------------------------------------
+" ZenCoding 
+" -----------------------------------------------------------
+
+let g:user_zen_expandabbr_key = '<c-z>'
 
 " -----------------------------------------------------------
 " NerdTree
 " -----------------------------------------------------------
 
 " Toggle nerdtree
-inoremap <leader>nt <ESC> :NERDTreeToggle<CR>
 vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
 nnoremap <leader>nt :NERDTreeToggle<CR>
 
 " Show the bookmarks table on startup
-let NERDTreeShowBookmarks=0
+let NERDTreeShowBookmarks=1
 
 " Show hidden files, too
 let NERDTreeShowFiles=1
-" let NERDTreeShowHidden=1
 
 " Quit on opening files from the tree
 let NERDTreeQuitOnOpen=0
@@ -267,6 +343,45 @@ let NERDTreeMouseMode=2
 " Allow NerdTree to change Vim's CD
 let NERDTreeChDirMode=2
 
-" Autopen NERDTree and focus cursor in new document
-autocmd VimEnter * NERDTree
-autocmd VimEnter * wincmd p
+" -----------------------------------------------------------
+" Syntastic 
+" -----------------------------------------------------------
+
+let g:syntastic_check_on_open=1
+
+" -----------------------------------------------------------
+" SnipMate 
+" -----------------------------------------------------------
+
+let g:snips_trigger_key='<c-space>'
+
+" -----------------------------------------------------------
+" Gundo 
+" -----------------------------------------------------------
+
+nnoremap <leader>u :GundoToggle<CR>
+vnoremap <leader>u :GundoToggle<CR>
+
+" -----------------------------------------------------------
+" CtrlP
+" -----------------------------------------------------------
+
+inoremap <C-p> <ESC>:CtrlPMixed<CR>
+let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_working_path_mode = ''
+let g:ctrlp_custom_ignore = 'DS_Store\|git'
+
+" -----------------------------------------------------------
+" Powerline
+" -----------------------------------------------------------
+
+let g:Powerline_symbols = 'fancy'
+
+" -----------------------------------------------------------
+" tComment
+" -----------------------------------------------------------
+
+call tcomment#DefineType('cfscript', '// %s')
+call tcomment#DefineType('cfscript_block', '/* %s */')
+call tcomment#DefineType('cfml', '<!--- %s --->')
+call tcomment#DefineType('cfml_block', '<!--- %s --->')
