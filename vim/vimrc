@@ -1,6 +1,7 @@
 " ---------------------------------------------------------------------------
 " Vundle
 " ---------------------------------------------------------------------------
+
 filetype off                   " required!
 
 set rtp+=~/.vim/bundle/vundle/
@@ -10,7 +11,6 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Install other bundles
-Bundle 'chriskempson/vim-tomorrow-theme'
 Bundle 'vim-scripts/The-NERD-tree'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
@@ -29,7 +29,11 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'Raimondi/delimitMate'
 Bundle 'https://github.com/Lokaltog/vim-powerline.git'
 Bundle 'henrik/vim-indexed-search'
-Bundle 'sjl/vitality.vim'
+Bundle 'myusuf3/numbers.vim'
+
+" Color schemes
+Bundle 'chriskempson/vim-tomorrow-theme'
+Bundle 'nanotech/jellybeans.vim'
 
 " Utility Bundles
 Bundle 'vim-scripts/L9'
@@ -48,7 +52,7 @@ set nocompatible 				" Don't be compatible with Vi
 " Colors / Theme
 " ---------------------------------------------------------------------------
 
-colorscheme Tomorrow-Night		" Set the colorscheme
+colorscheme jellybeans
 
 " ---------------------------------------------------------------------------
 " Files
@@ -72,7 +76,6 @@ set showtabline=2 				" Always show the tabline
 set ruler						" Turn on row,column dislay on status bar
 set backspace=2           		" Allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,] 		" Backspace and cursor keys wrap too
-set wildmenu 					" Command completion with tab
 set visualbell 					" Disable 'beep' for wrong commands and do screen flash
 set cursorline 					" Highlights the cursor line
 set ttyfast 					" Makes scrolling smoother
@@ -84,27 +87,14 @@ set sidescrolloff=10            " Number of columns to keep to the left and righ
 set mouse=a						" Enable mouse
 set showcmd						" Show command in bottom right of window
 set clipboard=unnamed			" Enable the system clipboard
-set noshowmode 					" Don't show the current Vim mode
+set showmode 					" Don't show the current Vim mode
 set lazyredraw  				" Don't update the display while executing macros
 set wrapscan 					" Set the search scan to wrap around the file
 set virtualedit=block 			" Allow the cursor to go in to "invalid" places
 set wrap linebreak nolist 		" Break/wrap lines in between words instead of the middle of a word
+set shortmess+=I 				" Skip the splash screen
+set wildmenu 					" Command completion with tab
 let mapleader = ","				" Set leader key to comma
-
-"  ---------------------------------------------------------------------------
-"  Line Numbering
-"  ---------------------------------------------------------------------------
-
-" Turn on relative line numbering in normal mode, regular in insert mode
-set rnu
-au BufEnter * :set rnu
-au BufLeave * :set nu
-au WinEnter * :set rnu
-au WinLeave * :set nu
-au InsertEnter * :set nu
-au InsertLeave * :set rnu
-au FocusLost * :set nu
-au FocusGained * :set rnu
 
 "  ---------------------------------------------------------------------------
 "  Status Line
@@ -123,12 +113,12 @@ set statusline+=%w
 set statusline+=%=
 
 " Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
 " Git branch
-set statusline+=\ %{fugitive#statusline()}
+" set statusline+=\ %{fugitive#statusline()}
 
 " Encoding
 set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}]
@@ -231,8 +221,68 @@ autocmd VimLeave * call SaveSession()
 map <leader>t :tabnew<CR>
 
 " -----------------------------------------------------------
+"  Tabline
+" -----------------------------------------------------------
+
+set tabline=%!MyTabLine()
+
+function! MyTabLine()
+	let s = ''
+
+	for i in range(tabpagenr('$'))
+		" select the highlighting
+		if i + 1 == tabpagenr()
+			let s .= '%#TabLineSel#'
+		else
+			let s .= '%#TabLine#'
+		endif
+
+		" set the tab page number (for mouse clicks)
+		let s .= '%' . (i + 1) . 'T' 
+
+		let tabNum = i + 1
+		let s .= ' '. tabNum . ') '
+
+		" the label is made by MyTabLabel()
+		let s .= ' %{MyTabLabel(' . (i + 1) . ')}'
+	endfor			
+
+	" after the last tab fill with TabLineFill and reset tab page nr
+	let s .= '%#TabLineFill#%T'
+
+	" right-align the label to close the current tab page
+	if tabpagenr('$') > 1 
+		let s .= '%=%#TabLine#%999X[close]'
+	endif
+
+	return s
+endfunction
+
+function! MyTabLabel(n)
+	let buflist = tabpagebuflist(a:n)
+	let winnr = tabpagewinnr(a:n)
+	
+	let label  = bufname(buflist[winnr - 1]) 
+
+	if label == ''
+		let label = 'Untitled'
+	endif
+
+	let label .= (getbufvar(buflist[winnr - 1], "&mod")?' + ':'   ')
+
+	return fnamemodify(label, ":t") 
+endfunction
+
+hi TabLineFill ctermfg=LightGrey ctermbg=Black
+hi TabLine ctermfg=LightGrey ctermbg=Black
+hi TabLineSel term=underline ctermfg=LightGrey ctermbg=DarkGrey
+
+" -----------------------------------------------------------
 " Misc Mappings
 " -----------------------------------------------------------
+
+" Preserve indentation while pasting text from the OS X clipboard
+noremap <leader>p :set paste<CR>:put  *<CR>:set nopaste<CR>
 
 " Open the scratchpad
 map <Leader>sp :vs ~/Dropbox/Notes/scratchpad.md<CR>
@@ -367,9 +417,10 @@ vnoremap <leader>u :GundoToggle<CR>
 " -----------------------------------------------------------
 
 inoremap <C-p> <ESC>:CtrlPMixed<CR>
+vnoremap <C-p> <ESC>:CtrlPMixed<CR>
 let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_working_path_mode = ''
-let g:ctrlp_custom_ignore = 'DS_Store\|git'
+let g:ctrlp_custom_ignore = '\v[\/](\.git|\.hg|\.svn|\.DS_Store)$'
 
 " -----------------------------------------------------------
 " Powerline
