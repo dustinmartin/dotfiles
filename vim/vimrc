@@ -172,6 +172,10 @@ nnoremap <C-l> <C-w>l
 " Searching
 " ---------------------------------------------------------------------------
 
+" Use 'real' regexes
+noremap / /\v
+vnoremap / /\v
+
 set ignorecase 							" Makes searches case insensitive if search string is all lower case
 set smartcase 							" Makes searches case SENSITIVE if search string contains an uppercase letter
 set gdefault                    		" Search/replace 'globally' (on a line) by default
@@ -183,13 +187,12 @@ set hlsearch 							" Highlight search results (as you type)
 " Backups and Swap Files
 " ----------------------------------------------------------------------------
 
-set undolevels=1000
-set nobackup                   			" Do not keep backups after close
-set nowritebackup               		" Do not keep a backup while working
-set noswapfile                 			" Don't keep swp files either
+set undofile 							" Enable undo files
+set undolevels=1000 					" The number of undo levels to allow
 set backupcopy=yes              		" Keep attributes of original file
-set directory=~/.vim/swap				" Keep swp files under ~/.vim/swap
-set backupdir=~/.vim/backup  			" Store backups under ~/.vim/backup
+set directory=~/.vim/swap//				" Keep swp files under ~/.vim/swap
+set backupdir=~/.vim/backup//  			" Store backups under ~/.vim/backup
+set undodir=~/.vim/undo// 				" Set the undo directory location
 
 " ----------------------------------------------------------------------------
 " Sessions
@@ -318,10 +321,6 @@ vnoremap > >gv
 
 " Visually select the text that was last edited/pasted
 nmap gV `[v`]
-
-" Use 'real' regexes
-nnoremap / /\v
-vnoremap / /\v
 
 " Map ESC
 imap jj <ESC>
