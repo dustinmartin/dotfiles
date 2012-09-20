@@ -187,11 +187,12 @@ set hlsearch 							" Highlight search results (as you type)
 " Backups and Swap Files
 " ----------------------------------------------------------------------------
 
+set backup 								" Enable the creation of backup files
+set backupcopy=yes              		" Keep attributes of original file
+set backupdir=~/.vim/backup//  			" Store backups under ~/.vim/backup
+set directory=~/.vim/swap//				" Keep swp files under ~/.vim/swap
 set undofile 							" Enable undo files
 set undolevels=1000 					" The number of undo levels to allow
-set backupcopy=yes              		" Keep attributes of original file
-set directory=~/.vim/swap//				" Keep swp files under ~/.vim/swap
-set backupdir=~/.vim/backup//  			" Store backups under ~/.vim/backup
 set undodir=~/.vim/undo// 				" Set the undo directory location
 
 " ----------------------------------------------------------------------------
