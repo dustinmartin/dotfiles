@@ -1,7 +1,15 @@
+grunt.js
+
 # Scribbles #
 #############
 scribble.cfm
+
+# IntelliJ IDEA #
+#################
 scribble/*
+.idea
+.idea/*
+*.iml
 
 # Tincr #
 #########
@@ -36,7 +44,6 @@ tincr.json
 # Logs and databases #
 ######################
 *.log
-*.sql
 *.sqlite
 
 # OS generated files #

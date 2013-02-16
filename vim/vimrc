@@ -18,26 +18,38 @@ Bundle 'Lokaltog/vim-easymotion'
 Bundle 'mileszs/ack.vim'
 Bundle 'davejlong/cf-utils.vim'
 Bundle 'tpope/vim-surround'
-Bundle 'garbas/vim-snipmate'
-Bundle 'mattn/zencoding-vim'
-Bundle 'scrooloose/syntastic'
+Bundle 'godlygeek/tabular'
+Bundle 'SirVer/ultisnips'
 Bundle 'ervandew/supertab'
-Bundle 'honza/snipmate-snippets'
+Bundle 'mattn/zencoding-vim'
+" Bundle 'scrooloose/syntastic'
 Bundle 'tomtom/tcomment_vim'
-Bundle 'sjl/gundo.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Raimondi/delimitMate'
-Bundle 'https://github.com/Lokaltog/vim-powerline.git'
-Bundle 'henrik/vim-indexed-search'
-Bundle 'myusuf3/numbers.vim'
+Bundle 'Lokaltog/vim-powerline'
+" Bundle 'myusuf3/numbers.vim'
+Bundle 'mattn/gist-vim'
+Bundle 'sjl/gundo.vim'
+Bundle 'hail2u/vim-css3-syntax'
+Bundle 'groenewege/vim-less'
+Bundle 'jelera/vim-javascript-syntax'
 
 " Color schemes
 Bundle 'chriskempson/vim-tomorrow-theme'
+Bundle 'altercation/vim-colors-solarized'
+Bundle '29decibel/codeschool-vim-theme'
+Bundle 'vim-scripts/wombat256.vim'
 Bundle 'nanotech/jellybeans.vim'
 
-" Utility Bundles
-Bundle 'vim-scripts/L9'
+" Dependencies
+
+" Required by Gist.vim
+Bundle 'mattn/webapi-vim' 
+
+" Required by ...
 Bundle 'tomtom/tlib_vim'
+
+" Required by ...
 Bundle 'MarcWeber/vim-addon-mw-utils'
 
 " ---------------------------------------------------------------------------
@@ -52,6 +64,7 @@ set nocompatible 				" Don't be compatible with Vi
 " Colors / Theme
 " ---------------------------------------------------------------------------
 
+" This is overwritten by the gui options
 colorscheme jellybeans
 
 " ---------------------------------------------------------------------------
@@ -66,10 +79,10 @@ set fileformats=unix,mac,dos
 " UI
 " ---------------------------------------------------------------------------
 
+set hidden 						" Allow unsaved buffers to be hidden
 set autoread 					" Reload files
 set shiftwidth=4 				" Number of spaces to use for each step of (auto)indent
 set tabstop=4 					" Number of spaces that a <Tab> in the file counts for
-set autoindent 					" Copy the indent from the current line when starting a new line
 set nowrap						" Turn word wrapping off. :set wrap turns it back on.
 set tabpagemax=50 				" Increase the number of allowed tabs
 set showtabline=2 				" Always show the tabline
@@ -84,17 +97,26 @@ set textwidth=0 				" Prevent Vim from wrapping lines
 set wrapmargin=0 				" Prevent Vim from wrapping lines
 set sidescroll=1 				" Number of columns to scroll horizontally
 set sidescrolloff=10            " Number of columns to keep to the left and right of cursor
+set scrolloff=1					" Number of rows to keep above/below the cursor
 set mouse=a						" Enable mouse
 set showcmd						" Show command in bottom right of window
-set clipboard=unnamed			" Enable the system clipboard
+set clipboard=unnamed			" Default to the system clipboard
 set showmode 					" Don't show the current Vim mode
 set lazyredraw  				" Don't update the display while executing macros
 set wrapscan 					" Set the search scan to wrap around the file
-set virtualedit=block 			" Allow the cursor to go in to "invalid" places
-set wrap linebreak nolist 		" Break/wrap lines in between words instead of the middle of a word
+set virtualedit=block 			" Allow the cursor to go in to invalid places in visual block mode
 set shortmess+=I 				" Skip the splash screen
 set wildmenu 					" Command completion with tab
+set shellcmdflag=-ic 			" Make Vim's :! shell behave like your command prompt and allow all aliases
+set matchtime=3					" How many tenths of a second to highlight a matching parentheses
+set spelllang=en_us 			" Set the spell check dictionary
+set number
+set autoindent 					" Copy the indent from the current line when starting a new line
+set nosmartindent
+set nocindent
+set indentexpr=
 let mapleader = ","				" Set leader key to comma
+" set linespace=4
 
 "  ---------------------------------------------------------------------------
 "  Status Line
@@ -111,14 +133,6 @@ set statusline+=%w
 
 " Left / Right Alignment Separater 
 set statusline+=%=
-
-" Syntastic
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-
-" Git branch
-" set statusline+=\ %{fugitive#statusline()}
 
 " Encoding
 set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}]
@@ -147,11 +161,14 @@ if has("gui_running")
 	set guifont=Ubuntu\ Mono\ for\ Powerline:h18 " Set the font style and size
 
 	" Window size
-	set lines=39 columns=140 	 " Set the window size
+	set lines=40 columns=130 	 " Set the window size
 
 	" Disable the scrollbars
 	set guioptions-=L			 " Disable left scrollbar
 	set guioptions-=r			 " Disable right scrollbar
+
+	" Colorscheme
+	colorscheme Tomorrow-Night
 endif
 
 " ---------------------------------------------------------------------------
@@ -172,10 +189,6 @@ nnoremap <C-l> <C-w>l
 " Searching
 " ---------------------------------------------------------------------------
 
-" Use 'real' regexes
-noremap / /\v
-vnoremap / /\v
-
 set ignorecase 							" Makes searches case insensitive if search string is all lower case
 set smartcase 							" Makes searches case SENSITIVE if search string contains an uppercase letter
 set gdefault                    		" Search/replace 'globally' (on a line) by default
@@ -183,14 +196,20 @@ set incsearch 							" Show where the pattern matches so far
 set showmatch 							" Highlight the matching bracket when one is inserted
 set hlsearch 							" Highlight search results (as you type)
 
+" Use standard regexes
+nnoremap / /\v
+vnoremap / /\v
+
 " ----------------------------------------------------------------------------
 " Backups and Swap Files
 " ----------------------------------------------------------------------------
 
+set noswapfile
+
 set backup 								" Enable the creation of backup files
 set backupcopy=yes              		" Keep attributes of original file
 set backupdir=~/.vim/backup//  			" Store backups under ~/.vim/backup
-set directory=~/.vim/swap//				" Keep swp files under ~/.vim/swap
+
 set undofile 							" Enable undo files
 set undolevels=1000 					" The number of undo levels to allow
 set undodir=~/.vim/undo// 				" Set the undo directory location
@@ -285,11 +304,29 @@ hi TabLineSel term=underline ctermfg=LightGrey ctermbg=DarkGrey
 " Misc Mappings
 " -----------------------------------------------------------
 
-" Preserve indentation while pasting text from the OS X clipboard
-noremap <leader>p :set paste<CR>:put  *<CR>:set nopaste<CR>
+" Yank till end of line
+nnoremap Y y$ 
+
+" Toggle spell checking
+nnoremap <Leader>sp :set spell!<CR>
 
 " Open the scratchpad
-map <Leader>sp :vs ~/Dropbox/Notes/scratchpad.md<CR>
+map <Leader>sc :tabedit ~/Dropbox/Notes/scratchpad.md<CR>
+
+" Toggle word wrapping (won't wrap in the middle of a word)
+nnoremap <leader>ww :set wrap! linebreak nolist<CR>
+
+" U does some weird stuff. Remap to u
+nnoremap U u
+vnoremap U u
+
+" Prevent vim fron unindenting on blank lines
+" inoremap <cr> <cr>x<bs>
+nnoremap o ox<BS>
+nnoremap O Ox<BS>
+
+" Preserve indentation while pasting text from the OS X clipboard
+nnoremap <leader>p :set paste<CR>:put  *<CR>:set nopaste<CR>
 
 " Close panel/window
 map <leader>x :close<cr>
@@ -334,6 +371,9 @@ imap jj <ESC>
 nnoremap j gj
 nnoremap k gk
 
+nnoremap <down> gj
+nnoremap <up> gk
+
 " Allow mode selection vs shift-j (J) and shift-k (K)
 nnoremap J V gj
 nnoremap K V gk
@@ -351,15 +391,13 @@ nnoremap ; :
 set foldenable 							" Enable folding
 set foldcolumn=0 						" Don't add a fold column
 set foldlevelstart=99            		" Start out with nothing folded
-
-" Allow the use of indent and manual folding together
-augroup vimrc
-	au BufReadPre * setlocal foldmethod=indent
-	au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
-augroup END
+set foldmethod=indent
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+
+" Fold the {} block
+nnoremap zb vi{zf 
 
 " -----------------------------------------------------------
 " ZenCoding 
@@ -398,29 +436,39 @@ let NERDTreeChDirMode=2
 " -----------------------------------------------------------
 
 let g:syntastic_check_on_open=1
-
-" -----------------------------------------------------------
-" SnipMate 
-" -----------------------------------------------------------
-
-let g:snips_trigger_key='<c-space>'
+let g:syntastic_enable_signs=0
 
 " -----------------------------------------------------------
 " Gundo 
 " -----------------------------------------------------------
 
-nnoremap <leader>u :GundoToggle<CR>
-vnoremap <leader>u :GundoToggle<CR>
+nnoremap <leader>u :GundoToggle<cr> 
+vnoremap <leader>u :GundoToggle<cr> 
 
 " -----------------------------------------------------------
 " CtrlP
 " -----------------------------------------------------------
 
-inoremap <C-p> <ESC>:CtrlPMixed<CR>
-vnoremap <C-p> <ESC>:CtrlPMixed<CR>
-let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_working_path_mode = ''
-let g:ctrlp_custom_ignore = '\v[\/](\.git|\.hg|\.svn|\.DS_Store)$'
+inoremap <C-p> <ESC>:CtrlP<CR>
+vnoremap <C-p> <ESC>:CtrlP<CR>
+
+nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <leader>f :CtrlP<CR>
+
+" Search by filename
+let g:ctrlp_by_filename = 1
+let g:ctrlp_tabpage_position= 'al'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_custom_ignore = {
+	\ 'dir':  '\v[\/]\.(git|hg|svn)$',
+	\ 'file': '\v\.(jpg|jpeg|png|gif|zip|pdf|dmg)$'
+	\ }
+let g:ctrlp_tabpage_position = 'al'
+
+let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<c-t>'],
+    \ 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>'],
+    \ }
 
 " -----------------------------------------------------------
 " Powerline
@@ -436,3 +484,38 @@ call tcomment#DefineType('cfscript', '// %s')
 call tcomment#DefineType('cfscript_block', '/* %s */')
 call tcomment#DefineType('cfml', '<!--- %s --->')
 call tcomment#DefineType('cfml_block', '<!--- %s --->')
+
+" -----------------------------------------------------------
+" Gist
+" -----------------------------------------------------------
+
+let g:gist_clip_command = 'pbcopy'
+let g:gist_detect_filetype = 1
+let g:gist_open_browser_after_post = 1
+let g:gist_post_private = 1
+
+" -----------------------------------------------------------
+" Tabular
+" -----------------------------------------------------------
+
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+
+nmap <Leader>a: :Tabularize /:<CR>
+vmap <Leader>a: :Tabularize /:<CR>
+
+" -----------------------------------------------------------
+" UltiSnips
+" -----------------------------------------------------------
+
+let g:UltiSnipsExpandTrigger="<c-space>"
+let g:UltiSnipsListSnippets="<c-s-space>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
+" -----------------------------------------------------------
+" Syntax Specific
+" -----------------------------------------------------------
+
+" Don't highlight HTML links
+:hi link htmlLink NONE<CR>

@@ -2,6 +2,18 @@
 alias ..="cd .."
 alias ...="cd ../.."
 
+# Fasd aliases
+alias a='fasd -a'        # any
+alias s='fasd -si'       # show / search / select
+alias d='fasd -d'        # directory
+alias f='fasd -f'        # file
+alias sd='fasd -sid'     # interactive directory selection
+alias sf='fasd -sif'     # interactive file selection
+alias j='fasd_cd -d'     # cd, same functionality as j in autojump
+alias z='fasd_cd -d'     # cd, same functionality as j in autojump
+alias zz='fasd_cd -d -i' # cd with interactive selection
+alias v='f -e vim' 		 # quick opening files with vim
+
 # Start Mongo
 alias mongostart='mongod run --config /usr/local/etc/mongod.conf'
 
@@ -43,15 +55,19 @@ alias g='git'
 alias gs='git status -s'
 alias gst='git status'
 alias gpl='git pull'
+alias gplff='git pull --ff-only'
+alias gm='git merge'
+alias gmff='git merge --no-ff'
 alias gpu='git push'
 alias gf='git fetch'
-alias gm='git merge'
 alias gco='git checkout'
 alias gb='git branch'
 alias grb='git rebase'
 alias gd='git diff'
 alias ga='git add'
 alias grm='git rm'
+
+alias gcod='git checkout develop'
 
 # Commit staged changed and provide some stats on the commit
 alias gc='git commit -v -m'
@@ -79,25 +95,19 @@ alias glmc='git log --author "$(git config --get user.name)" "$(git tag | tail -
 
 # Updates a branch
 gup() {
-	if [[ $(is_git_dirty) = true ]] then
-	    echo "The repo is dirty. Please commit all changes first."
-	else
-		echo "Fetching updates from origin"
-		git fetch origin 
-		echo
-		echo "Repasing origin/develop"
-		git rebase origin/develop
-	fi
+	echo "> Fetching updates from origin"
+	echo
+	git fetch origin 
+	echo
+	echo "> Rebasing origin/develop"
+	echo
+	git rebase origin/develop
 }
 
 # Interactive rebase
 gir() {
-	if [[ $(is_git_dirty) = true ]] then
-	    echo "The repo is dirty. Please commit all changes first."
-	else
-		echo "Rebasing (interactive) origin/develop"
-		git rebase -i origin/develop
-	fi
+	echo "Rebasing (interactive) origin/develop"
+	git rebase -i origin/develop
 }
 
 # Merges branch back into develop

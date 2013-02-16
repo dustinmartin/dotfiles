@@ -7,6 +7,9 @@ source $ZSH/oh-my-zsh.sh
 # Include other files
 source ~/.aliases
 
+# Init fasd
+eval "$(fasd --init auto)"
+
 # rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
