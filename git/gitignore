@@ -1,4 +1,6 @@
 grunt.js
+*.sublime-project
+*.sublime-workspace
 
 # Scribbles #
 #############
