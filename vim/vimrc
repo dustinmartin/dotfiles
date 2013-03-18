@@ -33,6 +33,7 @@ Bundle 'sjl/gundo.vim'
 Bundle 'hail2u/vim-css3-syntax'
 Bundle 'groenewege/vim-less'
 Bundle 'jelera/vim-javascript-syntax'
+Bundle 'airblade/vim-gitgutter'
 
 " Color schemes
 Bundle 'chriskempson/vim-tomorrow-theme'
