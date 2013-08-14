@@ -3,6 +3,7 @@
 	email = dm@dustinmartin.net
 [core]
 	excludesfile = ~/.gitignore
+	autocrlf = false
 [color]
 	diff = true
 	ui = true
@@ -15,8 +16,6 @@
 	default = matching
 [merge]
 	conflictstyle = diff3
-[gui]
-	recentrepo = /Users/dustinmartin/Projects/InVision/invision-v2/projects.invisionapp.com
 [rerere]
 	enabled = true
 	autoupdate = true

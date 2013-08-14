@@ -2,3 +2,4 @@ vim/session
 vim/undo
 vim/swap
 .netrwhist
+vim/*.un~

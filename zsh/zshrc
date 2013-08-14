@@ -10,27 +10,28 @@ source ~/.aliases
 # Init fasd
 eval "$(fasd --init auto)"
 
-# rbenv
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
 # Make sure Homebrew's packages before others
 export PATH="/usr/local/bin:$PATH"
 
 # Add Haskell binaries to the path
-export PATH="$HOME/Library/Haskell/bin:$PATH"
+export PATH="/Library/Haskell/bin:$PATH"
 
 # Add npm modules to the path
-export PATH="$HOME/usr/local/lib/node_modules:$PATH"
-export PATH="$HOME/usr/local/share/npm/bin:$PATH"
+export PATH="/usr/local/lib/node_modules:$PATH"
+export PATH="/usr/local/share/npm/bin:$PATH"
+
+# Setup the path to the Android tools
+export PATH="$HOME/Development Tools/adt-bundle-mac-x86_64-20130219/sdk/platform-tools):$PATH"
+export PATH="$HOME/Development Tools/adt-bundle-mac-x86_64-20130219/sdk/tools:$PATH"
 
 # Setup node.js modules
 export NODE_PATH="/usr/local/lib/node_modules:$NODE_PATH"
 
 # Ruby Options
-export RUBYOPT=rubygems
+# export RUBYOPT=rubygems
 
-# Autojump
-if [ -f `brew --prefix`/etc/autojump ]; then
-  . `brew --prefix`/etc/autojump
-fi
+# Setup NVM
+[[ -s /Users/dustinmartin/.nvm/nvm.sh ]] && . /Users/dustinmartin/.nvm/nvm.sh  # This loads NVM
+
+# Setup RVM
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
