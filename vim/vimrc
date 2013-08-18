@@ -1,6 +1,4 @@
-" ---------------------------------------------------------------------------
-" Vundle
-" ---------------------------------------------------------------------------
+" Bundles --------------------------------------------------------- {{{
 
 filetype off                   " required!
 
@@ -30,7 +28,6 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'myusuf3/numbers.vim'
 Bundle 'hail2u/vim-css3-syntax'
-Bundle 'airblade/vim-gitgutter'
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'jelera/vim-javascript-syntax'
@@ -38,44 +35,35 @@ Bundle 'pangloss/vim-javascript'
 " Bundle 'marijnh/tern_for_vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'Valloric/MatchTagAlways'
-Bundle 'jceb/vim-orgmode'
+" Bundle 'jceb/vim-orgmode'
 Bundle 'chrisbra/NrrwRgn'
+Bundle 'xolox/vim-misc'
+Bundle 'xolox/vim-session'
+Bundle 'goldfeld/vim-seek'
 
 " Color schemes
 Bundle 'tomasr/molokai'
 Bundle 'nanotech/jellybeans.vim'
 
-" ---------------------------------------------------------------------------
-" General
-" ---------------------------------------------------------------------------
+" }}}
+" Vim Settings ---------------------------------------------------- {{{
 
 syntax on 						" Enable syntax highlighting
 filetype plugin indent on 		" Detect and handle filetypes
+
+let mapleader = ","				" Set leader key to comma
+let maplocalleader = "\\"
+
+colorscheme molokai
+
 set nocompatible 				" Don't be compatible with Vi
-
-" ---------------------------------------------------------------------------
-" Colors / Theme
-" ---------------------------------------------------------------------------
-
-" This is overwritten by the gui options
-colorscheme jellybeans
-
-" ---------------------------------------------------------------------------
-" Files
-" ---------------------------------------------------------------------------
-
 set fileencoding=utf-8
 set fileformat=unix
 set fileformats=unix,mac,dos
-
-" ---------------------------------------------------------------------------
-" Settings
-" ---------------------------------------------------------------------------
-
 set hidden 						" Allow unsaved buffers to be hidden
 set nowrap						" Turn word wrapping off. :set wrap turns it back on.
 set tabpagemax=50 				" Increase the number of allowed tabs
-set showtabline=2 				" Always show the tabline
+set showtabline=0 				" Always show the tabline
 set ruler						" Turn on row,column dislay on status bar
 set backspace=2           		" Allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,] 		" Backspace and cursor keys wrap too
@@ -110,17 +98,57 @@ set switchbuf=usetab,newtab 	" Open new buffers always in new tabs
 set splitright                  " Split vertical windows right to the current windows
 set splitbelow                  " Split horizontal windows below to the current windows
 set autoread                    " Automatically reread changed files without asking me anything
-let mapleader = ","				" Set leader key to comma
-
-set complete-=i
+set suffixesadd+=.js 			" Help VIM find .js files when using gf
+set list
+set listchars=tab:\ \ ,eol:\ ,extends:❯,precedes:❮
+set ignorecase 							" Makes searches case insensitive if search string is all lower case
+set smartcase 							" Makes searches case SENSITIVE if search string contains an uppercase letter
+set gdefault                    		" Search/replace 'globally' (on a line) by default
+set incsearch 							" Start searching before pressing enter
+set showmatch 							" Highlight the matching bracket when one is inserted
+set hlsearch 							" Highlight search results (as you type)
+set noswapfile
+set nobackup
+set undolevels=1000 						" The number of undo levels to allow
 
 if &encoding ==# 'latin1' && has('gui_running')
     set encoding=utf-8
 endif
 
-"  ---------------------------------------------------------------------------
-"  Status Line
-"  ---------------------------------------------------------------------------
+if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
+	set t_Co=256 	" Enable 256 colors in terminal
+	set t_md= 		" Disable bold fonts in the terminal
+endif
+
+" }}}
+" GUI Settings ---------------------------------------------------- {{{
+
+if has("gui_running")
+
+    " Set the tab labels
+    set guitablabel=%t\ %m
+
+    " Hide the toolbar
+    set guioptions-=T 
+
+    " Set the font
+    " set guifont=Ubuntu\ Mono\ for\ Powerline:h18 " Set the font style and size
+    set guifont=Ubuntu\ Mono:h18 " Set the font style and size
+
+    " Window size
+    set lines=40 columns=130 	 " Set the window size
+
+    " Disable the scrollbars
+    set guioptions-=L			 " Disable left scrollbar
+    set guioptions-=r			 " Disable right scrollbar
+
+    " Colorscheme
+    colorscheme molokai
+
+endif
+
+" }}}
+" Status Line ----------------------------------------------------- {{{
 
 " Filename
 set statusline=\ [%t]
@@ -146,107 +174,8 @@ set statusline+=\ [%P]
 " Extra space
 set statusline+=\  
 
-" ---------------------------------------------------------------------------
-" GUI/MacVim Options
-" ---------------------------------------------------------------------------
-
-if has("gui_running")
-    " Set the tab labels
-    set guitablabel=%t\ %m
-
-    " Hide the toolbar
-    set guioptions-=T 
-
-    " Set the font
-    " set guifont=Ubuntu\ Mono\ for\ Powerline:h18 " Set the font style and size
-    set guifont=Ubuntu\ Mono:h18 " Set the font style and size
-
-    " Window size
-    set lines=40 columns=130 	 " Set the window size
-
-    " Disable the scrollbars
-    set guioptions-=L			 " Disable left scrollbar
-    set guioptions-=r			 " Disable right scrollbar
-
-    " Colorscheme
-    colorscheme molokai
-endif
-
-" ---------------------------------------------------------------------------
-" Splits 
-" ---------------------------------------------------------------------------
-
-" Open a new split and switch to it
-noremap <leader>vs <C-w>v<C-w>l
-noremap <leader>hs <C-w>s<C-w>j
-
-" Move around the splits
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-
-" ---------------------------------------------------------------------------
-" Searching
-" ---------------------------------------------------------------------------
-
-set ignorecase 							" Makes searches case insensitive if search string is all lower case
-set smartcase 							" Makes searches case SENSITIVE if search string contains an uppercase letter
-set gdefault                    		" Search/replace 'globally' (on a line) by default
-set incsearch 							" Start searching before pressing enter
-set showmatch 							" Highlight the matching bracket when one is inserted
-set hlsearch 							" Highlight search results (as you type)
-
-" Use standard regexes
-nnoremap / /\v
-vnoremap / /\v
-
-" ----------------------------------------------------------------------------
-" Backups / Swap / Undo Files
-" ----------------------------------------------------------------------------
-
-set noswapfile
-
-set nobackup 								" Disable the creation of backup files
-" set backupcopy=yes              			" Keep attributes of original file
-" set backupdir=~/.vim/backup//  			" Store backups under ~/.vim/backup
-
-" set undofile 								" Enable undo files
-set undolevels=1000 						" The number of undo levels to allow
-" set undodir=~/.vim/undo// 				" Set the undo directory location
-
-" ----------------------------------------------------------------------------
-" Sessions
-" ----------------------------------------------------------------------------
-
-" What parts of the session should be saved?
-set sessionoptions=curdir,tabpages,localoptions,folds
-
-function! RestoreSession()
-	if argc() == 0 "vim called without arguments
-		execute 'source ~/.vim/session'
-	end
-endfunction
-
-function! SaveSession()
-	if argc() == 0 "vim called without arguments
-		execute 'mksession! ~/.vim/session'
-	end
-endfunction
-
-autocmd VimEnter * call RestoreSession()
-autocmd VimLeave * call SaveSession()
-
-" -----------------------------------------------------------
-"  Tabs
-" -----------------------------------------------------------
-
-" Open a new tab
-map <leader>t :tabnew<CR>
-
-" -----------------------------------------------------------
-"  Tabline
-" -----------------------------------------------------------
+" }}}
+" Tab Line -------------------------------------------------------- {{{
 
 set tabline=%!MyTabLine()
 
@@ -301,21 +230,23 @@ hi TabLineFill ctermfg=LightGrey ctermbg=Black
 hi TabLine ctermfg=LightGrey ctermbg=Black
 hi TabLineSel term=underline ctermfg=LightGrey ctermbg=DarkGrey
 
-" -----------------------------------------------------------
-" Misc Mappings
-" -----------------------------------------------------------
+" }}}
+" Key Mappings ---------------------------------------------------- {{{
+
+" Use standard regexes
+nnoremap / /\v
+vnoremap / /\v
+
+" Keep the result in the center of the screen
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+nnoremap <silent> g# g#zz
 
 " Yank till end of line
 nnoremap Y y$ 
-
-" Toggle spell checking
-nnoremap <Leader>sp :set spell!<CR>
-
-" Open the scratchpad
-map <Leader>sc :tabedit ~/Dropbox/Notes/scratchpad.md<CR>
-
-" Toggle word wrapping (won't wrap in the middle of a word)
-nnoremap <leader>ww :set wrap! linebreak nolist<CR>
 
 " U does some weird stuff. Remap to u
 nnoremap U u
@@ -325,16 +256,6 @@ vnoremap U u
 " inoremap <cr> <cr>x<bs>
 " nnoremap o ox<BS>
 " nnoremap O Ox<BS>
-
-" Preserve indentation while pasting text from the OS X clipboard
-nnoremap <leader>p :set paste<CR>:put  *<CR>:set nopaste<CR>
-
-" Close panel/window
-map <leader>x :close<cr>
-
-"Shortcut for editing  vimrc file in a new tab
-nmap <leader>ev :tabedit $MYVIMRC<cr>
-nmap <leader>sv :source $MYVIMRC<cr>
 
 " Map tab to indent
 vnoremap <Tab> >gv
@@ -364,10 +285,6 @@ nmap gV `[v`]
 " Map ESC
 imap jj <ESC>
 
-" -----------------------------------------------------------
-" Movement
-" -----------------------------------------------------------
-
 " Movement by screen line instead of file line
 nnoremap j gj
 nnoremap k gk
@@ -385,27 +302,63 @@ vnoremap K gk
 vnoremap ; :
 nnoremap ; :
 
-" -----------------------------------------------------------
-" Code Folding
-" -----------------------------------------------------------
-
-set foldenable 							" Enable folding
-set foldcolumn=0 						" Don't add a fold column
-set foldlevel=99            			" Start out with nothing folded
-set foldlevelstart=99            		" Start out with nothing folded
-set foldmethod=syntax
-
-" What actions open a fold?
-set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
-
-" Fold the {} block - for manual folding only
-" nnoremap zb vi{zf 
-
 " Refocus folds
 nnoremap ,z zMzvzz
 
 " Make zO recursively open whatever top level fold we're in, no matter where the cursor happens to be.
 nnoremap zO zCzO
+
+" CtrlP
+inoremap <C-p> <ESC>:CtrlP<CR>
+vnoremap <C-p> <ESC>:CtrlP<CR>
+
+nnoremap <leader>gst :Gstatus<cr>
+
+" Open a new split and switch to it
+noremap <leader>vs <C-w>v<C-w>l
+noremap <leader>hs <C-w>s<C-w>j
+
+" Move around the splits
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" }}}
+" Leader Mappings ------------------------------------------------- {{{
+
+nnoremap <leader>t :tabnew<CR>
+vnoremap <leader>t :tabnew<CR>
+nnoremap <Leader>sp :set spell!<CR>
+nnoremap <leader>ww :set wrap! linebreak nolist<CR>
+nnoremap <leader>ev :tabedit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" Preserve indentation while pasting text from the os x clipboard
+nnoremap <leader>p :set paste<cr>:put  *<cr>:set nopaste<cr>
+
+" Toggle nerdtree
+vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
+nnoremap <leader>nt :NERDTreeToggle<CR>
+
+" Open up current file in NERDTree
+nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
+
+" CtrlP
+nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <leader>f :CtrlP<CR>
+
+" Tabularize
+nnoremap <Leader>a= :Tabularize /=<CR>
+vnoremap <Leader>a= :Tabularize /=<CR>
+nnoremap <Leader>a: :Tabularize /:<CR>
+vnoremap <Leader>a: :Tabularize /:<CR>
+
+" Ag
+nnoremap <leader>ag :Ag!<space>
+
+" }}}
+" Folding --------------------------------------------------------- {{{
 
 function! CustomFoldText()
 
@@ -435,19 +388,22 @@ endfunction
 
 set foldtext=CustomFoldText()
 
-" -----------------------------------------------------------
-" Emmet 
-" -----------------------------------------------------------
+" }}}
+" Plugin Settings ------------------------------------------------- {{{
+
+" --- Session ------------- {{{
+
+let g:session_autosave = 'yes'
+let g:session_autoload = 'yes'
+let g:session_default_to_last = 1
+
+" }}}
+" --- Emmet --------------- {{{
 
 let g:user_emmet_expandabbr_key = '<c-z>'
 
-" -----------------------------------------------------------
-" NerdTree
-" -----------------------------------------------------------
-
-" Toggle nerdtree
-vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
-nnoremap <leader>nt :NERDTreeToggle<CR>
+" }}}
+" --- Nerdtree ------------ {{{
 
 " Show the bookmarks table on startup
 let NERDTreeShowBookmarks=1
@@ -467,26 +423,18 @@ let NERDTreeMouseMode=2
 " Allow NerdTree to change Vim's CD
 let NERDTreeChDirMode=2
 
-" -----------------------------------------------------------
-" Syntastic 
-" -----------------------------------------------------------
+" }}}
+" --- Syntastic ----------- {{{
 
-let g:syntastic_check_on_open=1
-" let g:syntastic_enable_signs=0
+let g:syntastic_check_on_open=0
+let g:syntastic_enable_signs=1
 
-" -----------------------------------------------------------
-" CtrlP
-" -----------------------------------------------------------
-
-inoremap <C-p> <ESC>:CtrlP<CR>
-vnoremap <C-p> <ESC>:CtrlP<CR>
-
-nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>f :CtrlP<CR>
+" }}}
+" --- CtrlP --------------- {{{
 
 " Search by filename
 let g:ctrlp_by_filename = 1
-let g:ctrlp_tabpage_position= 'al'
+let g:ctrlp_tabpage_position= 'c'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = {
 	\ 'dir':  '\v[\/]\.(git|hg|svn)$',
@@ -500,46 +448,41 @@ let g:ctrlp_prompt_mappings = {
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_clear_cache_on_exit = 0
 
-" -----------------------------------------------------------
-" Powerline
-" -----------------------------------------------------------
+" }}}
+" --- Powerline ----------- {{{
 
 let g:Powerline_symbols = 'compatible'
 
-" -----------------------------------------------------------
-" Tabular
-" -----------------------------------------------------------
-
-nmap <Leader>a= :Tabularize /=<CR>
-vmap <Leader>a= :Tabularize /=<CR>
-
-nmap <Leader>a: :Tabularize /:<CR>
-vmap <Leader>a: :Tabularize /:<CR>
-
-" -----------------------------------------------------------
-" UltiSnips
-" -----------------------------------------------------------
+" }}}
+" --- Ultisnips ----------- {{{
 
 let g:UltiSnipsExpandTrigger="<c-space>"
 let g:UltiSnipsListSnippets="<c-s-space>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
-" -----------------------------------------------------------
-" Syntax Specific
-" -----------------------------------------------------------
-
-" Don't highlight HTML links
-:hi link htmlLink NONE<CR>
-
-" -----------------------------------------------------------
-" Silver Searcher / Ack
-" -----------------------------------------------------------
-  
-nnoremap <leader>a :Ag!<space>
-
-" -----------------------------------------------------------
-" Javascript Lib Syntax
-" -----------------------------------------------------------
+" }}}
+" --- Javascript Lib ------ {{{
 
 let g:used_javascript_libs = 'angularjs,jquery,underscore'
+
+" }}}
+
+" }}}
+" Autocmd --------------------------------------------------------- {{{
+
+au VimResized * :wincmd =
+
+" --- Vim ----------------- {{{
+
+augroup filetype_vim
+    au!
+
+    au FileType vim setlocal foldmethod=marker
+    au FileType help setlocal textwidth=78
+    au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+augroup END
+
+" }}}
+
+" }}}

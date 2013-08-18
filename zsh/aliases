@@ -14,8 +14,9 @@ alias z='fasd_cd -d'     # cd, same functionality as j in autojump
 alias zz='fasd_cd -d -i' # cd with interactive selection
 alias v='f -e vim' 		 # quick opening files with vim
 
-# Start Mongo
-alias mongostart='mongod run --config /usr/local/etc/mongod.conf'
+# Tmux
+# alias tmx='tmux -2'
+alias tmux="TERM=screen-256color-bce tmux"
 
 # Fix rake to work with zsh
 alias rake="noglob rake"
