@@ -24,6 +24,14 @@ export PATH="/usr/local/share/npm/bin:$PATH"
 export PATH="$HOME/Development Tools/adt-bundle-mac-x86_64-20130219/sdk/platform-tools):$PATH"
 export PATH="$HOME/Development Tools/adt-bundle-mac-x86_64-20130219/sdk/tools:$PATH"
 
+# Postgres.app
+export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
+
+# Go
+export GOPATH="$HOME/Projects/Go"
+export PATH="$GOPATH/bin:$PATH"
+export PATH="$GOROOT/bin:$PATH"
+
 # Setup node.js modules
 export NODE_PATH="/usr/local/lib/node_modules:$NODE_PATH"
 

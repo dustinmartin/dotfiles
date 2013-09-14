@@ -1,3 +1,6 @@
+" Author: Dustin Martin <dm@dustinmartin.net>
+" Source: https://github.com/dustinmartin/dotfiles
+
 " Bundles --------------------------------------------------------- {{{
 
 filetype off                   " required!
@@ -19,27 +22,30 @@ Bundle 'Lokaltog/vim-easymotion'
 Bundle 'rking/ag.vim'
 Bundle 'godlygeek/tabular'
 Bundle 'SirVer/ultisnips'
-Bundle 'ervandew/supertab'
 Bundle 'mattn/emmet-vim'
 Bundle 'scrooloose/syntastic'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Raimondi/delimitMate'
 Bundle 'Lokaltog/vim-powerline'
-Bundle 'myusuf3/numbers.vim'
 Bundle 'hail2u/vim-css3-syntax'
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'pangloss/vim-javascript'
-" Bundle 'marijnh/tern_for_vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'Valloric/MatchTagAlways'
-" Bundle 'jceb/vim-orgmode'
-Bundle 'chrisbra/NrrwRgn'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
-Bundle 'goldfeld/vim-seek'
+Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'docunext/closetag.vim'
+Bundle 'moll/vim-bbye'
+Bundle 'jnwhiteh/vim-golang'
+Bundle 'sjl/gundo.vim'
+
+" Bundle 'marijnh/tern_for_vim'
+" Bundle 'jceb/vim-orgmode'
+" Bundle 'goldfeld/vim-seek'
 
 " Color schemes
 Bundle 'tomasr/molokai'
@@ -48,77 +54,107 @@ Bundle 'nanotech/jellybeans.vim'
 " }}}
 " Vim Settings ---------------------------------------------------- {{{
 
-syntax on 						" Enable syntax highlighting
-filetype plugin indent on 		" Detect and handle filetypes
+syntax on                                " Enable syntax highlighting
+filetype plugin indent on                " Detect and handle filetypes
 
-let mapleader = ","				" Set leader key to comma
+let mapleader = ","                      " Set leader key to comma
 let maplocalleader = "\\"
 
 colorscheme molokai
 
-set nocompatible 				" Don't be compatible with Vi
+set nocompatible                         " Don't be compatible with Vi
+set encoding=utf-8
 set fileencoding=utf-8
 set fileformat=unix
 set fileformats=unix,mac,dos
-set hidden 						" Allow unsaved buffers to be hidden
-set nowrap						" Turn word wrapping off. :set wrap turns it back on.
-set tabpagemax=50 				" Increase the number of allowed tabs
-set showtabline=0 				" Always show the tabline
-set ruler						" Turn on row,column dislay on status bar
-set backspace=2           		" Allow backspacing over everything in insert mode
-set whichwrap+=<,>,h,l,[,] 		" Backspace and cursor keys wrap too
-set visualbell 					" Disable 'beep' for wrong commands and do screen flash
-set cursorline 					" Highlights the cursor line
-set ttyfast 					" Makes scrolling smoother
-set laststatus=2 				" Always show the statusline
-set textwidth=0 				" Prevent Vim from wrapping lines
-set wrapmargin=0 				" Prevent Vim from wrapping lines
-set sidescroll=1 				" Number of columns to scroll horizontally
-set sidescrolloff=10            " Number of columns to keep to the left and right of cursor
-set scrolloff=1					" Number of rows to keep above/below the cursor
-set mouse=a						" Enable mouse
-set showcmd						" Show command in bottom right of window
-set clipboard=unnamed			" Default to the system clipboard
-set showmode 					" Don't show the current Vim mode
-set lazyredraw  				" Don't update the display while executing macros
-set wrapscan 					" Set the search scan to wrap around the file
-set virtualedit=block 			" Allow the cursor to go in to invalid places in visual block mode
-set shortmess+=I 				" Skip the splash screen
-set wildmenu 					" Command completion with tab
-set matchtime=3					" How many tenths of a second to highlight a matching parentheses
-set spelllang=en_us 			" Set the spell check dictionary
-set number
-set shiftwidth=4 				" Number of spaces to use for each step of (auto)indent
-set tabstop=4 					" Number of spaces that a <Tab> in the file counts for
-set autoindent 					" Copy the indent from the current line when starting a new line
+set hidden                               " Allow unsaved buffers to be hidden
+set nowrap                               " Turn word wrapping off. :set wrap turns it back on.
+set tabpagemax=50                        " Increase the number of allowed tabs
+set showtabline=2                        " Always show the tabline
+set ruler                                " Turn on row,column dislay on status bar
+set backspace=2                          " Allow backspacing over everything in insert mode
+set whichwrap+=<,>,h,l,[,]               " Backspace and cursor keys wrap too
+set visualbell                           " Disable 'beep' for wrong commands and do screen flash
+set cursorline                           " Highlights the cursor line
+set ttyfast                              " Makes scrolling smoother
+set laststatus=2                         " Always show the statusline
+set textwidth=0                          " Prevent Vim from wrapping lines
+set wrapmargin=0                         " Prevent Vim from wrapping lines
+set sidescroll=1                         " Number of columns to scroll horizontally
+set sidescrolloff=10                     " Number of columns to keep to the left and right of cursor
+set scrolloff=1                          " Number of rows to keep above/below the cursor
+set mouse=a                              " Enable mouse
+set showcmd                              " Show command in bottom right of window
+set clipboard=unnamed                    " Default to the system clipboard
+set showmode                             " Don't show the current Vim mode
+set lazyredraw                           " Don't update the display while executing macros
+set wrapscan                             " Set the search scan to wrap around the file
+set virtualedit=block                    " Allow the cursor to go in to invalid places in visual block mode
+set shortmess+=I                         " Skip the splash screen
+set matchtime=3                          " How many tenths of a second to highlight a matching parentheses
+set spelllang=en_us                      " Set the spell check dictionary
+" set number
+set relativenumber
+set shiftwidth=4                         " Number of spaces to use for each step of (auto)indent
+set tabstop=4                            " Number of spaces that a <Tab> in the file counts for
+set softtabstop=4
+set expandtab
+set autoindent                           " Copy the indent from the current line when starting a new line
 set nosmartindent
 set nocindent
 set linespace=2
-set switchbuf=usetab,newtab 	" Open new buffers always in new tabs
-set splitright                  " Split vertical windows right to the current windows
-set splitbelow                  " Split horizontal windows below to the current windows
-set autoread                    " Automatically reread changed files without asking me anything
-set suffixesadd+=.js 			" Help VIM find .js files when using gf
+set switchbuf=usetab,newtab              " Open new buffers always in new tabs
+set splitright                           " Split vertical windows right to the current windows
+set splitbelow                           " Split horizontal windows below to the current windows
+set autoread                             " Automatically reread changed files without asking me anything
+set suffixesadd+=.js                     " Help VIM find .js files when using gf
 set list
-set listchars=tab:\ \ ,eol:\ ,extends:❯,precedes:❮
-set ignorecase 							" Makes searches case insensitive if search string is all lower case
-set smartcase 							" Makes searches case SENSITIVE if search string contains an uppercase letter
-set gdefault                    		" Search/replace 'globally' (on a line) by default
-set incsearch 							" Start searching before pressing enter
-set showmatch 							" Highlight the matching bracket when one is inserted
-set hlsearch 							" Highlight search results (as you type)
+set listchars=tab:»\ ,eol:\ ,trail:·,extends:❯,precedes:❮
+set ignorecase                           " Makes searches case insensitive if search string is all lower case
+set smartcase                            " Makes searches case SENSITIVE if search string contains an uppercase letter
+set gdefault                             " Search/replace 'globally' (on a line) by default
+set incsearch                            " Start searching before pressing enter
+set showmatch                            " Highlight the matching bracket when one is inserted
+set hlsearch                             " Highlight search results (as you type)
 set noswapfile
 set nobackup
-set undolevels=1000 						" The number of undo levels to allow
+set undolevels=1000                      " The number of undo levels to allow
+set complete-=i
+set formatoptions-=r                     " Don't add comment prefix to next line
 
-if &encoding ==# 'latin1' && has('gui_running')
-    set encoding=utf-8
-endif
+" What actions open a fold?
+set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+
+" Time out on key codes but not mappings.
+" Basically this makes terminal Vim work sanely.
+set notimeout
+set ttimeout
+set ttimeoutlen=10
+" set noesckeys
 
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-	set t_Co=256 	" Enable 256 colors in terminal
-	set t_md= 		" Disable bold fonts in the terminal
+    set t_Co=256    " Enable 256 colors in terminal
+    set t_md=       " Disable bold fonts in the terminal
 endif
+
+" }}}
+" Wildmenu Completion --------------------------------------------- {{{
+
+set wildmenu
+set wildmode=full
+
+set wildignore+=.hg,.git,.svn                    " Version control
+set wildignore+=*.aux,*.out,*.toc                " LaTeX intermediate files
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
+set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
+set wildignore+=*.spl                            " compiled spelling word lists
+set wildignore+=*.sw?                            " Vim swap files
+set wildignore+=*.DS_Store                       " OSX
+set wildignore+=*.luac                           " Lua byte code
+set wildignore+=migrations                       " Django migrations
+set wildignore+=*.pyc                            " Python byte code
+set wildignore+=*.orig                           " Merge resolution files
+set wildignore+=log/**,node_modules/**,target/**,tmp/**,*.rbc
 
 " }}}
 " GUI Settings ---------------------------------------------------- {{{
@@ -128,22 +164,16 @@ if has("gui_running")
     " Set the tab labels
     set guitablabel=%t\ %m
 
-    " Hide the toolbar
-    set guioptions-=T 
+    set guioptions-=T                        " Hide the toolbar
+    set guioptions-=e                        " Don't use GUI tabs
+    set guioptions-=L                        " Disable left scrollbar
+    set guioptions-=r                        " Disable right scrollbar
 
     " Set the font
-    " set guifont=Ubuntu\ Mono\ for\ Powerline:h18 " Set the font style and size
-    set guifont=Ubuntu\ Mono:h18 " Set the font style and size
+    set guifont=Ubuntu\ Mono:h18             " Set the font style and size
 
     " Window size
-    set lines=40 columns=130 	 " Set the window size
-
-    " Disable the scrollbars
-    set guioptions-=L			 " Disable left scrollbar
-    set guioptions-=r			 " Disable right scrollbar
-
-    " Colorscheme
-    colorscheme molokai
+    set lines=40 columns=130                 " Set the window size
 
 endif
 
@@ -180,58 +210,84 @@ set statusline+=\
 set tabline=%!MyTabLine()
 
 function! MyTabLine()
-	let s = ''
+    let s = ''
 
-	for i in range(tabpagenr('$'))
-		" select the highlighting
-		if i + 1 == tabpagenr()
-			let s .= '%#TabLineSel#'
-		else
-			let s .= '%#TabLine#'
-		endif
+    for i in range(tabpagenr('$'))
+        " select the highlighting
+        if i + 1 == tabpagenr()
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
+        endif
 
-		" set the tab page number (for mouse clicks)
-		let s .= '%' . (i + 1) . 'T' 
+        " set the tab page number (for mouse clicks)
+        let s .= '%' . (i + 1) . 'T' 
 
-		let tabNum = i + 1
-		let s .= ' '. tabNum . ') '
+        let tabNum = i + 1
+        let s .= ' '. tabNum . ') '
 
-		" the label is made by MyTabLabel()
-		let s .= ' %{MyTabLabel(' . (i + 1) . ')}'
-	endfor			
+        " the label is made by MyTabLabel()
+        let s .= ' %{MyTabLabel(' . (i + 1) . ')}'
+    endfor
 
-	" after the last tab fill with TabLineFill and reset tab page nr
-	let s .= '%#TabLineFill#%T'
+    " after the last tab fill with TabLineFill and reset tab page nr
+    let s .= '%#TabLineFill#%T'
 
-	" right-align the label to close the current tab page
-	if tabpagenr('$') > 1 
-		let s .= '%=%#TabLine#%999X[close]'
-	endif
+    " right-align the label to close the current tab page
+    if tabpagenr('$') > 1 
+        let s .= '%=%#TabLine#%999X[X]'
+    endif
 
-	return s
+    return s
 endfunction
 
 function! MyTabLabel(n)
-	let buflist = tabpagebuflist(a:n)
-	let winnr = tabpagewinnr(a:n)
-	
-	let label  = bufname(buflist[winnr - 1]) 
+    let buflist = tabpagebuflist(a:n)
+    let winnr = tabpagewinnr(a:n)
+    let label  = bufname(buflist[winnr - 1]) 
 
-	if label == ''
-		let label = 'Untitled'
-	endif
+    if label == ''
+        let label = 'Untitled'
+    endif
 
-	let label .= (getbufvar(buflist[winnr - 1], "&mod")?' + ':'   ')
+    let label .= (getbufvar(buflist[winnr - 1], "&mod")?' + ':'   ')
 
-	return fnamemodify(label, ":t") 
+    return fnamemodify(label, ":t") 
 endfunction
 
-hi TabLineFill ctermfg=LightGrey ctermbg=Black
-hi TabLine ctermfg=LightGrey ctermbg=Black
-hi TabLineSel term=underline ctermfg=LightGrey ctermbg=DarkGrey
+hi TabLine      guifg=#999999 guibg=#333333 gui=none    ctermfg=White ctermbg=DarkGrey cterm=none
+hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold    ctermfg=231 ctermbg=235 cterm=bold
+hi TabLineFill  guifg=#999999 guibg=#333333 gui=none    ctermfg=White ctermbg=DarkGrey cterm=none
 
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
+
+" Space to toggle folds.
+nnoremap <Space> za
+vnoremap <Space> za
+
+" Q: Closes the window
+nnoremap Q :q<cr>
+
+" _ : Quick horizontal splits
+nnoremap _ :sp<cr>
+
+" | : Quick vertical splits
+nnoremap <bar> :vsp<cr>
+
+" w!!: Writes using sudo
+cnoremap w!! w !sudo tee % >/dev/null
+
+" Select (charwise) the contents of the current line, excluding indentation.
+nnoremap vv ^vg_
+
+" Make ' go to the exact position
+noremap ' `
+
+" Easier to type, and I never use the default behavior.
+noremap H ^
+noremap L $
+vnoremap L g_
 
 " Use standard regexes
 nnoremap / /\v
@@ -306,17 +362,11 @@ nnoremap ; :
 nnoremap ,z zMzvzz
 
 " Make zO recursively open whatever top level fold we're in, no matter where the cursor happens to be.
-nnoremap zO zCzO
+" nnoremap zO zCzO
 
 " CtrlP
 inoremap <C-p> <ESC>:CtrlP<CR>
 vnoremap <C-p> <ESC>:CtrlP<CR>
-
-nnoremap <leader>gst :Gstatus<cr>
-
-" Open a new split and switch to it
-noremap <leader>vs <C-w>v<C-w>l
-noremap <leader>hs <C-w>s<C-w>j
 
 " Move around the splits
 nnoremap <C-h> <C-w>h
@@ -324,13 +374,45 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
+" Resize Splits
+nnoremap <leader>v> :vertical resize +3<cr>
+nnoremap <leader>v< :vertical resize -3<cr>
+
+nnoremap <leader>h> :resize +1<cr>
+nnoremap <leader>h< :resize -1<cr>
+
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
+" Show Gundo
+nnoremap <leader>u :GundoToggle<cr>
+
+" Delete buffer without messing up windows/panes
+nnoremap <leader>dd :Bdelete<cr>
+
+" nnoremap <leader>n :vimgrep /\v[A-Za-z0-9\_\$\.]+\s*(\=|:)\s*function\s*\(.*\)/ %<cr>
+
+" Git
+nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gw :Gwrite<cr>
+nnoremap <leader>ga :Gadd<cr>
+nnoremap <leader>gb :Gblame<cr>
+nnoremap <leader>gco :Gcheckout<cr>
+nnoremap <leader>gcm :Gcommit<cr>
+nnoremap <leader>gm :Gmove<cr>
+nnoremap <leader>gr :Gremove<cr>
+
+" Open a new split and switch to it
+" noremap <leader>vs <C-w>v<C-w>l
+" noremap <leader>hs <C-w>s<C-w>j
+
 nnoremap <leader>t :tabnew<CR>
 vnoremap <leader>t :tabnew<CR>
+
 nnoremap <Leader>sp :set spell!<CR>
 nnoremap <leader>ww :set wrap! linebreak nolist<CR>
+
 nnoremap <leader>ev :tabedit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
@@ -389,6 +471,24 @@ endfunction
 set foldtext=CustomFoldText()
 
 " }}}
+" File Renaming --------------------------------------------------- {{{
+
+function! RenameFile()
+
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+
+endfunction
+
+nnoremap <Leader>r :call RenameFile()<cr>
+
+" }}}
 " Plugin Settings ------------------------------------------------- {{{
 
 " --- Session ------------- {{{
@@ -406,7 +506,7 @@ let g:user_emmet_expandabbr_key = '<c-z>'
 " --- Nerdtree ------------ {{{
 
 " Show the bookmarks table on startup
-let NERDTreeShowBookmarks=1
+let NERDTreeShowBookmarks=0
 
 " Show hidden files, too
 let NERDTreeShowFiles=1
@@ -434,16 +534,16 @@ let g:syntastic_enable_signs=1
 
 " Search by filename
 let g:ctrlp_by_filename = 1
-let g:ctrlp_tabpage_position= 'c'
+let g:ctrlp_tabpage_position= 'al'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = {
-	\ 'dir':  '\v[\/]\.(git|hg|svn)$',
-	\ 'file': '\v\.(jpg|jpeg|png|gif|zip|pdf|dmg)$'
-	\ }
-let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': ['<c-t>'],
-    \ 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>'],
+    \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+    \ 'file': '\v\.(jpg|jpeg|png|gif|zip|pdf|dmg)$'
     \ }
+" let g:ctrlp_prompt_mappings = {
+"     \ 'AcceptSelection("e")': ['<c-t>'],
+"     \ 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>'],
+"     \ }
 
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_clear_cache_on_exit = 0
@@ -467,20 +567,170 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 let g:used_javascript_libs = 'angularjs,jquery,underscore'
 
 " }}}
+" --- Indent Guides ------- {{{
+
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 1
+
+" }}}
 
 " }}}
 " Autocmd --------------------------------------------------------- {{{
 
-au VimResized * :wincmd =
+" Only show cursorline in the current window and in normal mode.
+augroup cursor_line
+    au!
+    " au WinLeave,InsertEnter * set nocursorline
+    " au WinEnter,InsertLeave * set cursorline
+augroup END
 
+" --- Window Resize ------- {{{
+
+augroup window_resize
+    au!
+    au VimResized * :wincmd =
+augroup END
+
+" }}}
 " --- Vim ----------------- {{{
 
-augroup filetype_vim
+augroup ft_vim
     au!
 
     au FileType vim setlocal foldmethod=marker
-    au FileType help setlocal textwidth=78
-    au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+    " au FileType help setlocal textwidth=78
+    " au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+augroup END
+
+" }}}
+" --- CSS ----------------- {{{
+
+augroup ft_css
+    au!
+
+    au BufNewFile,BufRead *.less setlocal filetype=less
+    au BufNewFile,BufRead *.scss setlocal filetype=sass
+    au BufNewFile,BufRead *.sass setlocal filetype=sass
+
+    au Filetype less,css,sass setlocal foldmethod=marker
+    au Filetype less,css,sass setlocal foldmarker={,}
+    " au Filetype less,css,sass setlocal omnifunc=csscomplete#CompleteCSS
+    " au Filetype less,css,sass setlocal iskeyword+=-
+
+    " Use <leader>S to sort properties.  Turns this:
+    au BufNewFile,BufRead *.less,*.css,*.scss nnoremap <buffer> <localleader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
+augroup END
+
+" }}}
+" --- Java ---------------- {{{
+
+augroup ft_java
+    au!
+
+    au FileType java setlocal foldmethod=marker
+    au FileType java setlocal foldmarker={,}
+augroup END
+
+" }}}
+" --- Javascript ---------- {{{
+
+augroup ft_javascript
+    au!
+
+    au FileType javascript setlocal foldmethod=marker
+    au FileType javascript setlocal foldmarker={,}
+
+augroup END
+
+" }}}
+" --- Markdown ------------ {{{
+
+augroup ft_markdown
+    au!
+
+    au BufNewFile,BufRead *.m*down setlocal filetype=markdown foldlevel=1
+    au BufNewFile,BufRead *.md setlocal filetype=markdown foldlevel=1
+
+    " Use <localleader>1/2/3 to add headings.
+    au Filetype markdown nnoremap <buffer> <localleader>1 I#<space><ESC>
+    au Filetype markdown nnoremap <buffer> <localleader>2 I##<space><ESC>
+    au Filetype markdown nnoremap <buffer> <localleader>3 I###<space><ESC>
+
+    au Filetype markdown nnoremap <buffer> <localleader>h mzI#<ESC>`zl
+
+augroup END
+
+" }}}
+" --- Ruby ---------------- {{{
+
+augroup ft_ruby
+    au!
+
+    au Filetype ruby setlocal foldmethod=syntax
+
+    au BufRead,BufNewFile Gemfile setlocal filetype=ruby
+    au BufRead,BufNewFile Capfile setlocal filetype=ruby
+    au BufRead,BufNewFile *.rb setlocal shiftwidth=2 softtabstop=2
+
+augroup END
+
+" }}}
+" --- Scala --------------- {{{
+
+augroup ft_scala
+    au!
+    au Filetype scala setlocal foldmethod=marker foldmarker={,}
+augroup END
+
+" }}}
+" --- Vagrant ------------- {{{
+
+augroup ft_vagrant
+    au!
+    au BufRead,BufNewFile Vagrantfile setlocal filetype=ruby
+augroup END
+
+" }}}
+" --- HTML ---------------- {{{
+
+augroup ft_html
+    au!
+
+    au FileType html setlocal foldmethod=manual
+
+    " Use <localleader>f to fold the current tag.
+    au FileType html nnoremap <buffer> <localleader>f Vatzf
+
+    " Indent tag
+    au FileType html nnoremap <buffer> <localleader>= Vat=
+
+    " Don't highlight HTML links
+    " au FileType html :hi link htmlLink NONE<CR>
+
+augroup END
+
+" }}}
+" --- Yaml ---------------- {{{
+
+augroup ft_yaml
+    au!
+
+    au BufNewFile,BufRead *.yml setlocal filetype=yaml
+
+    au Filetype yaml setlocal foldmethod=indent
+    au Filetype yaml setlocal shiftwidth=2 softtabstop=2
+
+augroup END
+
+" }}}
+" --- Go ------------------ {{{
+
+augroup ft_go
+    au!
+
+    au FileType go setlocal foldmethod=marker
+    au FileType go setlocal foldmarker={,}
+
 augroup END
 
 " }}}
