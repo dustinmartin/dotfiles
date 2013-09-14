@@ -93,7 +93,7 @@ set virtualedit=block                    " Allow the cursor to go in to invalid 
 set shortmess+=I                         " Skip the splash screen
 set matchtime=3                          " How many tenths of a second to highlight a matching parentheses
 set spelllang=en_us                      " Set the spell check dictionary
-" set number
+set number
 set relativenumber
 set shiftwidth=4                         " Number of spaces to use for each step of (auto)indent
 set tabstop=4                            " Number of spaces that a <Tab> in the file counts for
