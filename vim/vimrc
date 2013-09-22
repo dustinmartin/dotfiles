@@ -60,6 +60,11 @@ filetype plugin indent on                " Detect and handle filetypes
 let mapleader = ","                      " Set leader key to comma
 let maplocalleader = "\\"
 
+if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
+    set t_Co=256    " Enable 256 colors in terminal
+    " set t_md=       " Disable bold fonts in the terminal
+endif
+
 colorscheme molokai
 
 set nocompatible                         " Don't be compatible with Vi
@@ -131,11 +136,6 @@ set notimeout
 set ttimeout
 set ttimeoutlen=10
 " set noesckeys
-
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-    set t_Co=256    " Enable 256 colors in terminal
-    set t_md=       " Disable bold fonts in the terminal
-endif
 
 " }}}
 " Wildmenu Completion --------------------------------------------- {{{
