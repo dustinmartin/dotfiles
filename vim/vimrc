@@ -29,23 +29,19 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'Raimondi/delimitMate'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'hail2u/vim-css3-syntax'
+Bundle 'groenewege/vim-less'
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'pangloss/vim-javascript'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'Valloric/MatchTagAlways'
+" Bundle 'Valloric/YouCompleteMe'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'docunext/closetag.vim'
-Bundle 'moll/vim-bbye'
-Bundle 'jnwhiteh/vim-golang'
 Bundle 'sjl/gundo.vim'
-
-" Bundle 'marijnh/tern_for_vim'
-" Bundle 'jceb/vim-orgmode'
-" Bundle 'goldfeld/vim-seek'
+Bundle 'tpope/vim-rails'
+Bundle 'ervandew/supertab'
 
 " Color schemes
 Bundle 'tomasr/molokai'
@@ -262,6 +258,9 @@ hi TabLineFill  guifg=#999999 guibg=#333333 gui=none    ctermfg=White ctermbg=Da
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
 
+" Shift tab to unindent
+" imap <S-Tab> <C-o><<
+
 " Space to toggle folds.
 nnoremap <Space> za
 vnoremap <Space> za
@@ -349,10 +348,10 @@ nnoremap <down> gj
 nnoremap <up> gk
 
 " Allow mode selection vs shift-j (J) and shift-k (K)
-nnoremap J V gj
-nnoremap K V gk
-vnoremap J gj
-vnoremap K gk
+" nnoremap J V gj
+" nnoremap K V gk
+" vnoremap J gj
+" vnoremap K gk
 
 " Remap ; to :
 vnoremap ; :
@@ -383,6 +382,16 @@ nnoremap <leader>h< :resize -1<cr>
 
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
+
+" Toggle Syntastic
+nnoremap <Leader>ss :SyntasticToggleMode<CR>
+
+" Change quotation marks
+nnoremap <Leader>"" :%s/'/"<CR>
+nnoremap <Leader>'' :%s/"/'<CR>
+
+" Trim Whitespace
+nnoremap <Leader>ws :%s/\s\+$//e<CR>
 
 " Show Gundo
 nnoremap <leader>u :GundoToggle<cr>
@@ -435,6 +444,8 @@ nnoremap <Leader>a= :Tabularize /=<CR>
 vnoremap <Leader>a= :Tabularize /=<CR>
 nnoremap <Leader>a: :Tabularize /:<CR>
 vnoremap <Leader>a: :Tabularize /:<CR>
+vnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
+nnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
 
 " Ag
 nnoremap <leader>ag :Ag!<space>
@@ -500,7 +511,7 @@ let g:session_default_to_last = 1
 " }}}
 " --- Emmet --------------- {{{
 
-let g:user_emmet_expandabbr_key = '<c-z>'
+" let g:user_emmet_expandabbr_key = '<c-z>'
 
 " }}}
 " --- Nerdtree ------------ {{{
@@ -571,6 +582,14 @@ let g:used_javascript_libs = 'angularjs,jquery,underscore'
 
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 1
+
+" }}}
+" --- MatchTagAlways ------ {{{
+
+let g:mta_set_default_matchtag_color = 0
+let g:mta_use_matchparen_group = 0
+
+highlight MatchTag ctermfg=black ctermbg=darkgrey guifg=black guibg=darkgrey
 
 " }}}
 

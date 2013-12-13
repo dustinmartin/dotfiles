@@ -10,6 +10,8 @@ source ~/.aliases
 # Init fasd
 eval "$(fasd --init auto)"
 
+export WEB_PORT=8180
+
 # Make sure Homebrew's packages before others
 export PATH="/usr/local/bin:$PATH"
 
