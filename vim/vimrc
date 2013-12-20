@@ -689,7 +689,10 @@ augroup ft_ruby
 
     au BufRead,BufNewFile Gemfile setlocal filetype=ruby
     au BufRead,BufNewFile Capfile setlocal filetype=ruby
+    au BufRead,BufNewFile *.rabl setlocal filetype=ruby
+
     au BufRead,BufNewFile *.rb setlocal shiftwidth=2 softtabstop=2
+    au BufRead,BufNewFile *.rabl setlocal shiftwidth=2 softtabstop=2
 
 augroup END
 
