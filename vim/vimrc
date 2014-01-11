@@ -256,6 +256,15 @@ hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold    ctermfg=231 ctermbg=235 
 hi TabLineFill  guifg=#999999 guibg=#333333 gui=none    ctermfg=White ctermbg=DarkGrey cterm=none
 
 " }}}
+" Custom Commands ------------------------------------------------- {{{
+
+" Close all buffers
+command! Bda 1,1000 bd
+
+" Set filetype to Javascript
+command! Setjs set ft=javscript
+
+" }}}
 " Key Mappings ---------------------------------------------------- {{{
 
 " Shift tab to unindent
