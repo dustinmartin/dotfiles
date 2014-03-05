@@ -42,6 +42,7 @@ Bundle 'docunext/closetag.vim'
 Bundle 'sjl/gundo.vim'
 Bundle 'tpope/vim-rails'
 Bundle 'ervandew/supertab'
+Bundle 'jnwhiteh/vim-golang'
 
 " Color schemes
 Bundle 'tomasr/molokai'
@@ -185,7 +186,7 @@ set statusline+=\ %m
 " Preview Screen Flag
 set statusline+=%w
 
-" Left / Right Alignment Separater 
+" Left / Right Alignment Separater
 set statusline+=%=
 
 " Encoding
@@ -195,10 +196,10 @@ set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}]
 set statusline+=\ [Line\ %l\/%L]
 
 " Percentage Through File
-set statusline+=\ [%P]  
+set statusline+=\ [%P]
 
 " Extra space
-set statusline+=\  
+set statusline+=\
 
 " }}}
 " Tab Line -------------------------------------------------------- {{{
@@ -217,7 +218,7 @@ function! MyTabLine()
         endif
 
         " set the tab page number (for mouse clicks)
-        let s .= '%' . (i + 1) . 'T' 
+        let s .= '%' . (i + 1) . 'T'
 
         let tabNum = i + 1
         let s .= ' '. tabNum . ') '
@@ -230,7 +231,7 @@ function! MyTabLine()
     let s .= '%#TabLineFill#%T'
 
     " right-align the label to close the current tab page
-    if tabpagenr('$') > 1 
+    if tabpagenr('$') > 1
         let s .= '%=%#TabLine#%999X[X]'
     endif
 
@@ -240,7 +241,7 @@ endfunction
 function! MyTabLabel(n)
     let buflist = tabpagebuflist(a:n)
     let winnr = tabpagewinnr(a:n)
-    let label  = bufname(buflist[winnr - 1]) 
+    let label  = bufname(buflist[winnr - 1])
 
     if label == ''
         let label = 'Untitled'
@@ -248,7 +249,7 @@ function! MyTabLabel(n)
 
     let label .= (getbufvar(buflist[winnr - 1], "&mod")?' + ':'   ')
 
-    return fnamemodify(label, ":t") 
+    return fnamemodify(label, ":t")
 endfunction
 
 hi TabLine      guifg=#999999 guibg=#333333 gui=none    ctermfg=White ctermbg=DarkGrey cterm=none
@@ -262,17 +263,19 @@ hi TabLineFill  guifg=#999999 guibg=#333333 gui=none    ctermfg=White ctermbg=Da
 command! Bda 1,1000 bd
 
 " Set filetype to Javascript
-command! Setjs set ft=javscript
+command! SetJS set ft=javscript
+
+" Format the JSON in the current file
+command! FormatJSON %!python -m json.tool
+
+" Remove  (caret M) from files
+command! RemoveM %s///g
 
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
 
 " Shift tab to unindent
 " imap <S-Tab> <C-o><<
-
-" Space to toggle folds.
-nnoremap <Space> za
-vnoremap <Space> za
 
 " Q: Closes the window
 nnoremap Q :q<cr>
@@ -310,7 +313,7 @@ nnoremap <silent> g* g*zz
 nnoremap <silent> g# g#zz
 
 " Yank till end of line
-nnoremap Y y$ 
+nnoremap Y y$
 
 " U does some weird stuff. Remap to u
 nnoremap U u
@@ -391,6 +394,10 @@ nnoremap <leader>h< :resize -1<cr>
 
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
+
+" Move tabs
+nnoremap <Leader>mr :tabm +1<CR>
+nnoremap <Leader>ml :tabm -1<CR>
 
 " Toggle Syntastic
 nnoremap <Leader>ss :SyntasticToggleMode<CR>
@@ -642,8 +649,11 @@ augroup ft_css
 
     au Filetype less,css,sass setlocal foldmethod=marker
     au Filetype less,css,sass setlocal foldmarker={,}
-    " au Filetype less,css,sass setlocal omnifunc=csscomplete#CompleteCSS
-    " au Filetype less,css,sass setlocal iskeyword+=-
+
+    au BufRead,BufNewFile *.css setlocal shiftwidth=4 softtabstop=4
+    au BufRead,BufNewFile *.less setlocal shiftwidth=4 softtabstop=4
+    au BufRead,BufNewFile *.scss setlocal shiftwidth=4 softtabstop=4
+    au BufRead,BufNewFile *.sass setlocal shiftwidth=4 softtabstop=4
 
     " Use <leader>S to sort properties.  Turns this:
     au BufNewFile,BufRead *.less,*.css,*.scss nnoremap <buffer> <localleader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>

@@ -2,6 +2,9 @@
 alias ..="cd .."
 alias ...="cd ../.."
 
+# UUID
+alias uuid="uuid | pbcopy"
+
 # Fasd aliases
 alias a='fasd -a'        # any
 alias s='fasd -si'       # show / search / select
@@ -46,7 +49,7 @@ alias showf="defaults write com.apple.finder AppleShowAllFiles TRUE; killall Fin
 alias hidef="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder"
 
 # Git
-#alias g='git'
+alias g='git'
 alias g='/usr/bin/git'
 alias gs='git status -s'
 alias gst='git status'
