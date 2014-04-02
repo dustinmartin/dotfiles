@@ -43,8 +43,14 @@ Bundle 'sjl/gundo.vim'
 Bundle 'tpope/vim-rails'
 Bundle 'ervandew/supertab'
 Bundle 'jnwhiteh/vim-golang'
+Bundle 'rizzatti/funcoo.vim'
+Bundle 'rizzatti/dash.vim'
+
+Bundle 'digitaltoad/vim-jade'
+Bundle 'wavded/vim-stylus'
 
 " Color schemes
+Bundle 'altercation/vim-colors-solarized'
 Bundle 'tomasr/molokai'
 Bundle 'nanotech/jellybeans.vim'
 
@@ -104,7 +110,7 @@ set expandtab
 set autoindent                           " Copy the indent from the current line when starting a new line
 set nosmartindent
 set nocindent
-set linespace=2
+set linespace=0
 set switchbuf=usetab,newtab              " Open new buffers always in new tabs
 set splitright                           " Split vertical windows right to the current windows
 set splitbelow                           " Split horizontal windows below to the current windows
@@ -167,10 +173,11 @@ if has("gui_running")
     set guioptions-=r                        " Disable right scrollbar
 
     " Set the font
-    set guifont=Ubuntu\ Mono:h18             " Set the font style and size
+    " set guifont=Ubuntu\ Mono:h18             " Set the font style and size
+    set guifont=Source\ Code\ Pro:h17             " Set the font style and size
 
     " Window size
-    set lines=40 columns=130                 " Set the window size
+    set lines=35 columns=115                 " Set the window size
 
 endif
 
@@ -369,9 +376,6 @@ nnoremap <up> gk
 vnoremap ; :
 nnoremap ; :
 
-" Refocus folds
-nnoremap ,z zMzvzz
-
 " Make zO recursively open whatever top level fold we're in, no matter where the cursor happens to be.
 " nnoremap zO zCzO
 
@@ -394,6 +398,9 @@ nnoremap <leader>h< :resize -1<cr>
 
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
+
+" Refocus folds
+nnoremap <leader>z zMzvzz
 
 " Move tabs
 nnoremap <Leader>mr :tabm +1<CR>

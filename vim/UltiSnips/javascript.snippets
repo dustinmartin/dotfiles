@@ -11,9 +11,32 @@ switch( $1 ){
 }
 endsnippet
 
-snippet fn "function" b
-function $1($2){
+snippet fn "function"
+function$1($2){
 	$3
 }
 endsnippet
+
+snippet ite "it - empty" b
+it( "$1" );$2
+endsnippet
+
+snippet it "it - function" b
+it( "$1", function(){
+	$2
+});
+endsnippet
+
+snippet if "if statement" b
+if( $1 ){
+	$2
+}
+endsnippet
+
+snippet for "for loop" b
+for( var i=0; i<$1; i++ ){
+	$2
+}
+endsnippet
+
 # vim:ft=snippets:
