@@ -45,9 +45,10 @@ Bundle 'ervandew/supertab'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'rizzatti/funcoo.vim'
 Bundle 'rizzatti/dash.vim'
-
-Bundle 'digitaltoad/vim-jade'
-Bundle 'wavded/vim-stylus'
+Bundle 'henrik/vim-reveal-in-finder'
+Bundle 'mxw/vim-jsx'
+" Bundle 'digitaltoad/vim-jade'
+" Bundle 'wavded/vim-stylus'
 
 " Color schemes
 Bundle 'altercation/vim-colors-solarized'
