@@ -42,7 +42,8 @@ Bundle 'docunext/closetag.vim'
 Bundle 'sjl/gundo.vim'
 Bundle 'tpope/vim-rails'
 Bundle 'ervandew/supertab'
-Bundle 'jnwhiteh/vim-golang'
+" Bundle 'jnwhiteh/vim-golang'
+Bundle 'fatih/vim-go'
 Bundle 'rizzatti/funcoo.vim'
 Bundle 'rizzatti/dash.vim'
 Bundle 'henrik/vim-reveal-in-finder'
@@ -69,6 +70,7 @@ if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gno
     " set t_md=       " Disable bold fonts in the terminal
 endif
 
+" colorscheme jellybeans
 colorscheme molokai
 
 set nocompatible                         " Don't be compatible with Vi
@@ -180,6 +182,7 @@ if has("gui_running")
     " Window size
     set lines=35 columns=115                 " Set the window size
 
+    colorscheme molokai
 endif
 
 " }}}
