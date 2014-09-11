@@ -34,7 +34,6 @@ Bundle 'terryma/vim-multiple-cursors'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'pangloss/vim-javascript'
-" Bundle 'Valloric/YouCompleteMe'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
 Bundle 'nathanaelkane/vim-indent-guides'
@@ -42,12 +41,14 @@ Bundle 'docunext/closetag.vim'
 Bundle 'sjl/gundo.vim'
 Bundle 'tpope/vim-rails'
 Bundle 'ervandew/supertab'
-" Bundle 'jnwhiteh/vim-golang'
 Bundle 'fatih/vim-go'
 Bundle 'rizzatti/funcoo.vim'
 Bundle 'rizzatti/dash.vim'
 Bundle 'henrik/vim-reveal-in-finder'
-Bundle 'mxw/vim-jsx'
+Bundle 'derekwyatt/vim-scala'
+Bundle 'airblade/vim-gitgutter'
+" Bundle 'Valloric/YouCompleteMe'
+" Bundle 'mxw/vim-jsx'
 " Bundle 'digitaltoad/vim-jade'
 " Bundle 'wavded/vim-stylus'
 
@@ -384,8 +385,8 @@ nnoremap ; :
 " nnoremap zO zCzO
 
 " CtrlP
-inoremap <C-p> <ESC>:CtrlP<CR>
-vnoremap <C-p> <ESC>:CtrlP<CR>
+inoremap <C-p> <ESC>:CtrlPMixed<CR>
+vnoremap <C-p> <ESC>:CtrlPMixed<CR>
 
 " Move around the splits
 nnoremap <C-h> <C-w>h
@@ -424,7 +425,7 @@ nnoremap <Leader>ws :%s/\s\+$//e<CR>
 nnoremap <leader>u :GundoToggle<cr>
 
 " Delete buffer without messing up windows/panes
-nnoremap <leader>dd :Bdelete<cr>
+" nnoremap <leader>dd :Bdelete<cr>
 
 " nnoremap <leader>n :vimgrep /\v[A-Za-z0-9\_\$\.]+\s*(\=|:)\s*function\s*\(.*\)/ %<cr>
 
@@ -464,7 +465,8 @@ nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 
 " CtrlP
 nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>f :CtrlP<CR>
+nnoremap <leader>f :CtrlPMixed<CR>
+" nnoremap <leader>d :CtrlPMixed<CR>
 
 " Tabularize
 nnoremap <Leader>a= :Tabularize /=<CR>
