@@ -5,8 +5,9 @@
 
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" Set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/vundle
+call vundle#begin()
 
 " Let Vundle manage Vundle
 Bundle 'gmarik/vundle'
@@ -16,8 +17,6 @@ Bundle 'vim-scripts/The-NERD-tree'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-haml'
-Bundle 'tpope/vim-unimpaired'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'rking/ag.vim'
 Bundle 'godlygeek/tabular'
@@ -38,16 +37,19 @@ Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'docunext/closetag.vim'
-Bundle 'sjl/gundo.vim'
-Bundle 'tpope/vim-rails'
 Bundle 'ervandew/supertab'
 Bundle 'fatih/vim-go'
 Bundle 'rizzatti/funcoo.vim'
-Bundle 'rizzatti/dash.vim'
 Bundle 'henrik/vim-reveal-in-finder'
 Bundle 'derekwyatt/vim-scala'
 Bundle 'airblade/vim-gitgutter'
-" Bundle 'Valloric/YouCompleteMe'
+Bundle 'elixir-lang/vim-elixir'
+Bundle 'Valloric/YouCompleteMe'
+" Bundle 'tpope/vim-unimpaired'
+" Bundle 'tpope/vim-haml'
+" Bundle 'rizzatti/dash.vim'
+" Bundle 'sjl/gundo.vim'
+" Bundle 'tpope/vim-rails'
 " Bundle 'mxw/vim-jsx'
 " Bundle 'digitaltoad/vim-jade'
 " Bundle 'wavded/vim-stylus'
@@ -56,6 +58,9 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'tomasr/molokai'
 Bundle 'nanotech/jellybeans.vim'
+
+" All of your Plugins must be added before the following line
+call vundle#end()
 
 " }}}
 " Vim Settings ---------------------------------------------------- {{{
@@ -120,7 +125,7 @@ set splitright                           " Split vertical windows right to the c
 set splitbelow                           " Split horizontal windows below to the current windows
 set autoread                             " Automatically reread changed files without asking me anything
 set suffixesadd+=.js                     " Help VIM find .js files when using gf
-set list
+" set list
 set listchars=tab:»\ ,eol:\ ,trail:·,extends:❯,precedes:❮
 set ignorecase                           " Makes searches case insensitive if search string is all lower case
 set smartcase                            " Makes searches case SENSITIVE if search string contains an uppercase letter
@@ -621,7 +626,12 @@ let g:mta_use_matchparen_group = 0
 highlight MatchTag ctermfg=black ctermbg=darkgrey guifg=black guibg=darkgrey
 
 " }}}
+" --- Go ------------------ {{{
 
+let g:go_auto_type_info = 1
+let g:go_highlight_methods = 1
+
+" }}}
 " }}}
 " Autocmd --------------------------------------------------------- {{{
 

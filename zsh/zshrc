@@ -24,14 +24,8 @@ export PATH="/Library/Haskell/bin:$PATH"
 # export NODE_PATH="/usr/local/lib/node_modules:$NODE_PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
 
-# Setup the path to the Android tools
-export PATH="$HOME/Development Tools/adt-bundle-mac-x86_64-20130219/sdk/platform-tools):$PATH"
-export PATH="$HOME/Development Tools/adt-bundle-mac-x86_64-20130219/sdk/tools:$PATH"
-
-# Postgres.app
-export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
-
 # Go
+export PATH="$PATH:/usr/local/go/bin"
 export GOPATH="$HOME/Projects/Go"
 export PATH="$GOPATH/bin:$PATH"
 export PATH="$GOROOT/bin:$PATH"
