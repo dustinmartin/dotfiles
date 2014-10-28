@@ -22,7 +22,6 @@ Bundle 'rking/ag.vim'
 Bundle 'godlygeek/tabular'
 Bundle 'SirVer/ultisnips'
 Bundle 'mattn/emmet-vim'
-Bundle 'scrooloose/syntastic'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Raimondi/delimitMate'
@@ -37,7 +36,6 @@ Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'docunext/closetag.vim'
-Bundle 'ervandew/supertab'
 Bundle 'fatih/vim-go'
 Bundle 'rizzatti/funcoo.vim'
 Bundle 'henrik/vim-reveal-in-finder'
@@ -45,19 +43,15 @@ Bundle 'derekwyatt/vim-scala'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'elixir-lang/vim-elixir'
 Bundle 'Valloric/YouCompleteMe'
+" Bundle 'ervandew/supertab'
+" Bundle 'scrooloose/syntastic'
 " Bundle 'tpope/vim-unimpaired'
-" Bundle 'tpope/vim-haml'
-" Bundle 'rizzatti/dash.vim'
 " Bundle 'sjl/gundo.vim'
 " Bundle 'tpope/vim-rails'
 " Bundle 'mxw/vim-jsx'
-" Bundle 'digitaltoad/vim-jade'
-" Bundle 'wavded/vim-stylus'
 
 " Color schemes
-Bundle 'altercation/vim-colors-solarized'
 Bundle 'tomasr/molokai'
-Bundle 'nanotech/jellybeans.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()
@@ -76,7 +70,6 @@ if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gno
     " set t_md=       " Disable bold fonts in the terminal
 endif
 
-" colorscheme jellybeans
 colorscheme molokai
 
 set nocompatible                         " Don't be compatible with Vi
@@ -632,6 +625,12 @@ let g:go_auto_type_info = 1
 let g:go_highlight_methods = 1
 
 " }}}
+" --- YouCompleteMe ------- {{{
+
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+
+" }}}
+
 " }}}
 " Autocmd --------------------------------------------------------- {{{
 
