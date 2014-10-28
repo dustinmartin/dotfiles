@@ -43,9 +43,9 @@ Bundle 'derekwyatt/vim-scala'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'elixir-lang/vim-elixir'
 Bundle 'Valloric/YouCompleteMe'
+Bundle 'scrooloose/syntastic'
+Bundle 'tpope/vim-unimpaired'
 " Bundle 'ervandew/supertab'
-" Bundle 'scrooloose/syntastic'
-" Bundle 'tpope/vim-unimpaired'
 " Bundle 'sjl/gundo.vim'
 " Bundle 'tpope/vim-rails'
 " Bundle 'mxw/vim-jsx'
@@ -628,6 +628,7 @@ let g:go_highlight_methods = 1
 " --- YouCompleteMe ------- {{{
 
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_comments = 1
 
 " }}}
 
