@@ -42,10 +42,10 @@ Bundle 'henrik/vim-reveal-in-finder'
 Bundle 'derekwyatt/vim-scala'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'elixir-lang/vim-elixir'
-Bundle 'Valloric/YouCompleteMe'
+" Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-unimpaired'
-" Bundle 'ervandew/supertab'
+Bundle 'ervandew/supertab'
 " Bundle 'sjl/gundo.vim'
 " Bundle 'tpope/vim-rails'
 " Bundle 'mxw/vim-jsx'
@@ -420,7 +420,7 @@ nnoremap <Leader>'' :%s/"/'<CR>
 nnoremap <Leader>ws :%s/\s\+$//e<CR>
 
 " Show Gundo
-nnoremap <leader>u :GundoToggle<cr>
+" nnoremap <leader>u :GundoToggle<cr>
 
 " Delete buffer without messing up windows/panes
 " nnoremap <leader>dd :Bdelete<cr>
@@ -564,8 +564,11 @@ let NERDTreeChDirMode=2
 " }}}
 " --- Syntastic ----------- {{{
 
-let g:syntastic_check_on_open=0
+let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
+let g:syntastic_mode_map={ 'mode': 'active',
+                     \ 'active_filetypes': [],
+                     \ 'passive_filetypes': ['html'] }
 
 " }}}
 " --- CtrlP --------------- {{{

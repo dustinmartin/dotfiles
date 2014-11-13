@@ -17,6 +17,32 @@ function$1($2){
 }
 endsnippet
 
+snippet desc "describe" b
+describe( "$1", function(){
+	$2
+});
+endsnippet
+
+snippet bef "beforeEach" b
+beforeEach( "$1", function(){
+	$2
+});
+endsnippet
+
+snippet spec "spec test" b
+describe( "$1", function(){
+
+	beforeEach(function(){
+		$2
+	});
+
+	it( "", function(){
+		$3
+	});
+
+});
+endsnippet
+
 snippet ite "it - empty" b
 it( "$1" );$2
 endsnippet
