@@ -1,7 +1,7 @@
 " Author: Dustin Martin <dm@dustinmartin.net>
 " Source: https://github.com/dustinmartin/dotfiles
 
-" Bundles --------------------------------------------------------- {{{
+" Plugins --------------------------------------------------------- {{{
 
 filetype off                   " required!
 
@@ -10,48 +10,49 @@ set rtp+=~/.vim/bundle/vundle
 call vundle#begin()
 
 " Let Vundle manage Vundle
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 
 " Install other bundles
-Bundle 'vim-scripts/The-NERD-tree'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-markdown'
-Bundle 'tpope/vim-surround'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'rking/ag.vim'
-Bundle 'godlygeek/tabular'
-Bundle 'SirVer/ultisnips'
-Bundle 'mattn/emmet-vim'
-Bundle 'tomtom/tcomment_vim'
-Bundle 'kien/ctrlp.vim'
-Bundle 'Raimondi/delimitMate'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'hail2u/vim-css3-syntax'
-Bundle 'groenewege/vim-less'
-Bundle 'terryma/vim-multiple-cursors'
-Bundle 'othree/javascript-libraries-syntax.vim'
-Bundle 'jelera/vim-javascript-syntax'
-Bundle 'pangloss/vim-javascript'
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-session'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'docunext/closetag.vim'
-Bundle 'fatih/vim-go'
-Bundle 'rizzatti/funcoo.vim'
-Bundle 'henrik/vim-reveal-in-finder'
-Bundle 'derekwyatt/vim-scala'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'elixir-lang/vim-elixir'
-" Bundle 'Valloric/YouCompleteMe'
-Bundle 'scrooloose/syntastic'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'ervandew/supertab'
-" Bundle 'sjl/gundo.vim'
-" Bundle 'tpope/vim-rails'
-" Bundle 'mxw/vim-jsx'
+Plugin 'vim-scripts/The-NERD-tree'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-markdown'
+Plugin 'tpope/vim-surround'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'rking/ag.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'SirVer/ultisnips'
+Plugin 'mattn/emmet-vim'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'Raimondi/delimitMate'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'groenewege/vim-less'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'pangloss/vim-javascript'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-session'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'docunext/closetag.vim'
+Plugin 'fatih/vim-go'
+Plugin 'rizzatti/funcoo.vim'
+Plugin 'henrik/vim-reveal-in-finder'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'elixir-lang/vim-elixir'
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'ervandew/supertab'
+Plugin 'tacahiroy/ctrlp-funky'
+" Plugin 'Valloric/YouCompleteMe'
+" Plugin 'sjl/gundo.vim'
+" Plugin 'tpope/vim-rails'
+" Plugin 'mxw/vim-jsx'
 
 " Color schemes
-Bundle 'tomasr/molokai'
+Plugin 'tomasr/molokai'
 
 " All of your Plugins must be added before the following line
 call vundle#end()
@@ -187,6 +188,8 @@ endif
 " }}}
 " Status Line ----------------------------------------------------- {{{
 
+" This is only useful without Powerline
+
 " Filename
 set statusline=\ [%t]
 
@@ -262,9 +265,9 @@ function! MyTabLabel(n)
     return fnamemodify(label, ":t")
 endfunction
 
-hi TabLine      guifg=#999999 guibg=#333333 gui=none    ctermfg=White ctermbg=DarkGrey cterm=none
-hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold    ctermfg=231 ctermbg=235 cterm=bold
-hi TabLineFill  guifg=#999999 guibg=#333333 gui=none    ctermfg=White ctermbg=DarkGrey cterm=none
+hi TabLine      guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold ctermfg=231 ctermbg=235 cterm=bold
+hi TabLineFill  guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
 
 " }}}
 " Custom Commands ------------------------------------------------- {{{
@@ -329,14 +332,13 @@ nnoremap Y y$
 nnoremap U u
 vnoremap U u
 
-" Prevent vim from unindenting on blank lines
-" inoremap <cr> <cr>x<bs>
-" nnoremap o ox<BS>
-" nnoremap O Ox<BS>
-
 " Map tab to indent
 vnoremap <Tab> >gv
 nnoremap <Tab> >>
+
+" Map shift+tab to unindent
+vnoremap <S-Tab> <gv
+nnoremap <S-Tab> <<
 
 " Bubble single lines
 nmap <C-Up> [e
@@ -347,10 +349,6 @@ imap <C-Down> <esc>]e
 " Bubble multiple lines
 vmap <C-Up> [egv
 vmap <C-Down> ]egv
-
-" Map shift+tab to unindent
-vnoremap <S-Tab> <gv
-nnoremap <S-Tab> <<
 
 " Keep a block selected after indenting
 vnoremap < <gv
@@ -369,12 +367,6 @@ nnoremap k gk
 nnoremap <down> gj
 nnoremap <up> gk
 
-" Allow mode selection vs shift-j (J) and shift-k (K)
-" nnoremap J V gj
-" nnoremap K V gk
-" vnoremap J gj
-" vnoremap K gk
-
 " Remap ; to :
 vnoremap ; :
 nnoremap ; :
@@ -392,13 +384,6 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" Resize Splits
-nnoremap <leader>v> :vertical resize +3<cr>
-nnoremap <leader>v< :vertical resize -3<cr>
-
-nnoremap <leader>h> :resize +1<cr>
-nnoremap <leader>h< :resize -1<cr>
-
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
@@ -409,9 +394,6 @@ nnoremap <leader>z zMzvzz
 nnoremap <Leader>mr :tabm +1<CR>
 nnoremap <Leader>ml :tabm -1<CR>
 
-" Toggle Syntastic
-nnoremap <Leader>ss :SyntasticToggleMode<CR>
-
 " Change quotation marks
 nnoremap <Leader>"" :%s/'/"<CR>
 nnoremap <Leader>'' :%s/"/'<CR>
@@ -421,11 +403,6 @@ nnoremap <Leader>ws :%s/\s\+$//e<CR>
 
 " Show Gundo
 " nnoremap <leader>u :GundoToggle<cr>
-
-" Delete buffer without messing up windows/panes
-" nnoremap <leader>dd :Bdelete<cr>
-
-" nnoremap <leader>n :vimgrep /\v[A-Za-z0-9\_\$\.]+\s*(\=|:)\s*function\s*\(.*\)/ %<cr>
 
 " Git
 nnoremap <leader>gd :Gdiff<cr>
@@ -464,7 +441,12 @@ nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 " CtrlP
 nnoremap <leader>b :CtrlPBuffer<CR>
 nnoremap <leader>f :CtrlPMixed<CR>
-" nnoremap <leader>d :CtrlPMixed<CR>
+
+" Show functions
+nnoremap <Leader>x :CtrlPFunky<CR>
+
+" Narrow the list down with a word under cursor
+nnoremap <Leader>z :execute 'CtrlPFunky ' . expand('<cword>')<CR>
 
 " Tabularize
 nnoremap <Leader>a= :Tabularize /=<CR>
@@ -581,13 +563,10 @@ let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn)$',
     \ 'file': '\v\.(jpg|jpeg|png|gif|zip|pdf|dmg)$'
     \ }
-" let g:ctrlp_prompt_mappings = {
-"     \ 'AcceptSelection("e")': ['<c-t>'],
-"     \ 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>'],
-"     \ }
 
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_extensions = ['funky']
 
 " }}}
 " --- Powerline ----------- {{{
