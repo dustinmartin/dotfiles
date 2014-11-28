@@ -40,7 +40,7 @@ Plugin 'fatih/vim-go'
 Plugin 'rizzatti/funcoo.vim'
 Plugin 'henrik/vim-reveal-in-finder'
 Plugin 'derekwyatt/vim-scala'
-Plugin 'airblade/vim-gitgutter'
+Plugin 'mhinz/vim-signify'
 Plugin 'elixir-lang/vim-elixir'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-unimpaired'
@@ -53,6 +53,7 @@ Plugin 'tacahiroy/ctrlp-funky'
 
 " Color schemes
 Plugin 'tomasr/molokai'
+Plugin 'w0ng/vim-hybrid'
 
 " All of your Plugins must be added before the following line
 call vundle#end()
