@@ -442,10 +442,10 @@ nnoremap <leader>b :CtrlPBuffer<CR>
 nnoremap <leader>f :CtrlPMixed<CR>
 
 " Show functions
-nnoremap <Leader>x :CtrlPFunky<CR>
+nnoremap <Leader>sf :CtrlPFunky<CR>
 
 " Narrow the list down with a word under cursor
-nnoremap <Leader>z :execute 'CtrlPFunky ' . expand('<cword>')<CR>
+nnoremap <Leader>sc :execute 'CtrlPFunky ' . expand('<cword>')<CR>
 
 " Tabularize
 nnoremap <Leader>a= :Tabularize /=<CR>
