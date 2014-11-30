@@ -53,7 +53,6 @@ Plugin 'tacahiroy/ctrlp-funky'
 
 " Color schemes
 Plugin 'tomasr/molokai'
-Plugin 'w0ng/vim-hybrid'
 
 " All of your Plugins must be added before the following line
 call vundle#end()
@@ -69,9 +68,9 @@ let maplocalleader = "\\"
 
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
     set t_Co=256    " Enable 256 colors in terminal
-    " set t_md=       " Disable bold fonts in the terminal
 endif
 
+let g:molokai_original = 1
 colorscheme molokai
 
 set nocompatible                         " Don't be compatible with Vi
@@ -183,7 +182,6 @@ if has("gui_running")
     " Window size
     set lines=35 columns=115                 " Set the window size
 
-    colorscheme molokai
 endif
 
 " }}}
