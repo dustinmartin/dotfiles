@@ -50,7 +50,7 @@ Plugin 'editorconfig/editorconfig-vim'
 " Plugin 'Valloric/YouCompleteMe'
 " Plugin 'sjl/gundo.vim'
 " Plugin 'tpope/vim-rails'
-" Plugin 'mxw/vim-jsx'
+Plugin 'mxw/vim-jsx'
 
 " Color schemes
 Plugin 'tomasr/molokai'
@@ -120,7 +120,7 @@ set splitright                           " Split vertical windows right to the c
 set splitbelow                           " Split horizontal windows below to the current windows
 set autoread                             " Automatically reread changed files without asking me anything
 set suffixesadd+=.js                     " Help VIM find .js files when using gf
-" set list
+set list
 set listchars=tab:»\ ,eol:\ ,trail:·,extends:❯,precedes:❮
 set ignorecase                           " Makes searches case insensitive if search string is all lower case
 set smartcase                            " Makes searches case SENSITIVE if search string contains an uppercase letter
@@ -133,6 +133,7 @@ set nobackup
 set undolevels=1000                      " The number of undo levels to allow
 set complete-=i
 set formatoptions-=r                     " Don't add comment prefix to next line
+set colorcolumn=120
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
@@ -237,7 +238,7 @@ function! MyTabLine()
         let s .= ' '. tabNum . ') '
 
         " the label is made by MyTabLabel()
-        let s .= ' %{MyTabLabel(' . (i + 1) . ')}'
+        let s .= '%{MyTabLabel(' . (i + 1) . ')}'
     endfor
 
     " after the last tab fill with TabLineFill and reset tab page nr
@@ -546,6 +547,8 @@ let NERDTreeChDirMode=2
 " }}}
 " --- Syntastic ----------- {{{
 
+let g:syntastic_javascript_checkers = ['jscs']
+let g:syntastic_javascript_jscs_args = "--esprima=esprima-fb --esnext"
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
 let g:syntastic_mode_map={ 'mode': 'active',
@@ -779,6 +782,18 @@ augroup ft_go
 
     au FileType go setlocal foldmethod=marker
     au FileType go setlocal foldmarker={,}
+
+augroup END
+
+" }}}
+" --- XML ----------------- {{{
+
+augroup ft_xml
+    au!
+
+    au FileType xml setlocal foldmethod=indent
+    au Filetype xml setlocal foldmethod=indent
+    au Filetype xml setlocal shiftwidth=2 softtabstop=2
 
 augroup END
 

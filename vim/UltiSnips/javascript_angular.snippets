@@ -1,38 +1,38 @@
 snippet ngc "angular.controller" b
-angular.module( "$1" ).
-	controller( "$2Controller", function( $scope ){
+angular.module('$1')
+	.controller('$2Controller', function($scope) {
 
-		"use strict";
+		'use strict';
 
 		$3
 	});
 endsnippet
 
 snippet ngd "angular.directive" b
-angular.module( "$1" ).
-	directive( "$2", function(){
+angular.module('$1')
+	.directive('$2', function() {
 
-		"use strict";
+		'use strict';
 
 		return {
 			scope: {},
-			templateUrl: "",
-			link: function( scope, elem, attrs ){
+			templateUrl: '',
+			link: function(scope, elem, attrs) {
 				$3
 			},
-			controller: function( $scope ){
+			controller: function($scope) {
 			}
 		};
 	});
 endsnippet
 
 snippet ngfi "angular.filter" b
-angular.module( "$1" ).
-	filter( "$2", function(){
+angular.module('$1')
+	.filter('$2', function() {
 
-		"use strict";
+		'use strict';
 
-		return function( input ){
+		return function(input){
 			$3
 			return input;
 
@@ -41,10 +41,10 @@ angular.module( "$1" ).
 endsnippet
 
 snippet ngfa "angular.factory" b
-angular.module( "$1" ).
-	factory( "$2", function(){
+angular.module('$1')
+	.factory('$2', function() {
 
-		"use strict";
+		'use strict';
 
 		$3
 	});
