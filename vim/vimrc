@@ -25,7 +25,7 @@ Plugin 'mattn/emmet-vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'Raimondi/delimitMate'
-Plugin 'Lokaltog/vim-powerline'
+Plugin 'bling/vim-airline'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'groenewege/vim-less'
 Plugin 'terryma/vim-multiple-cursors'
@@ -54,6 +54,7 @@ Plugin 'mxw/vim-jsx'
 
 " Color schemes
 Plugin 'tomasr/molokai'
+Plugin 'altercation/vim-colors-solarized'
 
 " All of your Plugins must be added before the following line
 call vundle#end()
@@ -71,8 +72,20 @@ if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gno
     set t_Co=256    " Enable 256 colors in terminal
 endif
 
-let g:molokai_original = 1
-colorscheme molokai
+colorscheme solarized
+
+" Settings for Molokai
+" let g:molokai_original = 1
+" hi TabLine      guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+" hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold ctermfg=231 ctermbg=235 cterm=bold
+" hi TabLineFill  guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+
+" Settings for Solarized     
+set background=light
+hi SignColumn   guibg=#eee8d5
+hi TabLine      guifg=#268bd2 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+hi TabLineSel   guifg=#eee8d5 guibg=#93a1a1 gui=bold ctermfg=231 ctermbg=235 cterm=bold
+hi TabLineFill  guifg=#eee8d5 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
 
 set nocompatible                         " Don't be compatible with Vi
 set encoding=utf-8
@@ -178,7 +191,6 @@ if has("gui_running")
     set guioptions-=r                        " Disable right scrollbar
 
     " Set the font
-    " set guifont=Ubuntu\ Mono:h18             " Set the font style and size
     set guifont=Source\ Code\ Pro:h17             " Set the font style and size
 
     " Window size
@@ -265,10 +277,6 @@ function! MyTabLabel(n)
 
     return fnamemodify(label, ":t")
 endfunction
-
-hi TabLine      guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold ctermfg=231 ctermbg=235 cterm=bold
-hi TabLineFill  guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
 
 " }}}
 " Custom Commands ------------------------------------------------- {{{
@@ -575,9 +583,11 @@ let g:ctrlp_extensions = ['funky']
 let g:ctrlp_funky_syntax_highlight = 1
 
 " }}}
-" --- Powerline ----------- {{{
+" --- Airline ------------- {{{
 
-let g:Powerline_symbols = 'compatible'
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline_left_sep=''
+let g:airline_right_sep=''
 
 " }}}
 " --- Ultisnips ----------- {{{
