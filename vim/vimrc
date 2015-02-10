@@ -72,20 +72,13 @@ if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gno
     set t_Co=256    " Enable 256 colors in terminal
 endif
 
-colorscheme solarized
+colorscheme molokai
 
 " Settings for Molokai
-" let g:molokai_original = 1
-" hi TabLine      guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-" hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold ctermfg=231 ctermbg=235 cterm=bold
-" hi TabLineFill  guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-
-" Settings for Solarized     
-set background=light
-hi SignColumn   guibg=#eee8d5
-hi TabLine      guifg=#268bd2 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-hi TabLineSel   guifg=#eee8d5 guibg=#93a1a1 gui=bold ctermfg=231 ctermbg=235 cterm=bold
-hi TabLineFill  guifg=#eee8d5 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+let g:molokai_original = 1
+hi TabLine      guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold ctermfg=231 ctermbg=235 cterm=bold
+hi TabLineFill  guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
 
 set nocompatible                         " Don't be compatible with Vi
 set encoding=utf-8
@@ -118,8 +111,8 @@ set virtualedit=block                    " Allow the cursor to go in to invalid 
 set shortmess+=I                         " Skip the splash screen
 set matchtime=3                          " How many tenths of a second to highlight a matching parentheses
 set spelllang=en_us                      " Set the spell check dictionary
-set number
-set relativenumber
+set number                               " Display line numbers
+set relativenumber                       " Use relative line numbers
 set shiftwidth=4                         " Number of spaces to use for each step of (auto)indent
 set tabstop=4                            " Number of spaces that a <Tab> in the file counts for
 set softtabstop=4
@@ -128,7 +121,7 @@ set autoindent                           " Copy the indent from the current line
 set nosmartindent
 set nocindent
 set linespace=0
-set switchbuf=usetab,newtab              " Open new buffers always in new tabs
+set switchbuf=newtab                     " Open new buffers always in new tabs
 set splitright                           " Split vertical windows right to the current windows
 set splitbelow                           " Split horizontal windows below to the current windows
 set autoread                             " Automatically reread changed files without asking me anything
@@ -195,6 +188,23 @@ if has("gui_running")
 
     " Window size
     set lines=35 columns=115                 " Set the window size
+
+    colorscheme solarized
+
+    " Settings for Molokai
+    " let g:molokai_original = 1
+    " hi TabLine      guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+    " hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold ctermfg=231 ctermbg=235 cterm=bold
+    " hi TabLineFill  guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+
+    " Settings for Solarized
+    set background=light
+    hi SignColumn  guibg=#eee8d5
+    hi Folded      guifg=#eee8d5 guibg=#93a1a1 gui=none
+    hi TabLine     guifg=#657B83 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+    hi TabLineSel  guifg=#eee8d5 guibg=#657B83 gui=bold ctermfg=231   ctermbg=235      cterm=bold
+    hi TabLineFill guifg=#eee8d5 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+    hi Visual      guifg=#eee8d5 guibg=#d33682 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
 
 endif
 
@@ -282,7 +292,7 @@ endfunction
 " Custom Commands ------------------------------------------------- {{{
 
 " Close all buffers
-command! Bda 1,1000 bd
+command! BDA 1,1000 bd
 
 " Set filetype to Javascript
 command! SetJS set ft=javscript
@@ -323,8 +333,18 @@ noremap L $
 vnoremap L g_
 
 " Use standard regexes
-nnoremap / /\v
-vnoremap / /\v
+" nnoremap / /\v
+" vnoremap / /\v
+
+" EasyMotion config
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+
+" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+" Without these mappings, `n` & `N` works fine. (These mappings just provide
+" different highlight method and have some other features )
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
 
 " Keep the result in the center of the screen
 nnoremap <silent> n nzz
@@ -627,6 +647,11 @@ let g:go_highlight_methods = 1
 
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 1
+
+" }}}
+" --- EasyMotion ---------- {{{
+
+let g:EasyMotion_use_smartsign_us = 1
 
 " }}}
 
