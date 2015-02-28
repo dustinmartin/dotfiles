@@ -6,7 +6,7 @@
 filetype off                   " required!
 
 " Set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/vundle
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " Let Vundle manage Vundle
@@ -337,14 +337,14 @@ vnoremap L g_
 " vnoremap / /\v
 
 " EasyMotion config
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
+" map  / <Plug>(easymotion-sn)
+" omap / <Plug>(easymotion-tn)
 
 " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
 " Without these mappings, `n` & `N` works fine. (These mappings just provide
 " different highlight method and have some other features )
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
+" map  n <Plug>(easymotion-next)
+" map  N <Plug>(easymotion-prev)
 
 " Keep the result in the center of the screen
 nnoremap <silent> n nzz
@@ -575,9 +575,9 @@ let NERDTreeChDirMode=2
 " }}}
 " --- Syntastic ----------- {{{
 
-let g:syntastic_javascript_checkers = ['jscs']
+let g:syntastic_javascript_checkers = ['jscs','jshint']
 let g:syntastic_javascript_jscs_args = "--esprima=esprima-fb --esnext"
-let g:syntastic_check_on_open=1
+let g:syntastic_check_on_open=0
 let g:syntastic_enable_signs=1
 let g:syntastic_mode_map={ 'mode': 'active',
                      \ 'active_filetypes': [],
