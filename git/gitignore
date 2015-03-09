@@ -4,20 +4,12 @@
 # node_modules/*
 # node_modules
 
-# Scribbles #
-#############
-scribble.cfm
-
 # IntelliJ IDEA #
 #################
 scribble/*
 .idea
 .idea/*
 *.iml
-
-# Tincr #
-#########
-tincr.json
 
 # Temporary Files #
 ###################

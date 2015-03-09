@@ -1,21 +1,10 @@
 [user]
 	name = Dustin Martin
-	email = dm@dustinmartin.net
 [core]
 	excludesfile = ~/.gitignore
-	autocrlf = false
 [color]
 	diff = true
 	ui = true
 [alias]
 	hist = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
-[github]
-	user = dustinmartin
-[push]
-	default = matching
-[merge]
-	conflictstyle = diff3
-[rerere]
-	enabled = true
-	autoupdate = true
