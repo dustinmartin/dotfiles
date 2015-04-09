@@ -45,7 +45,6 @@ Plugin 'elixir-lang/vim-elixir'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'ervandew/supertab'
-Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'editorconfig/editorconfig-vim'
 " Plugin 'Valloric/YouCompleteMe'
 " Plugin 'sjl/gundo.vim'
@@ -333,18 +332,11 @@ noremap L $
 vnoremap L g_
 
 " Use standard regexes
-" nnoremap / /\v
-" vnoremap / /\v
+nnoremap / /\v
+vnoremap / /\v
 
-" EasyMotion config
-" map  / <Plug>(easymotion-sn)
-" omap / <Plug>(easymotion-tn)
-
-" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
-" Without these mappings, `n` & `N` works fine. (These mappings just provide
-" different highlight method and have some other features )
-" map  n <Plug>(easymotion-next)
-" map  N <Plug>(easymotion-prev)
+map sf <Plug>(easymotion-bd-f)
+map sw <Plug>(easymotion-bd-w)
 
 " Keep the result in the center of the screen
 nnoremap <silent> n nzz
@@ -471,12 +463,6 @@ nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 nnoremap <leader>b :CtrlPBuffer<CR>
 nnoremap <leader>f :CtrlPMixed<CR>
 
-" Show functions
-nnoremap <Leader>sf :CtrlPFunky<CR>
-
-" Narrow the list down with a word under cursor
-nnoremap <Leader>sc :execute 'CtrlPFunky ' . expand('<cword>')<CR>
-
 " Tabularize
 nnoremap <Leader>a= :Tabularize /=<CR>
 vnoremap <Leader>a= :Tabularize /=<CR>
@@ -598,10 +584,6 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_clear_cache_on_exit = 0
 
-" Enable/setup the 'funky' extension
-let g:ctrlp_extensions = ['funky']
-let g:ctrlp_funky_syntax_highlight = 1
-
 " }}}
 " --- Airline ------------- {{{
 
@@ -651,7 +633,9 @@ let g:ycm_complete_in_comments = 1
 " }}}
 " --- EasyMotion ---------- {{{
 
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
 let g:EasyMotion_use_smartsign_us = 1
+let g:EasyMotion_smartcase = 1
 
 " }}}
 
@@ -661,8 +645,8 @@ let g:EasyMotion_use_smartsign_us = 1
 " Only show cursorline in the current window and in normal mode.
 augroup cursor_line
     au!
-    " au WinLeave,InsertEnter * set nocursorline
-    " au WinEnter,InsertLeave * set cursorline
+    au WinLeave,InsertEnter * set nocursorline
+    au WinEnter,InsertLeave * set cursorline
 augroup END
 
 " --- Window Resize ------- {{{
@@ -713,6 +697,18 @@ augroup ft_java
 
     au FileType java setlocal foldmethod=marker
     au FileType java setlocal foldmarker={,}
+augroup END
+
+" }}}
+" --- JSON ---------------- {{{
+
+augroup ft_json
+    au!
+
+    au BufNewFile,BufRead *.json setlocal filetype=json
+
+    au FileType json setlocal foldmarker={,}
+
 augroup END
 
 " }}}

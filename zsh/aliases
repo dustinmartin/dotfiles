@@ -2,9 +2,6 @@
 alias ..="cd .."
 alias ...="cd ../.."
 
-# UUID
-alias uuid="uuid | pbcopy"
-
 # Fasd aliases
 alias a='fasd -a'        # any
 alias s='fasd -si'       # show / search / select
@@ -15,7 +12,7 @@ alias sf='fasd -sif'     # interactive file selection
 alias j='fasd_cd -d'     # cd, same functionality as j in autojump
 alias z='fasd_cd -d'     # cd, same functionality as j in autojump
 alias zz='fasd_cd -d -i' # cd with interactive selection
-alias v='f -e vim' 		 # quick opening files with vim
+alias v='f -e vim'       # quick opening files with vim
 
 # Tmux
 # alias tmx='tmux -2'
@@ -32,12 +29,7 @@ export EDITOR='vim'
 
 # List all files colorized in long format, including dot files
 alias la="ls -Gla"
-
-# List only directories
-alias lsd='ls -l | grep "^d"'
-
-# List files with details
-alias ll="ls -Gl"
+alias ll="ls -Gla"
 
 # Show colors for ls
 alias ls="ls -G"
@@ -50,24 +42,18 @@ alias hidef="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Fi
 
 # Git
 alias g='git'
-alias g='/usr/bin/git'
-alias gs='git status -s'
-alias gst='git status'
+alias gs='git status -sb'
+alias gst='git status -sb'
 alias gpl='git pull'
-alias gplff='git pull --ff-only'
-alias gm='git merge'
-alias gmff='git merge --no-ff'
 alias gpu='git push'
 alias gf='git fetch'
+alias gm='git merge --no-ff'
 alias gco='git checkout'
 alias gb='git branch'
 alias grb='git rebase'
 alias gd='git diff'
 alias ga='git add'
-alias grm='git rm'
-alias gl='git log'
-
-alias gcom='git checkout master'
+alias gl='git log --graph --stat --abbrev-commit --date=relative'
 
 # Commit staged changed and provide some stats on the commit
 alias gc='git commit -v -m'
@@ -82,59 +68,30 @@ alias gcob='git checkout -b'
 alias gaa='git add -u && git add . && git status'
 
 # Updates a branch
-gup() {
-	echo "> Fetching updates from origin"
-	echo
-	git fetch origin 
-	echo
-	echo "> Rebasing origin/master"
-	echo
-	git rebase origin/master
-}
+# gup() {
+#     echo "> Fetching updates from origin"
+#     git fetch
+#     echo "> Rebasing origin/team-ccr"
+#     git rebase origin/team-ccr
+# }
 
 # Interactive rebase
-gir() {
-	echo "Rebasing (interactive) origin/master"
-	git rebase -i origin/master
-}
-
-# Merges branch back into master
-gdone() {
-	if [[ $(is_git_dirty) = true ]] then
-	    echo "The repo is dirty. Please commit all changes first."
-	else
-		branch=$(current_branch)
-		echo "Fetching changes 'develop' - git fetch origin develop"
-		git fetch origin develop
-		echo
-		echo "Rebasing - git rebase origin/develop"
-		git rebase origin/develop
-		echo
-		echo "Checking out 'develop' - git checkout develop"
-		git checkout develop
-		echo
-		echo "Pulling 'develop' - git pull --ff-only"
-		git pull --ff-only
-		echo
-		echo "Merging into 'develop' - git merge --no-ff $branch"
-		git merge --no-ff $branch
-		echo
-		echo "Pushing changes from 'develop' to repo - git push origin develop"
-		git push origin develop		
-	fi
-}
+# gir() {
+#     echo "Rebasing (interactive) origin/team-ccr"
+#     git rebase -i origin/team-ccr
+# }
 
 # Get the current branch
 current_branch() {
-	ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-	echo ${ref#refs/heads/}
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    echo ${ref#refs/heads/}
 }
 
 # Returns if the git repo in the current directory is dirty
 is_git_dirty() {
-	if [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit (working directory clean)" ]] then
-		echo true
-	else
-		echo false
-	fi
+    if [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit (working directory clean)" ]] then
+        echo true
+    else
+        echo false
+    fi
 }
