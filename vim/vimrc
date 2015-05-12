@@ -56,6 +56,7 @@ Plugin 'tpope/vim-fireplace'
 Plugin 'tpope/vim-leiningen'
 
 " Color schemes
+Plugin 'chriskempson/base16-vim'
 Plugin 'tomasr/molokai'
 Plugin 'altercation/vim-colors-solarized'
 
@@ -78,10 +79,10 @@ endif
 colorscheme molokai
 
 " Settings for Molokai
-let g:molokai_original = 1
-hi TabLine      guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold ctermfg=231 ctermbg=235 cterm=bold
-hi TabLineFill  guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+" let g:molokai_original = 1
+" hi TabLine      guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+" hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold ctermfg=231 ctermbg=235 cterm=bold
+" hi TabLineFill  guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
 
 set nocompatible                         " Don't be compatible with Vi
 set encoding=utf-8
@@ -192,7 +193,8 @@ if has("gui_running")
     " Window size
     set lines=35 columns=115                 " Set the window size
 
-    colorscheme solarized
+    colorscheme base16-ocean
+    " colorscheme solarized
 
     " Settings for Molokai
     " let g:molokai_original = 1
@@ -201,13 +203,13 @@ if has("gui_running")
     " hi TabLineFill  guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
 
     " Settings for Solarized
-    set background=light
-    hi SignColumn  guibg=#eee8d5
-    hi Folded      guifg=#eee8d5 guibg=#93a1a1 gui=none
-    hi TabLine     guifg=#657B83 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-    hi TabLineSel  guifg=#eee8d5 guibg=#657B83 gui=bold ctermfg=231   ctermbg=235      cterm=bold
-    hi TabLineFill guifg=#eee8d5 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-    hi Visual      guifg=#eee8d5 guibg=#d33682 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+    " set background=light
+    " hi SignColumn  guibg=#eee8d5
+    " hi Folded      guifg=#eee8d5 guibg=#93a1a1 gui=none
+    " hi TabLine     guifg=#657B83 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+    " hi TabLineSel  guifg=#eee8d5 guibg=#657B83 gui=bold ctermfg=231   ctermbg=235      cterm=bold
+    " hi TabLineFill guifg=#eee8d5 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
+    " hi Visual      guifg=#eee8d5 guibg=#d33682 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
 
 endif
 
@@ -299,6 +301,7 @@ command! BDA 1,1000 bd
 
 " Set filetype to Javascript
 command! SetJS set ft=javscript
+" command! RunJS :!node %
 
 " Format the JSON in the current file
 command! FormatJSON %!python -m json.tool
@@ -565,6 +568,7 @@ let NERDTreeChDirMode=2
 " }}}
 " --- Syntastic ----------- {{{
 
+" let g:syntastic_debug = 3
 let g:syntastic_javascript_checkers = ['jscs','jshint']
 let g:syntastic_javascript_jscs_args = "--esprima=esprima-fb --esnext"
 let g:syntastic_check_on_open=0
@@ -721,6 +725,7 @@ augroup END
 augroup ft_javascript
     au!
 
+    au FileType javascript map <buffer> <F2> :!node % <CR>
     au FileType javascript setlocal foldmethod=marker
     au FileType javascript setlocal foldmarker={,}
 
