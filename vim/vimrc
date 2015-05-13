@@ -315,9 +315,6 @@ command! RemoveM %s///g
 " Shift tab to unindent
 " imap <S-Tab> <C-o><<
 
-" Q: Closes the window
-nnoremap Q :q<cr>
-
 " _ : Quick horizontal splits
 nnoremap _ :sp<cr>
 
