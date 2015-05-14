@@ -3,25 +3,23 @@
 
 " Plugins --------------------------------------------------------- {{{
 
-filetype off                   " required!
+filetype off
 
 " Set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " Let Vundle manage Vundle
-Plugin 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
 
-" Install other bundles
+" Miscellaneous plugins
 Plugin 'vim-scripts/The-NERD-tree'
 Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-markdown'
 Plugin 'tpope/vim-surround'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'rking/ag.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'SirVer/ultisnips'
-Plugin 'mattn/emmet-vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'Raimondi/delimitMate'
@@ -29,36 +27,42 @@ Plugin 'bling/vim-airline'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'groenewege/vim-less'
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'pangloss/vim-javascript'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'docunext/closetag.vim'
-Plugin 'fatih/vim-go'
-Plugin 'rust-lang/rust.vim'
 Plugin 'rizzatti/funcoo.vim'
 Plugin 'henrik/vim-reveal-in-finder'
-Plugin 'derekwyatt/vim-scala'
 Plugin 'mhinz/vim-signify'
-Plugin 'elixir-lang/vim-elixir'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'ervandew/supertab'
 Plugin 'editorconfig/editorconfig-vim'
+
+" Better Javascript support
+Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'othree/yajs.vim'
 Plugin 'mxw/vim-jsx'
-Plugin 'guns/vim-sexp'
-Plugin 'tpope/vim-sexp-mappings-for-regular-people'
-Plugin 'guns/vim-clojure-static'
-Plugin 'guns/vim-clojure-highlight'
-Plugin 'tpope/vim-fireplace'
-Plugin 'tpope/vim-leiningen'
+Plugin 'marijnh/tern_for_vim'
+
+" Misc language support
+Plugin 'tpope/vim-markdown'
+Plugin 'fatih/vim-go'
+Plugin 'rust-lang/rust.vim'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'elixir-lang/vim-elixir'
+
+" Clojure
+" Plugin 'guns/vim-sexp'
+" Plugin 'tpope/vim-sexp-mappings-for-regular-people'
+" Plugin 'guns/vim-clojure-static'
+" Plugin 'guns/vim-clojure-highlight'
+" Plugin 'tpope/vim-fireplace'
+" Plugin 'tpope/vim-leiningen'
 
 " Color schemes
 Plugin 'chriskempson/base16-vim'
 Plugin 'tomasr/molokai'
-Plugin 'altercation/vim-colors-solarized'
 
 " All of your Plugins must be added before the following line
 call vundle#end()
@@ -77,12 +81,6 @@ if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gno
 endif
 
 colorscheme molokai
-
-" Settings for Molokai
-" let g:molokai_original = 1
-" hi TabLine      guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-" hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold ctermfg=231 ctermbg=235 cterm=bold
-" hi TabLineFill  guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
 
 set nocompatible                         " Don't be compatible with Vi
 set encoding=utf-8
@@ -153,7 +151,6 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 set notimeout
 set ttimeout
 set ttimeoutlen=10
-" set noesckeys
 
 " }}}
 " Wildmenu Completion --------------------------------------------- {{{
@@ -194,53 +191,8 @@ if has("gui_running")
     set lines=35 columns=115                 " Set the window size
 
     colorscheme base16-ocean
-    " colorscheme solarized
-
-    " Settings for Molokai
-    " let g:molokai_original = 1
-    " hi TabLine      guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-    " hi TabLineSel   guifg=#000000 guibg=#666666 gui=bold ctermfg=231 ctermbg=235 cterm=bold
-    " hi TabLineFill  guifg=#999999 guibg=#333333 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-
-    " Settings for Solarized
-    " set background=light
-    " hi SignColumn  guibg=#eee8d5
-    " hi Folded      guifg=#eee8d5 guibg=#93a1a1 gui=none
-    " hi TabLine     guifg=#657B83 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-    " hi TabLineSel  guifg=#eee8d5 guibg=#657B83 gui=bold ctermfg=231   ctermbg=235      cterm=bold
-    " hi TabLineFill guifg=#eee8d5 guibg=#eee8d5 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
-    " hi Visual      guifg=#eee8d5 guibg=#d33682 gui=none ctermfg=White ctermbg=DarkGrey cterm=none
 
 endif
-
-" }}}
-" Status Line ----------------------------------------------------- {{{
-
-" This is only useful without Powerline
-
-" Filename
-set statusline=\ [%t]
-
-" Modified Flag
-set statusline+=\ %m
-
-" Preview Screen Flag
-set statusline+=%w
-
-" Left / Right Alignment Separater
-set statusline+=%=
-
-" Encoding
-set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}]
-
-" Line x of y
-set statusline+=\ [Line\ %l\/%L]
-
-" Percentage Through File
-set statusline+=\ [%P]
-
-" Extra space
-set statusline+=\
 
 " }}}
 " Tab Line -------------------------------------------------------- {{{
@@ -426,9 +378,6 @@ nnoremap <Leader>'' :%s/"/'<CR>
 " Trim Whitespace
 nnoremap <Leader>ws :%s/\s\+$//e<CR>
 
-" Show Gundo
-" nnoremap <leader>u :GundoToggle<cr>
-
 " Git
 nnoremap <leader>gd :Gdiff<cr>
 nnoremap <leader>gs :Gstatus<cr>
@@ -537,11 +486,6 @@ let g:session_autoload = 'yes'
 let g:session_default_to_last = 1
 
 " }}}
-" --- Emmet --------------- {{{
-
-" let g:user_emmet_expandabbr_key = '<c-z>'
-
-" }}}
 " --- Nerdtree ------------ {{{
 
 " Show the bookmarks table on startup
@@ -607,7 +551,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 " }}}
 " --- Javascript Lib ------ {{{
 
-let g:used_javascript_libs = 'angularjs,jquery,underscore'
+let g:used_javascript_libs = 'angularjs,jquery,underscore,chai,react,flux'
 
 " }}}
 " --- Indent Guides ------- {{{
@@ -646,6 +590,13 @@ let g:EasyMotion_smartcase = 1
 
 " }}}
 " Autocmd --------------------------------------------------------- {{{
+
+" Close the preview window when the cursor moves or insert mode is exited
+" augroup preview_close
+"     au!
+    " au CursorMovedI *  if pumvisible() == 0|silent! pclose|endif
+    " au InsertLeave * if pumvisible() == 0|silent! pclose|endif
+" augroup END
 
 " Only show cursorline in the current window and in normal mode.
 augroup cursor_line
