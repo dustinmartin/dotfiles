@@ -12,47 +12,52 @@ call vundle#begin()
 " Let Vundle manage Vundle
 Plugin 'gmarik/Vundle.vim'
 
-" Miscellaneous plugins
-Plugin 'vim-scripts/The-NERD-tree'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-surround'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'rking/ag.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'SirVer/ultisnips'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'kien/ctrlp.vim'
-Plugin 'Raimondi/delimitMate'
-Plugin 'bling/vim-airline'
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'groenewege/vim-less'
-Plugin 'terryma/vim-multiple-cursors'
+" Support Plugins
+Plugin 'rizzatti/funcoo.vim'
 Plugin 'xolox/vim-misc'
+
+" Finding/Navigation
+Plugin 'vim-scripts/The-NERD-tree'
+Plugin 'rking/ag.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'tpope/vim-unimpaired'
+
+" Completion and Snippets
+Plugin 'SirVer/ultisnips'
+Plugin 'ervandew/supertab'
+
+" Version Control
+Plugin 'tpope/vim-fugitive'
+Plugin 'mhinz/vim-signify'
+
+" Code Modification
+Plugin 'tpope/vim-surround'
+Plugin 'godlygeek/tabular'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'Raimondi/delimitMate'
+Plugin 'docunext/closetag.vim'
+
+" Editor Usability
+Plugin 'bling/vim-airline'
 Plugin 'xolox/vim-session'
 Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'docunext/closetag.vim'
-Plugin 'rizzatti/funcoo.vim'
 Plugin 'henrik/vim-reveal-in-finder'
-Plugin 'mhinz/vim-signify'
-Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'ervandew/supertab'
 Plugin 'editorconfig/editorconfig-vim'
+Plugin 'scrooloose/syntastic'
 
-" Better Javascript support
+" Language Support
 Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'othree/yajs.vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'marijnh/tern_for_vim'
-
-" Misc language support
+Plugin 'hail2u/vim-css3-syntax'
 Plugin 'tpope/vim-markdown'
 Plugin 'fatih/vim-go'
 Plugin 'rust-lang/rust.vim'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'elixir-lang/vim-elixir'
-
-" Clojure
 " Plugin 'guns/vim-sexp'
 " Plugin 'tpope/vim-sexp-mappings-for-regular-people'
 " Plugin 'guns/vim-clojure-static'
@@ -60,7 +65,7 @@ Plugin 'elixir-lang/vim-elixir'
 " Plugin 'tpope/vim-fireplace'
 " Plugin 'tpope/vim-leiningen'
 
-" Color schemes
+" Color Schemes
 Plugin 'chriskempson/base16-vim'
 Plugin 'tomasr/molokai'
 
@@ -258,8 +263,8 @@ command! SetJS set ft=javscript
 " Format the JSON in the current file
 command! FormatJSON %!python -m json.tool
 
-" Remove  (caret M) from files
-command! RemoveM %s///g
+" Remove \ (caret M) from files
+command! RemoveM %s/\//g
 
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
