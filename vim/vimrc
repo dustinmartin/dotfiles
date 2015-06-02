@@ -32,13 +32,6 @@ Plugin 'ervandew/supertab'
 Plugin 'tpope/vim-fugitive'
 Plugin 'mhinz/vim-signify'
 
-" Code Modification
-Plugin 'tpope/vim-surround'
-Plugin 'godlygeek/tabular'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'Raimondi/delimitMate'
-Plugin 'docunext/closetag.vim'
-
 " Editor Usability
 Plugin 'bling/vim-airline'
 Plugin 'xolox/vim-session'
@@ -46,10 +39,21 @@ Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'henrik/vim-reveal-in-finder'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'scrooloose/syntastic'
+Plugin 'christoomey/vim-tmux-navigator'
+
+" Code Modification
+Plugin 'tpope/vim-surround'
+Plugin 'godlygeek/tabular'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'Raimondi/delimitMate'
+Plugin 'docunext/closetag.vim'
 
 " Language Support
 Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'pangloss/vim-javascript'
 Plugin 'othree/yajs.vim'
+
 Plugin 'mxw/vim-jsx'
 Plugin 'marijnh/tern_for_vim'
 Plugin 'hail2u/vim-css3-syntax'
@@ -58,6 +62,7 @@ Plugin 'fatih/vim-go'
 Plugin 'rust-lang/rust.vim'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'elixir-lang/vim-elixir'
+" Plugin 'leafgarland/typescript-vim'
 " Plugin 'guns/vim-sexp'
 " Plugin 'tpope/vim-sexp-mappings-for-regular-people'
 " Plugin 'guns/vim-clojure-static'
@@ -78,14 +83,26 @@ call vundle#end()
 syntax on                                " Enable syntax highlighting
 filetype plugin indent on                " Detect and handle filetypes
 
-let mapleader = ","                      " Set leader key to comma
+" let mapleader = "\<space>"                      " Set leader key to comma
 let maplocalleader = "\\"
 
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-    set t_Co=256    " Enable 256 colors in terminal
+if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal" || &term =~ '^screen'
+    " Enable 256 colors in terminal
+    set t_Co=256
+    " Improve mouse support in the terminal
+    set ttymouse=xterm2
 endif
 
-colorscheme molokai
+" Tell Tmux to tell iTerm to change the cursor shape
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+colorscheme base16-ocean
 
 set nocompatible                         " Don't be compatible with Vi
 set encoding=utf-8
@@ -195,8 +212,6 @@ if has("gui_running")
     " Window size
     set lines=35 columns=115                 " Set the window size
 
-    colorscheme base16-ocean
-
 endif
 
 " }}}
@@ -253,6 +268,10 @@ endfunction
 " }}}
 " Custom Commands ------------------------------------------------- {{{
 
+" Edit Vimrc
+command! VimrcEdit tabedit $MYVIMRC
+command! VimrcReload source $MYVIMRC
+
 " Close all buffers
 command! BDA 1,1000 bd
 
@@ -269,17 +288,16 @@ command! RemoveM %s/\//g
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
 
-" Shift tab to unindent
-" imap <S-Tab> <C-o><<
+" Rather than remap leader to <space>, map <space> to leader so
+" that showcmd in the bottom right will show \ instead of <20>
+map <space> <leader>
+map , <leader>
 
 " _ : Quick horizontal splits
 nnoremap _ :sp<cr>
 
 " | : Quick vertical splits
 nnoremap <bar> :vsp<cr>
-
-" w!!: Writes using sudo
-cnoremap w!! w !sudo tee % >/dev/null
 
 " Select (charwise) the contents of the current line, excluding indentation.
 nnoremap vv ^vg_
@@ -296,8 +314,9 @@ vnoremap L g_
 nnoremap / /\v
 vnoremap / /\v
 
-map sf <Plug>(easymotion-bd-f)
-map sw <Plug>(easymotion-bd-w)
+" Find words with Easymotion
+map s <Plug>(easymotion-bd-w)
+map S <Plug>(easymotion-bd-f)
 
 " Keep the result in the center of the screen
 nnoremap <silent> n nzz
@@ -356,15 +375,11 @@ nnoremap ; :
 " Make zO recursively open whatever top level fold we're in, no matter where the cursor happens to be.
 " nnoremap zO zCzO
 
-" CtrlP
-inoremap <C-p> <ESC>:CtrlPMixed<CR>
-vnoremap <C-p> <ESC>:CtrlPMixed<CR>
-
 " Move around the splits
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+" nnoremap <C-h> <C-w>h
+" nnoremap <C-j> <C-w>j
+" nnoremap <C-k> <C-w>k
+" nnoremap <C-l> <C-w>l
 
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
@@ -373,8 +388,8 @@ nnoremap <C-l> <C-w>l
 nnoremap <leader>z zMzvzz
 
 " Move tabs
-nnoremap <Leader>mr :tabm +1<CR>
-nnoremap <Leader>ml :tabm -1<CR>
+nnoremap <right> :tabm +1<CR>
+nnoremap <left> :tabm -1<CR>
 
 " Change quotation marks
 nnoremap <Leader>"" :%s/'/"<CR>
@@ -383,29 +398,14 @@ nnoremap <Leader>'' :%s/"/'<CR>
 " Trim Whitespace
 nnoremap <Leader>ws :%s/\s\+$//e<CR>
 
-" Git
-nnoremap <leader>gd :Gdiff<cr>
+" Fugitive
 nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gw :Gwrite<cr>
-nnoremap <leader>ga :Gadd<cr>
-nnoremap <leader>gb :Gblame<cr>
-nnoremap <leader>gco :Gcheckout<cr>
-nnoremap <leader>gcm :Gcommit<cr>
-nnoremap <leader>gm :Gmove<cr>
-nnoremap <leader>gr :Gremove<cr>
-
-" Open a new split and switch to it
-" noremap <leader>vs <C-w>v<C-w>l
-" noremap <leader>hs <C-w>s<C-w>j
 
 nnoremap <leader>t :tabnew<CR>
 vnoremap <leader>t :tabnew<CR>
 
 nnoremap <Leader>sp :set spell!<CR>
 nnoremap <leader>ww :set wrap! linebreak nolist<CR>
-
-nnoremap <leader>ev :tabedit $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
 
 " Preserve indentation while pasting text from the os x clipboard
 nnoremap <leader>p :set paste<cr>:put  *<cr>:set nopaste<cr>
@@ -548,10 +548,10 @@ let g:airline_right_sep=''
 " }}}
 " --- Ultisnips ----------- {{{
 
-let g:UltiSnipsExpandTrigger="<c-space>"
-let g:UltiSnipsListSnippets="<c-s-space>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+" let g:UltiSnipsExpandTrigger="<c-space>"
+" let g:UltiSnipsListSnippets="<c-s-space>"
+" let g:UltiSnipsJumpForwardTrigger="<c-j>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 " }}}
 " --- Javascript Lib ------ {{{
@@ -590,6 +590,10 @@ let g:ycm_complete_in_comments = 1
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 let g:EasyMotion_use_smartsign_us = 1
 let g:EasyMotion_smartcase = 1
+let g:EasyMotion_keys = 'abcdehijlmnopqrstuvwxyzfgkj'
+
+hi EasyMotionTarget2First cterm=bold gui=bold ctermbg=none ctermfg=red
+hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
 
 " }}}
 

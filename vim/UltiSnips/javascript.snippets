@@ -1,5 +1,9 @@
 snippet con "console.log()" b
-console.log($0);
+console.log(${0:${VISUAL}});
+endsnippet
+
+snippet pretty "JSON.stringify" b
+console.log(JSON.stringify(${0:${VISUAL:variable}}, null, 2));
 endsnippet
 
 # snippet time "console.log()" b
@@ -28,15 +32,21 @@ function$1($2) {
 }
 endsnippet
 
+snippet des "describe" b
+describe('$1', function() {
+	${2:${VISUAL}}
+});
+endsnippet
+
 snippet desc "describe" b
 describe('$1', function() {
-	$2
+	${2:${VISUAL}}
 });
 endsnippet
 
 snippet bef "beforeEach" b
 beforeEach('$1', function() {
-	$2
+	${2:${VISUAL}}
 });
 endsnippet
 
