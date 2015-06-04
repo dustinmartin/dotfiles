@@ -83,7 +83,7 @@ call vundle#end()
 syntax on                                " Enable syntax highlighting
 filetype plugin indent on                " Detect and handle filetypes
 
-" let mapleader = "\<space>"                      " Set leader key to comma
+let mapleader = ","                      " Set leader key to comma
 let maplocalleader = "\\"
 
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal" || &term =~ '^screen'
@@ -287,11 +287,6 @@ command! RemoveM %s/\//g
 
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
-
-" Rather than remap leader to <space>, map <space> to leader so
-" that showcmd in the bottom right will show \ instead of <20>
-map <space> <leader>
-map , <leader>
 
 " _ : Quick horizontal splits
 nnoremap _ :sp<cr>
