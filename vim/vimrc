@@ -40,6 +40,7 @@ Plugin 'henrik/vim-reveal-in-finder'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-repeat'
 
 " Code Modification
 Plugin 'tpope/vim-surround'
@@ -94,14 +95,15 @@ if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gno
 endif
 
 " Tell Tmux to tell iTerm to change the cursor shape
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
+" if exists('$TMUX')
+"   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+"   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+" else
+"   let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+"   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+" endif
 
+set background=dark
 colorscheme base16-ocean
 
 set nocompatible                         " Don't be compatible with Vi
@@ -273,7 +275,8 @@ command! VimrcEdit tabedit $MYVIMRC
 command! VimrcReload source $MYVIMRC
 
 " Close all buffers
-command! BDA 1,1000 bd
+" command! BDA 1,1000 bd
+command! BDA bufdo bd
 
 " Set filetype to Javascript
 command! SetJS set ft=javscript
@@ -287,6 +290,10 @@ command! RemoveM %s/\//g
 
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
+
+" Move tabs
+nnoremap <right> :tabm +1<CR>
+nnoremap <left> :tabm -1<CR>
 
 " _ : Quick horizontal splits
 nnoremap _ :sp<cr>
@@ -329,12 +336,12 @@ nnoremap U u
 vnoremap U u
 
 " Map tab to indent
-vnoremap <Tab> >gv
-nnoremap <Tab> >>
+" vnoremap <Tab> >gv
+" nnoremap <Tab> >>
 
 " Map shift+tab to unindent
-vnoremap <S-Tab> <gv
-nnoremap <S-Tab> <<
+" vnoremap <S-Tab> <gv
+" nnoremap <S-Tab> <<
 
 " Bubble single lines
 nmap <C-Up> [e
@@ -382,10 +389,6 @@ nnoremap ; :
 " Refocus folds
 nnoremap <leader>z zMzvzz
 
-" Move tabs
-nnoremap <right> :tabm +1<CR>
-nnoremap <left> :tabm -1<CR>
-
 " Change quotation marks
 nnoremap <Leader>"" :%s/'/"<CR>
 nnoremap <Leader>'' :%s/"/'<CR>
@@ -399,15 +402,18 @@ nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>t :tabnew<CR>
 vnoremap <leader>t :tabnew<CR>
 
-nnoremap <Leader>sp :set spell!<CR>
+" nnoremap <Leader>sp :set spell!<CR>
+
 nnoremap <leader>ww :set wrap! linebreak nolist<CR>
 
 " Preserve indentation while pasting text from the os x clipboard
-nnoremap <leader>p :set paste<cr>:put  *<cr>:set nopaste<cr>
+" nnoremap <leader>p :set paste<cr>:put  *<cr>:set nopaste<cr>
 
 " Toggle nerdtree
-vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
-nnoremap <leader>nt :NERDTreeToggle<CR>
+" vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
+" nnoremap <leader>nt :NERDTreeToggle<CR>
+vnoremap <leader>` <ESC> :NERDTreeToggle<CR>
+nnoremap <leader>` :NERDTreeToggle<CR>
 
 " Open up current file in NERDTree
 nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
@@ -415,6 +421,8 @@ nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 " CtrlP
 nnoremap <leader>b :CtrlPBuffer<CR>
 nnoremap <leader>f :CtrlPMixed<CR>
+nnoremap <leader>d :CtrlPBookmarkDir<CR>
+nnoremap <leader>l :CtrlPLine<CR>
 
 " Tabularize
 nnoremap <Leader>a= :Tabularize /=<CR>
