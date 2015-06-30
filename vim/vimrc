@@ -39,6 +39,7 @@ Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'henrik/vim-reveal-in-finder'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'scrooloose/syntastic'
+Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-repeat'
 
@@ -274,6 +275,13 @@ endfunction
 command! VimrcEdit tabedit $MYVIMRC
 command! VimrcReload source $MYVIMRC
 
+command! OpenCCR args ~/ng7/git/ng7/core/client/app/scripts/core/formEngine/**/*.{js,jsx}
+                      \ ~/ng7/git/ng7/core/client/test/unit/formEngine/**/*.js
+                      \ ~/ng7/git/ng7/core/client/app/scripts/core/clinicalDocumentation/**/*.{js,jsx}
+                      \ ~/ng7/git/ng7/core/client/test/unit/clinicalDocumentation/**/*.js
+                      \ ~/ng7/git/ng7/infrastructure/restserv/app/formEngine/**/*.{js,json}
+                      \ ~/ng7/git/ng7/infrastructure/restserv/app/clinicalDocumentation/**/*.{js,json}
+
 " Close all buffers
 " command! BDA 1,1000 bd
 command! BDA bufdo bd
@@ -387,7 +395,7 @@ nnoremap ; :
 " Leader Mappings ------------------------------------------------- {{{
 
 " Refocus folds
-nnoremap <leader>z zMzvzz
+nnoremap <leader>z zMzvzazAzz
 
 " Change quotation marks
 nnoremap <Leader>"" :%s/'/"<CR>
@@ -410,8 +418,8 @@ nnoremap <leader>ww :set wrap! linebreak nolist<CR>
 " nnoremap <leader>p :set paste<cr>:put  *<cr>:set nopaste<cr>
 
 " Toggle nerdtree
-" vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
-" nnoremap <leader>nt :NERDTreeToggle<CR>
+vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
+nnoremap <leader>nt :NERDTreeToggle<CR>
 vnoremap <leader>` <ESC> :NERDTreeToggle<CR>
 nnoremap <leader>` :NERDTreeToggle<CR>
 
