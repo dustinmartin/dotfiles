@@ -420,8 +420,6 @@ nnoremap <leader>ww :set wrap! linebreak nolist<CR>
 " Toggle nerdtree
 vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
 nnoremap <leader>nt :NERDTreeToggle<CR>
-vnoremap <leader>` <ESC> :NERDTreeToggle<CR>
-nnoremap <leader>` :NERDTreeToggle<CR>
 
 " Open up current file in NERDTree
 nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
