@@ -43,6 +43,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-repeat'
+Plugin 'kien/rainbow_parentheses.vim'
 
 " Code Modification
 Plugin 'tpope/vim-surround'
@@ -58,20 +59,19 @@ Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'othree/yajs.vim'
 
 Plugin 'mxw/vim-jsx'
-Plugin 'marijnh/tern_for_vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'tpope/vim-markdown'
 Plugin 'fatih/vim-go'
 Plugin 'rust-lang/rust.vim'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'elixir-lang/vim-elixir'
+Plugin 'tpope/vim-fireplace'
+Plugin 'guns/vim-clojure-static'
+Plugin 'guns/vim-clojure-highlight'
+Plugin 'tpope/vim-salve'
+Plugin 'guns/vim-sexp'
+Plugin 'tpope/vim-sexp-mappings-for-regular-people'
 " Plugin 'leafgarland/typescript-vim'
-" Plugin 'guns/vim-sexp'
-" Plugin 'tpope/vim-sexp-mappings-for-regular-people'
-" Plugin 'guns/vim-clojure-static'
-" Plugin 'guns/vim-clojure-highlight'
-" Plugin 'tpope/vim-fireplace'
-" Plugin 'tpope/vim-leiningen'
 
 " Color Schemes
 Plugin 'chriskempson/base16-vim'
@@ -495,6 +495,14 @@ nnoremap <Leader>r :call RenameFile()<cr>
 " }}}
 " Plugin Settings ------------------------------------------------- {{{
 
+" --- Rainbow Parens ------ {{{
+
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+" }}}
 " --- Session ------------- {{{
 
 let g:session_autosave = 'yes'
