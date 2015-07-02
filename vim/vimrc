@@ -58,7 +58,6 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'othree/yajs.vim'
 
 Plugin 'mxw/vim-jsx'
-Plugin 'marijnh/tern_for_vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'tpope/vim-markdown'
 Plugin 'fatih/vim-go'
