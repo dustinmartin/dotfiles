@@ -26,7 +26,8 @@ Plugin 'tpope/vim-unimpaired'
 
 " Completion and Snippets
 Plugin 'SirVer/ultisnips'
-Plugin 'ervandew/supertab'
+" Plugin 'ervandew/supertab'
+Plugin 'Valloric/YouCompleteMe'
 
 " Version Control
 Plugin 'tpope/vim-fugitive'
@@ -52,8 +53,8 @@ Plugin 'docunext/closetag.vim'
 
 " Language Support
 Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'pangloss/vim-javascript'
+" Plugin 'jelera/vim-javascript-syntax'
+" Plugin 'pangloss/vim-javascript'
 Plugin 'othree/yajs.vim'
 
 Plugin 'mxw/vim-jsx'
@@ -167,6 +168,7 @@ set undolevels=1000                      " The number of undo levels to allow
 set complete-=i
 set formatoptions-=r                     " Don't add comment prefix to next line
 set colorcolumn=120
+set completeopt=menu,menuone
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
@@ -279,12 +281,12 @@ command! OpenCCR args ~/ng7/git/ng7/core/client/app/scripts/core/formEngine/**/*
                       \ ~/ng7/git/ng7/core/client/test/unit/formEngine/**/*.js
                       \ ~/ng7/git/ng7/core/client/app/scripts/core/clinicalDocumentation/**/*.{js,jsx}
                       \ ~/ng7/git/ng7/core/client/test/unit/clinicalDocumentation/**/*.js
-                      \ ~/ng7/git/ng7/infrastructure/restserv/app/formEngine/**/*.{js,json}
-                      \ ~/ng7/git/ng7/infrastructure/restserv/app/clinicalDocumentation/**/*.{js,json}
+                      \ ~/ng7/git/ng7/infrastructure/restserv/app/formEngine/**/*.{js}
+                      \ ~/ng7/git/ng7/infrastructure/restserv/app/clinicalDocumentation/**/*.{js}
 
 " Close all buffers
-" command! BDA 1,1000 bd
-command! BDA bufdo bd
+command! BDA 1,1000 bd
+" command! BDA bufdo bd
 
 " Set filetype to Javascript
 command! SetJS set ft=javscript
@@ -557,7 +559,7 @@ let g:airline_right_sep=''
 " }}}
 " --- Ultisnips ----------- {{{
 
-" let g:UltiSnipsExpandTrigger="<c-space>"
+let g:UltiSnipsExpandTrigger="<c-j>"
 " let g:UltiSnipsListSnippets="<c-s-space>"
 " let g:UltiSnipsJumpForwardTrigger="<c-j>"
 " let g:UltiSnipsJumpBackwardTrigger="<c-k>"
