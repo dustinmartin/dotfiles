@@ -43,7 +43,7 @@ alias hidef="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Fi
 # Git
 alias g='git'
 alias gs='git status -sb'
-alias gst='git status -sb'
+alias gst='git status'
 alias gpl='git pull'
 alias gpu='git push'
 alias gf='git fetch'

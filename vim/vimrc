@@ -331,12 +331,12 @@ map s <Plug>(easymotion-bd-w)
 map S <Plug>(easymotion-bd-f)
 
 " Keep the result in the center of the screen
-nnoremap <silent> n nzz
-nnoremap <silent> N Nzz
-nnoremap <silent> * *zz
-nnoremap <silent> # #zz
-nnoremap <silent> g* g*zz
-nnoremap <silent> g# g#zz
+nnoremap <silent> n nzzzv
+nnoremap <silent> N Nzzzv
+nnoremap <silent> * *zzzv
+nnoremap <silent> # #zzzv
+nnoremap <silent> g* g*zzzv
+nnoremap <silent> g# g#zzzv
 
 " Yank till end of line
 nnoremap Y y$
@@ -618,6 +618,11 @@ hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
 
 " }}}
 " Autocmd --------------------------------------------------------- {{{
+
+augroup misc_fixes
+    " Fix vim/tmux from displaying ^[[o when switching to another tmux pane
+    au FocusGained * silent redraw!
+augroup END
 
 " Close the preview window when the cursor moves or insert mode is exited
 " augroup preview_close
