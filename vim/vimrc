@@ -428,7 +428,7 @@ nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 
 " CtrlP
 nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>f :CtrlPMixed<CR>
+nnoremap <leader>f :CtrlP<CR>
 nnoremap <leader>d :CtrlPBookmarkDir<CR>
 nnoremap <leader>l :CtrlPLine<CR>
 
@@ -550,7 +550,7 @@ let g:ctrlp_by_filename = 1
 let g:ctrlp_tabpage_position= 'al'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+    \ 'dir':  '\v[\/]\.(git|hg|svn)$|node_modules',
     \ 'file': '\v\.(jpg|jpeg|png|gif|zip|pdf|dmg)$'
     \ }
 
