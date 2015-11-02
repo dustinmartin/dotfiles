@@ -54,6 +54,7 @@ alias grb='git rebase'
 alias gd='git diff'
 alias ga='git add'
 alias gl='git log --graph --stat --abbrev-commit --date=relative'
+alias gpb='git pb'
 
 # Commit staged changed and provide some stats on the commit
 alias gc='git commit -v -m'

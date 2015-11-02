@@ -21,7 +21,7 @@ Plugin 'vim-scripts/The-NERD-tree'
 Plugin 'rking/ag.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'Lokaltog/vim-easymotion'
+" Plugin 'Lokaltog/vim-easymotion'
 Plugin 'tpope/vim-unimpaired'
 
 " Completion and Snippets
@@ -36,18 +36,19 @@ Plugin 'mhinz/vim-signify'
 " Editor Usability
 Plugin 'bling/vim-airline'
 Plugin 'xolox/vim-session'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'henrik/vim-reveal-in-finder'
+" Plugin 'nathanaelkane/vim-indent-guides'
+" Plugin 'henrik/vim-reveal-in-finder'
 Plugin 'editorconfig/editorconfig-vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'tmux-plugins/vim-tmux-focus-events'
+Plugin 'benekastah/neomake'
+" Plugin 'scrooloose/syntastic'
+" Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'tpope/vim-repeat'
-Plugin 'kien/rainbow_parentheses.vim'
+" Plugin 'tpope/vim-repeat'
+" Plugin 'kien/rainbow_parentheses.vim'
 
 " Code Modification
 Plugin 'tpope/vim-surround'
-Plugin 'godlygeek/tabular'
+" Plugin 'godlygeek/tabular'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'docunext/closetag.vim'
@@ -60,17 +61,17 @@ Plugin 'othree/yajs.vim'
 
 Plugin 'mxw/vim-jsx'
 Plugin 'hail2u/vim-css3-syntax'
-Plugin 'tpope/vim-markdown'
-Plugin 'fatih/vim-go'
-Plugin 'rust-lang/rust.vim'
-Plugin 'derekwyatt/vim-scala'
-Plugin 'elixir-lang/vim-elixir'
-Plugin 'tpope/vim-fireplace'
-Plugin 'guns/vim-clojure-static'
-Plugin 'guns/vim-clojure-highlight'
-Plugin 'tpope/vim-salve'
-Plugin 'guns/vim-sexp'
-Plugin 'tpope/vim-sexp-mappings-for-regular-people'
+" Plugin 'tpope/vim-markdown'
+" Plugin 'fatih/vim-go'
+" Plugin 'rust-lang/rust.vim'
+" Plugin 'derekwyatt/vim-scala'
+" Plugin 'elixir-lang/vim-elixir'
+" Plugin 'tpope/vim-fireplace'
+" Plugin 'guns/vim-clojure-static'
+" Plugin 'guns/vim-clojure-highlight'
+" Plugin 'tpope/vim-salve'
+" Plugin 'guns/vim-sexp'
+" Plugin 'tpope/vim-sexp-mappings-for-regular-people'
 " Plugin 'leafgarland/typescript-vim'
 
 " Color Schemes
@@ -93,7 +94,7 @@ if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gno
     " Enable 256 colors in terminal
     set t_Co=256
     " Improve mouse support in the terminal
-    set ttymouse=xterm2
+    " set ttymouse=xterm2 Disabled for Neovim
 endif
 
 " Tell Tmux to tell iTerm to change the cursor shape
@@ -141,9 +142,9 @@ set matchtime=3                          " How many tenths of a second to highli
 set spelllang=en_us                      " Set the spell check dictionary
 set number                               " Display line numbers
 set relativenumber                       " Use relative line numbers
-set shiftwidth=4                         " Number of spaces to use for each step of (auto)indent
-set tabstop=4                            " Number of spaces that a <Tab> in the file counts for
-set softtabstop=4
+set shiftwidth=2                         " Number of spaces to use for each step of (auto)indent
+set tabstop=2                            " Number of spaces that a <Tab> in the file counts for
+set softtabstop=2
 set expandtab
 set autoindent                           " Copy the indent from the current line when starting a new line
 set nosmartindent
@@ -193,7 +194,6 @@ set wildignore+=*.spl                            " compiled spelling word lists
 set wildignore+=*.sw?                            " Vim swap files
 set wildignore+=*.DS_Store                       " OSX
 set wildignore+=*.luac                           " Lua byte code
-set wildignore+=migrations                       " Django migrations
 set wildignore+=*.pyc                            " Python byte code
 set wildignore+=*.orig                           " Merge resolution files
 set wildignore+=log/**,node_modules/**,target/**,tmp/**,*.rbc
@@ -277,16 +277,9 @@ endfunction
 command! VimrcEdit tabedit $MYVIMRC
 command! VimrcReload source $MYVIMRC
 
-command! OpenCCR args ~/ng7/git/ng7/core/client/app/scripts/core/formEngine/**/*.{js,jsx}
-                      \ ~/ng7/git/ng7/core/client/test/unit/formEngine/**/*.js
-                      \ ~/ng7/git/ng7/core/client/app/scripts/core/clinicalDocumentation/**/*.{js,jsx}
-                      \ ~/ng7/git/ng7/core/client/test/unit/clinicalDocumentation/**/*.js
-                      \ ~/ng7/git/ng7/infrastructure/restserv/app/formEngine/**/*.{js}
-                      \ ~/ng7/git/ng7/infrastructure/restserv/app/clinicalDocumentation/**/*.{js}
-
 " Close all buffers
-command! BDA 1,1000 bd
-" command! BDA bufdo bd
+" command! BDA 1,1000 bd
+command! BDA bufdo bd
 
 " Set filetype to Javascript
 command! SetJS set ft=javscript
@@ -327,8 +320,8 @@ nnoremap / /\v
 vnoremap / /\v
 
 " Find words with Easymotion
-map s <Plug>(easymotion-bd-w)
-map S <Plug>(easymotion-bd-f)
+" map s <Plug>(easymotion-bd-w)
+" map S <Plug>(easymotion-bd-f)
 
 " Keep the result in the center of the screen
 nnoremap <silent> n nzzzv
@@ -396,6 +389,9 @@ nnoremap ; :
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
+" Run Syntastic
+" nnoremap <leader>c :SyntasticCheck<CR>
+
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
 
@@ -408,6 +404,7 @@ nnoremap <Leader>ws :%s/\s\+$//e<CR>
 
 " Fugitive
 nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gd :Gdiff<cr>
 
 nnoremap <leader>t :tabnew<CR>
 vnoremap <leader>t :tabnew<CR>
@@ -497,10 +494,10 @@ nnoremap <Leader>r :call RenameFile()<cr>
 
 " --- Rainbow Parens ------ {{{
 
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+" au VimEnter * RainbowParenthesesToggle
+" au Syntax * RainbowParenthesesLoadRound
+" au Syntax * RainbowParenthesesLoadSquare
+" au Syntax * RainbowParenthesesLoadBraces
 
 " }}}
 " --- Session ------------- {{{
@@ -533,14 +530,15 @@ let NERDTreeChDirMode=2
 " }}}
 " --- Syntastic ----------- {{{
 
-" let g:syntastic_debug = 3
-let g:syntastic_javascript_checkers = ['jscs','jshint']
-let g:syntastic_javascript_jscs_args = "--esprima=esprima-fb --esnext"
-let g:syntastic_check_on_open=0
-let g:syntastic_enable_signs=1
-let g:syntastic_mode_map={ 'mode': 'active',
-                     \ 'active_filetypes': [],
-                     \ 'passive_filetypes': ['html'] }
+autocmd! BufWritePost * Neomake
+let g:neomake_javascript_enabled_makers = ['jscs', 'eslint']
+
+" let g:syntastic_javascript_checkers = ['jscs','eslint']
+" let g:syntastic_check_on_open=0
+" let g:syntastic_enable_signs=1
+" let g:syntastic_mode_map={ 'mode': 'active',
+"                      \ 'active_filetypes': [],
+"                      \ 'passive_filetypes': ['html'] }
 
 " }}}
 " --- CtrlP --------------- {{{
@@ -556,6 +554,14 @@ let g:ctrlp_custom_ignore = {
 
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_clear_cache_on_exit = 0
+" let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+      \ --ignore .git
+      \ --ignore .svn
+      \ --ignore .hg
+      \ --ignore .DS_Store
+      \ --ignore "**/*.pyc"
+      \ -g ""'
 
 " }}}
 " --- Airline ------------- {{{
@@ -606,13 +612,13 @@ let g:ycm_complete_in_comments = 1
 " }}}
 " --- EasyMotion ---------- {{{
 
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-let g:EasyMotion_use_smartsign_us = 1
-let g:EasyMotion_smartcase = 1
-let g:EasyMotion_keys = 'abcdehijlmnopqrstuvwxyzfgkj'
-
-hi EasyMotionTarget2First cterm=bold gui=bold ctermbg=none ctermfg=red
-hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
+" let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" let g:EasyMotion_use_smartsign_us = 1
+" let g:EasyMotion_smartcase = 1
+" let g:EasyMotion_keys = 'abcdehijlmnopqrstuvwxyzfgkj'
+"
+" hi EasyMotionTarget2First cterm=bold gui=bold ctermbg=none ctermfg=red
+" hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
 
 " }}}
 
