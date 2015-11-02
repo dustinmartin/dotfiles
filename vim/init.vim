@@ -90,6 +90,11 @@ filetype plugin indent on                " Detect and handle filetypes
 let mapleader = ","                      " Set leader key to comma
 let maplocalleader = "\\"
 
+" Fix <ctrl>+h for vim-tmux-navigator
+if has('nvim')
+    nmap <BS> <C-W>h
+endif
+
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal" || &term =~ '^screen'
     " Enable 256 colors in terminal
     set t_Co=256
