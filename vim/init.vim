@@ -2,84 +2,78 @@
 " Source: https://github.com/dustinmartin/dotfiles
 
 " Plugins --------------------------------------------------------- {{{
+"
+" Load vim-plug
+if empty(glob("~/.config/nvim/autoload/plug.vim"))
+  execute '!curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+endif
 
-filetype off
-
-" Set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" Let Vundle manage Vundle
-Plugin 'gmarik/Vundle.vim'
-
-" Support Plugins
-Plugin 'rizzatti/funcoo.vim'
-Plugin 'xolox/vim-misc'
+call plug#begin('~/.config/nvim/plugged')
 
 " Finding/Navigation
-Plugin 'vim-scripts/The-NERD-tree'
-Plugin 'rking/ag.vim'
-Plugin 'kien/ctrlp.vim'
-Plugin 'terryma/vim-multiple-cursors'
-" Plugin 'Lokaltog/vim-easymotion'
-Plugin 'tpope/vim-unimpaired'
+Plug 'scrooloose/nerdtree', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
+Plug 'rking/ag.vim', { 'on': 'Ag' }
+Plug 'kien/ctrlp.vim', { 'on':  ['CtrlP', 'CtrlPLine', 'CtrlPBuffer'] }
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-unimpaired'
 
 " Completion and Snippets
-Plugin 'SirVer/ultisnips'
-" Plugin 'ervandew/supertab'
-Plugin 'Valloric/YouCompleteMe'
+Plug 'SirVer/ultisnips'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 
 " Version Control
-Plugin 'tpope/vim-fugitive'
-Plugin 'mhinz/vim-signify'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'gregsexton/gitv', { 'on': 'Gitv' }
 
 " Editor Usability
-Plugin 'bling/vim-airline'
-Plugin 'xolox/vim-session'
-" Plugin 'nathanaelkane/vim-indent-guides'
-" Plugin 'henrik/vim-reveal-in-finder'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'benekastah/neomake'
-" Plugin 'scrooloose/syntastic'
-" Plugin 'tmux-plugins/vim-tmux-focus-events'
-Plugin 'christoomey/vim-tmux-navigator'
-" Plugin 'tpope/vim-repeat'
-" Plugin 'kien/rainbow_parentheses.vim'
+Plug 'bling/vim-airline'
+Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'benekastah/neomake', { 'on':  ['Neomake'] }
+Plug 'ferranpm/vim-isolate', { 'on':  ['Isolate', 'UnIsolate'] }
+Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'wellle/targets.vim'
+" Plug 'tpope/vim-repeat'
+Plug 'chip/vim-fat-finger'
+Plug 'terryma/vim-expand-region'
+Plug 'tpope/vim-eunuch'
 
 " Code Modification
-Plugin 'tpope/vim-surround'
-" Plugin 'godlygeek/tabular'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'Raimondi/delimitMate'
-Plugin 'docunext/closetag.vim'
+Plug 'tpope/vim-surround'
+Plug 'godlygeek/tabular', { 'on':  'Tabularize' }
+Plug 'tomtom/tcomment_vim'
+Plug 'cohama/lexima.vim'
 
 " Language Support
-Plugin 'othree/javascript-libraries-syntax.vim'
-" Plugin 'jelera/vim-javascript-syntax'
-" Plugin 'pangloss/vim-javascript'
-Plugin 'othree/yajs.vim'
-
-Plugin 'mxw/vim-jsx'
-Plugin 'hail2u/vim-css3-syntax'
-" Plugin 'tpope/vim-markdown'
-" Plugin 'fatih/vim-go'
-" Plugin 'rust-lang/rust.vim'
-" Plugin 'derekwyatt/vim-scala'
-" Plugin 'elixir-lang/vim-elixir'
-" Plugin 'tpope/vim-fireplace'
-" Plugin 'guns/vim-clojure-static'
-" Plugin 'guns/vim-clojure-highlight'
-" Plugin 'tpope/vim-salve'
-" Plugin 'guns/vim-sexp'
-" Plugin 'tpope/vim-sexp-mappings-for-regular-people'
-" Plugin 'leafgarland/typescript-vim'
+Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'othree/yajs.vim'
+Plug 'mxw/vim-jsx'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'tpope/vim-markdown'
+Plug 'fatih/vim-go'
+Plug 'rust-lang/rust.vim'
+Plug 'derekwyatt/vim-scala'
+Plug 'elixir-lang/vim-elixir'
+Plug 'leafgarland/typescript-vim'
+Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
+Plug 'tpope/vim-salve', { 'for': 'clojure' }
+Plug 'guns/vim-sexp', { 'for': 'clojure' }
+Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
+Plug 'tejr/vim-tmux'
+Plug 'tpope/vim-git'
+Plug 'honza/dockerfile.vim'
 
 " Color Schemes
-Plugin 'chriskempson/base16-vim'
-Plugin 'tomasr/molokai'
+Plug 'chriskempson/base16-vim'
+Plug 'tomasr/molokai'
 
 " All of your Plugins must be added before the following line
-call vundle#end()
+call plug#end()
 
 " }}}
 " Vim Settings ---------------------------------------------------- {{{
@@ -90,32 +84,18 @@ filetype plugin indent on                " Detect and handle filetypes
 let mapleader = ","                      " Set leader key to comma
 let maplocalleader = "\\"
 
-" Fix <ctrl>+h for vim-tmux-navigator
 if has('nvim')
+    " Fix <ctrl>+h for vim-tmux-navigator
     nmap <BS> <C-W>h
-endif
 
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal" || &term =~ '^screen'
-    " Enable 256 colors in terminal
-    set t_Co=256
-    " Improve mouse support in the terminal
-    " set ttymouse=xterm2 Disabled for Neovim
+    " Change cursor shape in insert mode
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
-
-" Tell Tmux to tell iTerm to change the cursor shape
-" if exists('$TMUX')
-"   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-"   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-" else
-"   let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-"   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-" endif
 
 set background=dark
 colorscheme base16-ocean
 
-set nocompatible                         " Don't be compatible with Vi
-set encoding=utf-8
+set shell=/bin/zsh                       " Setting shell to zsh
 set fileencoding=utf-8
 set fileformat=unix
 set fileformats=unix,mac,dos
@@ -128,12 +108,12 @@ set backspace=2                          " Allow backspacing over everything in 
 set whichwrap+=<,>,h,l,[,]               " Backspace and cursor keys wrap too
 set visualbell                           " Disable 'beep' for wrong commands and do screen flash
 set cursorline                           " Highlights the cursor line
-set ttyfast                              " Makes scrolling smoother
 set laststatus=2                         " Always show the statusline
 set textwidth=0                          " Prevent Vim from wrapping lines
 set wrapmargin=0                         " Prevent Vim from wrapping lines
 set sidescroll=1                         " Number of columns to scroll horizontally
 set sidescrolloff=10                     " Number of columns to keep to the left and right of cursor
+set t_Co=256
 set scrolloff=1                          " Number of rows to keep above/below the cursor
 set mouse=a                              " Enable mouse
 set showcmd                              " Show command in bottom right of window
@@ -278,6 +258,9 @@ endfunction
 " }}}
 " Custom Commands ------------------------------------------------- {{{
 
+" See all code TODOs
+command! TODO Ag! TODO\|FIXME
+
 " Edit Vimrc
 command! VimrcEdit tabedit $MYVIMRC
 command! VimrcReload source $MYVIMRC
@@ -303,11 +286,17 @@ command! RemoveM %s/\//g
 nnoremap <right> :tabm +1<CR>
 nnoremap <left> :tabm -1<CR>
 
-" _ : Quick horizontal splits
-nnoremap _ :sp<cr>
+" Don't yank to default register when changing something
+nnoremap c "xc
+xnoremap c "xc
 
-" | : Quick vertical splits
-nnoremap <bar> :vsp<cr>
+" Automatically jump to end of text you paste
+vnoremap <silent> y y`]
+vnoremap <silent> p p`]
+nnoremap <silent> p p`]
+
+" No more accidentally showing up command window (Use C-f to show it)
+map q: :q
 
 " Select (charwise) the contents of the current line, excluding indentation.
 nnoremap vv ^vg_
@@ -323,10 +312,6 @@ vnoremap L g_
 " Use standard regexes
 nnoremap / /\v
 vnoremap / /\v
-
-" Find words with Easymotion
-" map s <Plug>(easymotion-bd-w)
-" map S <Plug>(easymotion-bd-f)
 
 " Keep the result in the center of the screen
 nnoremap <silent> n nzzzv
@@ -382,20 +367,8 @@ nnoremap <up> gk
 vnoremap ; :
 nnoremap ; :
 
-" Make zO recursively open whatever top level fold we're in, no matter where the cursor happens to be.
-" nnoremap zO zCzO
-
-" Move around the splits
-" nnoremap <C-h> <C-w>h
-" nnoremap <C-j> <C-w>j
-" nnoremap <C-k> <C-w>k
-" nnoremap <C-l> <C-w>l
-
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
-
-" Run Syntastic
-" nnoremap <leader>c :SyntasticCheck<CR>
 
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
@@ -477,34 +450,8 @@ endfunction
 set foldtext=CustomFoldText()
 
 " }}}
-" File Renaming --------------------------------------------------- {{{
-
-function! RenameFile()
-
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-
-    if new_name != '' && new_name != old_name
-        exec ':saveas ' . new_name
-        exec ':silent !rm ' . old_name
-        redraw!
-    endif
-
-endfunction
-
-nnoremap <Leader>r :call RenameFile()<cr>
-
-" }}}
 " Plugin Settings ------------------------------------------------- {{{
 
-" --- Rainbow Parens ------ {{{
-
-" au VimEnter * RainbowParenthesesToggle
-" au Syntax * RainbowParenthesesLoadRound
-" au Syntax * RainbowParenthesesLoadSquare
-" au Syntax * RainbowParenthesesLoadBraces
-
-" }}}
 " --- Session ------------- {{{
 
 let g:session_autosave = 'yes'
@@ -532,18 +479,14 @@ let NERDTreeMouseMode=2
 " Allow NerdTree to change Vim's CD
 let NERDTreeChDirMode=2
 
+" Automatically remove a buffer when a file is being deleted or renamed via a context menu command
+let NERDTreeAutoDeleteBuffer=1
+
 " }}}
 " --- Syntastic ----------- {{{
 
 autocmd! BufWritePost * Neomake
 let g:neomake_javascript_enabled_makers = ['jscs', 'eslint']
-
-" let g:syntastic_javascript_checkers = ['jscs','eslint']
-" let g:syntastic_check_on_open=0
-" let g:syntastic_enable_signs=1
-" let g:syntastic_mode_map={ 'mode': 'active',
-"                      \ 'active_filetypes': [],
-"                      \ 'passive_filetypes': ['html'] }
 
 " }}}
 " --- CtrlP --------------- {{{
@@ -634,13 +577,6 @@ augroup misc_fixes
     " Fix vim/tmux from displaying ^[[o when switching to another tmux pane
     au FocusGained * silent redraw!
 augroup END
-
-" Close the preview window when the cursor moves or insert mode is exited
-" augroup preview_close
-"     au!
-    " au CursorMovedI *  if pumvisible() == 0|silent! pclose|endif
-    " au InsertLeave * if pumvisible() == 0|silent! pclose|endif
-" augroup END
 
 " Only show cursorline in the current window and in normal mode.
 augroup cursor_line
