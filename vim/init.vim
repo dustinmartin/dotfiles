@@ -12,6 +12,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Finding/Navigation
 Plug 'scrooloose/nerdtree', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'rking/ag.vim', { 'on': 'Ag' }
 Plug 'kien/ctrlp.vim', { 'on':  ['CtrlP', 'CtrlPLine', 'CtrlPBuffer'] }
 Plug 'terryma/vim-multiple-cursors'
@@ -32,19 +33,19 @@ Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'benekastah/neomake', { 'on':  ['Neomake'] }
-Plug 'ferranpm/vim-isolate', { 'on':  ['Isolate', 'UnIsolate'] }
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'wellle/targets.vim'
-" Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-repeat'
 Plug 'chip/vim-fat-finger'
 Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-eunuch'
+Plug 'easymotion/vim-easymotion'
 
 " Code Modification
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular', { 'on':  'Tabularize' }
-Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 
 " Language Support
@@ -286,17 +287,13 @@ command! RemoveM %s/\//g
 nnoremap <right> :tabm +1<CR>
 nnoremap <left> :tabm -1<CR>
 
-" Don't yank to default register when changing something
+" Don't yank to default register when changing something, e.g. ciw, ci(
 nnoremap c "xc
 xnoremap c "xc
 
-" Automatically jump to end of text you paste
-vnoremap <silent> y y`]
-vnoremap <silent> p p`]
-nnoremap <silent> p p`]
-
-" No more accidentally showing up command window (Use C-f to show it)
-map q: :q
+" Find words with Easymotion
+map S <Plug>(easymotion-bd-w)
+map s <Plug>(easymotion-bd-f2)
 
 " Select (charwise) the contents of the current line, excluding indentation.
 nnoremap vv ^vg_
@@ -327,14 +324,6 @@ nnoremap Y y$
 " U does some weird stuff. Remap to u
 nnoremap U u
 vnoremap U u
-
-" Map tab to indent
-" vnoremap <Tab> >gv
-" nnoremap <Tab> >>
-
-" Map shift+tab to unindent
-" vnoremap <S-Tab> <gv
-" nnoremap <S-Tab> <<
 
 " Bubble single lines
 nmap <C-Up> [e
@@ -560,13 +549,13 @@ let g:ycm_complete_in_comments = 1
 " }}}
 " --- EasyMotion ---------- {{{
 
-" let g:EasyMotion_do_mapping = 0 " Disable default mappings
-" let g:EasyMotion_use_smartsign_us = 1
-" let g:EasyMotion_smartcase = 1
-" let g:EasyMotion_keys = 'abcdehijlmnopqrstuvwxyzfgkj'
-"
-" hi EasyMotionTarget2First cterm=bold gui=bold ctermbg=none ctermfg=red
-" hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+let g:EasyMotion_use_smartsign_us = 1
+let g:EasyMotion_smartcase = 1
+let g:EasyMotion_keys = 'abcdehijlmnopqrstuvwxyzfgkj'
+
+hi EasyMotionTarget2First cterm=bold gui=bold ctermbg=none ctermfg=red
+hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
 
 " }}}
 
