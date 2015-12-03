@@ -26,7 +26,7 @@ switch($1){
 }
 endsnippet
 
-snippet afn "function" w
+snippet fna "function" w
 ($1) => { $2 }
 endsnippet
 
@@ -34,6 +34,12 @@ snippet fn "function" w
 function$1($2) {
 	$3
 }
+endsnippet
+
+snippet fne "function" w
+const $1 = function($2) {
+	$3
+};
 endsnippet
 
 snippet des "describe" b
