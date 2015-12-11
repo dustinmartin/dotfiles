@@ -55,6 +55,7 @@ alias gd='git diff'
 alias ga='git add'
 alias gl='git log --graph --stat --abbrev-commit --date=relative'
 alias gpb='git pb'
+alias gup='git up'
 
 # Commit staged changed and provide some stats on the commit
 alias gc='git commit -v -m'
@@ -67,20 +68,6 @@ alias gcob='git checkout -b'
 
 # Stage all updated/added/deleted files
 alias gaa='git add -u && git add . && git status'
-
-# Updates a branch
-# gup() {
-#     echo "> Fetching updates from origin"
-#     git fetch
-#     echo "> Rebasing origin/team-ccr"
-#     git rebase origin/team-ccr
-# }
-
-# Interactive rebase
-# gir() {
-#     echo "Rebasing (interactive) origin/team-ccr"
-#     git rebase -i origin/team-ccr
-# }
 
 # Get the current branch
 current_branch() {

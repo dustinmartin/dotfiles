@@ -49,25 +49,28 @@ Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 
 " Language Support
+Plug 'sheerun/vim-polyglot'
 Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'othree/yajs.vim'
-Plug 'mxw/vim-jsx'
-Plug 'hail2u/vim-css3-syntax'
-Plug 'tpope/vim-markdown'
-Plug 'fatih/vim-go'
-Plug 'rust-lang/rust.vim'
-Plug 'derekwyatt/vim-scala'
-Plug 'elixir-lang/vim-elixir'
-Plug 'leafgarland/typescript-vim'
-Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
-Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
-Plug 'tpope/vim-salve', { 'for': 'clojure' }
-Plug 'guns/vim-sexp', { 'for': 'clojure' }
-Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
-Plug 'tejr/vim-tmux'
-Plug 'tpope/vim-git'
-Plug 'honza/dockerfile.vim'
+
+" Plug 'mustache/vim-mustache-handlebars'
+" Plug 'othree/yajs.vim'
+" Plug 'mxw/vim-jsx'
+" Plug 'hail2u/vim-css3-syntax'
+" Plug 'tpope/vim-markdown'
+" Plug 'fatih/vim-go'
+" Plug 'rust-lang/rust.vim'
+" Plug 'derekwyatt/vim-scala'
+" Plug 'elixir-lang/vim-elixir'
+" Plug 'leafgarland/typescript-vim'
+" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+" Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+" Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
+" Plug 'tpope/vim-salve', { 'for': 'clojure' }
+" Plug 'guns/vim-sexp', { 'for': 'clojure' }
+" Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
+" Plug 'tejr/vim-tmux'
+" Plug 'tpope/vim-git'
+" Plug 'honza/dockerfile.vim'
 
 " Color Schemes
 Plug 'chriskempson/base16-vim'
