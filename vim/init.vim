@@ -82,6 +82,8 @@ call plug#end()
 " }}}
 " Vim Settings ---------------------------------------------------- {{{
 
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
 syntax on                                " Enable syntax highlighting
 filetype plugin indent on                " Detect and handle filetypes
 
@@ -203,7 +205,7 @@ if has("gui_running")
     set guifont=Source\ Code\ Pro:h17             " Set the font style and size
 
     " Window size
-    set lines=35 columns=115                 " Set the window size
+    " set lines=35 columns=115                 " Set the window size
 
 endif
 
