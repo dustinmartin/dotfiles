@@ -117,7 +117,6 @@ set textwidth=0                          " Prevent Vim from wrapping lines
 set wrapmargin=0                         " Prevent Vim from wrapping lines
 set sidescroll=1                         " Number of columns to scroll horizontally
 set sidescrolloff=10                     " Number of columns to keep to the left and right of cursor
-set t_Co=256
 set scrolloff=1                          " Number of rows to keep above/below the cursor
 set mouse=a                              " Enable mouse
 set showcmd                              " Show command in bottom right of window
