@@ -27,6 +27,9 @@ alias reload="source ~/.zshrc"
 # Set vim as the editor
 export EDITOR='vim'
 
+# Make FZF ignore files on .gitignore by piping to Ag
+export FZF_DEFAULT_COMMAND='ag -g ""'
+
 # List all files colorized in long format, including dot files
 alias la="ls -Gla"
 alias ll="ls -Gla"

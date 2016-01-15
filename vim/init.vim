@@ -13,14 +13,17 @@ call plug#begin('~/.config/nvim/plugged')
 " Finding/Navigation
 Plug 'scrooloose/nerdtree', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
-Plug 'rking/ag.vim', { 'on': 'Ag' }
-Plug 'kien/ctrlp.vim', { 'on':  ['CtrlP', 'CtrlPLine', 'CtrlPBuffer'] }
+" Plug 'rking/ag.vim', { 'on': 'Ag' }
+Plug 'ctrlpvim/ctrlp.vim', { 'on':  ['CtrlP', 'CtrlPLine', 'CtrlPBuffer'] }
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-unimpaired'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
 " Version Control
 Plug 'tpope/vim-fugitive'
@@ -52,29 +55,8 @@ Plug 'cohama/lexima.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'othree/javascript-libraries-syntax.vim'
 
-" Plug 'mustache/vim-mustache-handlebars'
-" Plug 'othree/yajs.vim'
-" Plug 'mxw/vim-jsx'
-" Plug 'hail2u/vim-css3-syntax'
-" Plug 'tpope/vim-markdown'
-" Plug 'fatih/vim-go'
-" Plug 'rust-lang/rust.vim'
-" Plug 'derekwyatt/vim-scala'
-" Plug 'elixir-lang/vim-elixir'
-" Plug 'leafgarland/typescript-vim'
-" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-" Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
-" Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
-" Plug 'tpope/vim-salve', { 'for': 'clojure' }
-" Plug 'guns/vim-sexp', { 'for': 'clojure' }
-" Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
-" Plug 'tejr/vim-tmux'
-" Plug 'tpope/vim-git'
-" Plug 'honza/dockerfile.vim'
-
 " Color Schemes
 Plug 'chriskempson/base16-vim'
-Plug 'tomasr/molokai'
 
 " All of your Plugins must be added before the following line
 call plug#end()
@@ -267,8 +249,8 @@ endfunction
 command! TODO Ag! TODO\|FIXME
 
 " Edit Vimrc
-command! VimrcEdit tabedit $MYVIMRC
-command! VimrcReload source $MYVIMRC
+command! Vimrc tabedit $MYVIMRC
+command! Reload source $MYVIMRC
 
 " Close all buffers
 " command! BDA 1,1000 bd
@@ -301,7 +283,7 @@ xnoremap c "xc
 
 " Find words with Easymotion
 map S <Plug>(easymotion-bd-w)
-map s <Plug>(easymotion-bd-f2)
+map s <Plug>(easymotion-bd-f)
 
 " Select (charwise) the contents of the current line, excluding indentation.
 nnoremap vv ^vg_
@@ -367,6 +349,9 @@ nnoremap ; :
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
+" Open scratch file
+nnoremap <leader>s :vsplit ~/Desktop/SCRATCH.txt<CR>
+
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
 
@@ -399,10 +384,14 @@ nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 
 " CtrlP
-nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>f :CtrlP<CR>
-nnoremap <leader>d :CtrlPBookmarkDir<CR>
-nnoremap <leader>l :CtrlPLine<CR>
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>l :Lines<CR>
+
+" nnoremap <leader>b :CtrlPBuffer<CR>
+" nnoremap <leader>f :CtrlP<CR>
+" nnoremap <leader>d :CtrlPBookmarkDir<CR>
+" nnoremap <leader>l :CtrlPLine<CR>
 
 " Tabularize
 nnoremap <Leader>a= :Tabularize /=<CR>
@@ -413,7 +402,10 @@ vnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
 nnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
 
 " Ag
-nnoremap <leader>ag :Ag!<space>
+" nnoremap <leader>ag :Ag!<space>
+nnoremap <leader>ag :Ag!<cr>
+
+nnoremap <leader>c :checktime<CR>
 
 " }}}
 " Folding --------------------------------------------------------- {{{
@@ -480,7 +472,7 @@ let NERDTreeChDirMode=2
 let NERDTreeAutoDeleteBuffer=1
 
 " }}}
-" --- Syntastic ----------- {{{
+" --- Neomake ----------- {{{
 
 autocmd! BufWritePost * Neomake
 let g:neomake_javascript_enabled_makers = ['jscs', 'eslint']
@@ -489,24 +481,23 @@ let g:neomake_javascript_enabled_makers = ['jscs', 'eslint']
 " --- CtrlP --------------- {{{
 
 " Search by filename
-let g:ctrlp_by_filename = 1
-let g:ctrlp_tabpage_position= 'al'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn)$|node_modules',
-    \ 'file': '\v\.(jpg|jpeg|png|gif|zip|pdf|dmg)$'
-    \ }
+" let g:ctrlp_by_filename = 1
+" let g:ctrlp_tabpage_position= 'al'
+" let g:ctrlp_cmd = 'CtrlP'
+" let g:ctrlp_custom_ignore = {
+"     \ 'dir':  '\v[\/]\.(git|hg|svn)$|node_modules',
+"     \ 'file': '\v\.(jpg|jpeg|png|gif|zip|pdf|dmg)$'
+"     \ }
 
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_clear_cache_on_exit = 0
-" let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-      \ --ignore .git
-      \ --ignore .svn
-      \ --ignore .hg
-      \ --ignore .DS_Store
-      \ --ignore "**/*.pyc"
-      \ -g ""'
+" let g:ctrlp_working_path_mode = 0
+" let g:ctrlp_clear_cache_on_exit = 0
+" let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+"       \ --ignore .git
+"       \ --ignore .svn
+"       \ --ignore .hg
+"       \ --ignore .DS_Store
+"       \ --ignore "**/*.pyc"
+"       \ -g ""'
 
 " }}}
 " --- Airline ------------- {{{
@@ -527,6 +518,7 @@ let g:UltiSnipsExpandTrigger="<c-j>"
 " --- Javascript Lib ------ {{{
 
 let g:used_javascript_libs = 'angularjs,jquery,underscore,chai,react,flux'
+let g:jsx_ext_required = 0
 
 " }}}
 " --- Indent Guides ------- {{{

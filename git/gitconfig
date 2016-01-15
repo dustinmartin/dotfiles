@@ -1,5 +1,6 @@
 [user]
 	name = Dustin Martin
+	email = dm@dustinmartin.net
 [alias]
   # alias = config --get-regexp alias
   # ec = config --global -e
