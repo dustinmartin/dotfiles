@@ -18,6 +18,9 @@ alias v='f -e vim'       # quick opening files with vim
 # alias tmx='tmux -2'
 alias tmux="TERM=screen-256color-bce tmux"
 
+# Make psql point to pgcli
+alias psql="pgcli"
+
 # Fix rake to work with zsh
 alias rake="noglob rake"
 

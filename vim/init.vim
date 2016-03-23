@@ -13,9 +13,6 @@ call plug#begin('~/.config/nvim/plugged')
 " Finding/Navigation
 Plug 'scrooloose/nerdtree', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
-" Plug 'rking/ag.vim', { 'on': 'Ag' }
-Plug 'ctrlpvim/ctrlp.vim', { 'on':  ['CtrlP', 'CtrlPLine', 'CtrlPBuffer'] }
-Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-unimpaired'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -28,17 +25,16 @@ Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 " Version Control
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'gregsexton/gitv', { 'on': 'Gitv' }
 
 " Editor Usability
-Plug 'bling/vim-airline'
-Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'benekastah/neomake', { 'on':  ['Neomake'] }
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'wellle/targets.vim'
 Plug 'tpope/vim-repeat'
 Plug 'chip/vim-fat-finger'
 Plug 'terryma/vim-expand-region'
@@ -54,6 +50,7 @@ Plug 'cohama/lexima.vim'
 " Language Support
 Plug 'sheerun/vim-polyglot'
 Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'vim-scripts/SyntaxRange'
 
 " Color Schemes
 Plug 'chriskempson/base16-vim'
@@ -145,6 +142,7 @@ set completeopt=menu,menuone
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+set foldlevel=0
 
 " Time out on key codes but not mappings.
 " Basically this makes terminal Vim work sanely.
@@ -246,7 +244,7 @@ endfunction
 " Custom Commands ------------------------------------------------- {{{
 
 " See all code TODOs
-command! TODO Ag! TODO\|FIXME
+" command! TODO Ag! TODO\|FIXME
 
 " Edit Vimrc
 command! Vimrc tabedit $MYVIMRC
@@ -282,8 +280,8 @@ nnoremap c "xc
 xnoremap c "xc
 
 " Find words with Easymotion
-map S <Plug>(easymotion-bd-w)
-map s <Plug>(easymotion-bd-f)
+" map T <Plug>(easymotion-bd-w)
+" map t <Plug>(easymotion-bd-f)
 
 " Select (charwise) the contents of the current line, excluding indentation.
 nnoremap vv ^vg_
@@ -350,7 +348,7 @@ nnoremap ; :
 " Leader Mappings ------------------------------------------------- {{{
 
 " Open scratch file
-nnoremap <leader>s :vsplit ~/Desktop/SCRATCH.txt<CR>
+nnoremap <leader>s :vsplit ~/Desktop/Scratch.txt<CR>
 
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
@@ -402,8 +400,7 @@ vnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
 nnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
 
 " Ag
-" nnoremap <leader>ag :Ag!<space>
-nnoremap <leader>ag :Ag!<cr>
+nnoremap <leader>ag :Ag<cr>
 
 nnoremap <leader>c :checktime<CR>
 
@@ -443,9 +440,9 @@ set foldtext=CustomFoldText()
 
 " --- Session ------------- {{{
 
-let g:session_autosave = 'yes'
-let g:session_autoload = 'yes'
-let g:session_default_to_last = 1
+" let g:session_autosave = 'yes'
+" let g:session_autoload = 'yes'
+" let g:session_default_to_last = 1
 
 " }}}
 " --- Nerdtree ------------ {{{
@@ -644,6 +641,7 @@ augroup ft_javascript
     au!
 
     au FileType javascript map <buffer> <F2> :!node % <CR>
+    " au FileType javascript setlocal foldmethod=syntax
     au FileType javascript setlocal foldmethod=marker
     au FileType javascript setlocal foldmarker={,}
 
