@@ -2,6 +2,12 @@
 alias ..="cd .."
 alias ...="cd ../.."
 
+alias vi='vim'
+
+alias pr='hub pull-request'
+
+alias twyladb='psql -h "localhost" -U twyla'
+
 # Fasd aliases
 alias a='fasd -a'        # any
 alias s='fasd -si'       # show / search / select
@@ -61,7 +67,7 @@ alias gd='git diff'
 alias ga='git add'
 alias gl='git log --graph --stat --abbrev-commit --date=relative'
 alias gpb='git pb'
-alias gup='git up'
+alias gup='echo "\nGitty up!\n" && git up'
 
 # Commit staged changed and provide some stats on the commit
 alias gc='git commit -v -m'
@@ -74,6 +80,8 @@ alias gcob='git checkout -b'
 
 # Stage all updated/added/deleted files
 alias gaa='git add -u && git add . && git status'
+
+alias gap='git add -p && git status'
 
 # Get the current branch
 current_branch() {

@@ -1,3 +1,16 @@
+snippet serv "ES6 Service" b
+import BaseService from '../common/base.service.js';
+
+class $1 extends BaseService {
+	constructor() {
+		super();
+	}
+}
+
+module.exports = new $3;
+endsnippet
+
+
 snippet con "console.log()" b
 console.log(${0:${VISUAL}});
 endsnippet
@@ -91,7 +104,7 @@ if ($1) {
 endsnippet
 
 snippet for "for loop" b
-for (var i=0; i<$1; i++) {
+for (let i = 0; i < $1; i++) {
 	$2
 }
 endsnippet
