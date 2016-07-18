@@ -51,10 +51,12 @@ Plug 'cohama/lexima.vim'
 " Language Support
 Plug 'sheerun/vim-polyglot'
 Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'vim-scripts/SyntaxRange'
 
 " Color Schemes
-Plug 'chriskempson/base16-vim'
+" Plug 'chriskempson/base16-vim'
+Plug 'joshdick/onedark.vim'
+Plug 'joshdick/airline-onedark.vim'
+" Plug 'w0ng/vim-hybrid'
 
 " All of your Plugins must be added before the following line
 call plug#end()
@@ -62,7 +64,23 @@ call plug#end()
 " }}}
 " Vim Settings ---------------------------------------------------- {{{
 
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+if (empty($TMUX))
+  if (has("nvim"))
+    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  endif
+  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+endif
 
 syntax on                                " Enable syntax highlighting
 filetype plugin indent on                " Detect and handle filetypes
@@ -78,8 +96,9 @@ if has('nvim')
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
 
+let g:airline_theme='onedark'
 set background=dark
-colorscheme base16-ocean
+colorscheme onedark
 
 set shell=/bin/zsh                       " Setting shell to zsh
 set fileencoding=utf-8
@@ -280,10 +299,6 @@ nnoremap <left> :tabm -1<CR>
 nnoremap c "xc
 xnoremap c "xc
 
-" Find words with Easymotion
-" map T <Plug>(easymotion-bd-w)
-" map t <Plug>(easymotion-bd-f)
-
 " Select (charwise) the contents of the current line, excluding indentation.
 nnoremap vv ^vg_
 
@@ -349,7 +364,7 @@ nnoremap ; :
 " Leader Mappings ------------------------------------------------- {{{
 
 " Open scratch file
-nnoremap <leader>s :vsplit ~/Desktop/Scratch.txt<CR>
+" nnoremap <leader>s :vsplit ~/Desktop/Scratch.txt<CR>
 
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
@@ -547,7 +562,7 @@ let g:ycm_complete_in_comments = 1
 " }}}
 " --- EasyMotion ---------- {{{
 
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
+let g:EasyMotion_do_mapping = 1 " Disable default mappings
 let g:EasyMotion_use_smartsign_us = 1
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_keys = 'abcdehijlmnopqrstuvwxyzfgkj'
