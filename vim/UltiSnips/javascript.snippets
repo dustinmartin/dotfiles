@@ -1,3 +1,22 @@
+snippet mock "Mock" b
+const mocker = require('$1');
+
+module.exports = function(target) {
+	const fixtures = {
+		$2: {
+		}
+	};
+
+	const methods = {
+		$3: {
+			default: () => Promise.resolve(fixtures.$2)
+		}
+	};
+
+	return mocker.createMock(target, fixtures, methods);
+};
+endsnippet
+
 snippet serv "ES6 Service" b
 import BaseService from '../common/base.service.js';
 
@@ -10,6 +29,9 @@ class $1 extends BaseService {
 module.exports = new $3;
 endsnippet
 
+snippet line "line" b
+// -- ${0:Private} -------------------------------------- //
+endsnippet
 
 snippet con "console.log()" b
 console.log(${0:${VISUAL}});
@@ -31,11 +53,11 @@ endsnippet
 # endsnippet
 
 snippet switch "switch" b
-switch($1){
-	case '$2':
-		break;
-	default:
-		break;
+switch ($1){
+case '$2':
+	break;
+default:
+	break;
 }
 endsnippet
 

@@ -10,7 +10,7 @@
   up = pull --rebase upstream master
   pb = !git push --set-upstream origin "$(git rev-parse --abbrev-ref HEAD)"
   db = !f() { git branch -d $1; git push origin :$1; }; f
-  cm = !git add -A && git commit -m
+  # cm = !git add -A && git commit -m
   wip = !git add -A && git commit -m ‘WIP'
   undo = reset HEAD~1 --mixed
   amend = commit --amend

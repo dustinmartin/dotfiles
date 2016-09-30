@@ -19,6 +19,7 @@ Plug 'junegunn/fzf.vim'
 
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
+" Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 " Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
@@ -38,9 +39,9 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-repeat'
 Plug 'chip/vim-fat-finger'
-Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-eunuch'
 Plug 'easymotion/vim-easymotion'
+Plug 'pelodelfuego/vim-swoop'
 
 " Code Modification
 Plug 'tpope/vim-surround'
@@ -53,10 +54,15 @@ Plug 'sheerun/vim-polyglot'
 Plug 'othree/javascript-libraries-syntax.vim'
 
 " Color Schemes
-" Plug 'chriskempson/base16-vim'
+Plug 'chriskempson/base16-vim'
 Plug 'joshdick/onedark.vim'
-Plug 'joshdick/airline-onedark.vim'
-" Plug 'w0ng/vim-hybrid'
+Plug 'raphamorim/lucario'
+Plug 'junegunn/seoul256.vim'
+Plug 'dracula/vim'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'jacoborus/tender'
+Plug 'trevordmiller/nova-vim'
+Plug 'mhartington/oceanic-next'
 
 " All of your Plugins must be added before the following line
 call plug#end()
@@ -96,9 +102,17 @@ if has('nvim')
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
 
-let g:airline_theme='onedark'
-set background=dark
-colorscheme onedark
+" colorscheme OceanicNext
+" set background=dark
+
+let g:seoul256_background = 236
+let g:airline_theme='zenburn'
+colorscheme seoul256
+
+" colorscheme nova
+
+" colorscheme tender
+" let g:airline_theme = 'tender'
 
 set shell=/bin/zsh                       " Setting shell to zsh
 set fileencoding=utf-8
@@ -279,7 +293,14 @@ command! SetJS set ft=javscript
 " command! RunJS :!node %
 
 " Format the JSON in the current file
-command! FormatJSON %!python -m json.tool
+command! -bar ToJSON %!python -m json.tool
+command! SetJSON set ft=json
+command! FormatJSON ToJSON|SetJSON
+
+" Format Selected XML
+command! -bar ToXML silent %!xmllint --encode UTF-8 --format -
+command! SetXML set ft=xml
+command! FormatXML ToXML|SetXML
 
 " Remove \ (caret M) from files
 command! RemoveM %s/\//g
@@ -304,6 +325,9 @@ nnoremap vv ^vg_
 
 " Make ' go to the exact position
 noremap ' `
+
+" I always accidentally hit K when I mean k
+nnoremap K k
 
 " Easier to type, and I never use the default behavior.
 noremap H ^
@@ -397,10 +421,10 @@ nnoremap <leader>nt :NERDTreeToggle<CR>
 " Open up current file in NERDTree
 nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 
-" CtrlP
+" FZF
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>l :Lines<CR>
+" nnoremap <leader>l :Lines<CR>
 
 " nnoremap <leader>b :CtrlPBuffer<CR>
 " nnoremap <leader>f :CtrlP<CR>
@@ -485,9 +509,13 @@ let NERDTreeChDirMode=2
 let NERDTreeAutoDeleteBuffer=1
 
 " }}}
-" --- Neomake ----------- {{{
+" --- Neomake ------------- {{{
 
 autocmd! BufWritePost * Neomake
+
+let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
+let g:neomake_javascript_jscs_exe = $PWD .'/node_modules/.bin/jscs'
+
 let g:neomake_javascript_enabled_makers = ['jscs', 'eslint']
 
 " }}}
@@ -556,8 +584,8 @@ let g:go_highlight_methods = 1
 " }}}
 " --- YouCompleteMe ------- {{{
 
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_complete_in_comments = 1
+" let g:ycm_collect_identifiers_from_comments_and_strings = 1
+" let g:ycm_complete_in_comments = 1
 
 " }}}
 " --- EasyMotion ---------- {{{
@@ -569,8 +597,6 @@ let g:EasyMotion_keys = 'abcdehijlmnopqrstuvwxyzfgkj'
 
 hi EasyMotionTarget2First cterm=bold gui=bold ctermbg=none ctermfg=red
 hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
-
-" }}}
 
 " }}}
 " Autocmd --------------------------------------------------------- {{{
