@@ -2,7 +2,8 @@
 alias ..="cd .."
 alias ...="cd ../.."
 
-alias vi='vim'
+alias vi='nvim'
+alias vim='nvim'
 
 alias pr='hub pull-request'
 
@@ -34,7 +35,7 @@ alias rake="noglob rake"
 alias reload="source ~/.zshrc"
 
 # Set vim as the editor
-export EDITOR='vim'
+export EDITOR='nvim'
 
 # Make FZF ignore files on .gitignore by piping to Ag
 export FZF_DEFAULT_COMMAND='ag -g ""'

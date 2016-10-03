@@ -14,7 +14,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'scrooloose/nerdtree', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'tpope/vim-unimpaired'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Completion and Snippets
@@ -34,7 +34,7 @@ Plug 'vim-airline/vim-airline-themes'
 " Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'benekastah/neomake', { 'on':  ['Neomake'] }
+Plug 'neomake/neomake'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-repeat'
