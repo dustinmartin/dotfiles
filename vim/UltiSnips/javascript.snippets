@@ -1,3 +1,15 @@
+snippet try "try/catch" b
+try {
+	$1
+} catch (error) {
+	$2
+}
+endsnippet
+
+snippet tern "Tenary" w
+${0:condition} ? ${1:true} : ${1:false}
+endsnippet
+
 snippet mock "Mock" b
 const mocker = require('$1');
 
@@ -61,30 +73,20 @@ default:
 }
 endsnippet
 
-snippet fna "function" w
-$1 => { $2 }
-endsnippet
-
 snippet fn "function" w
-function$1($2) {
-	$3
+($1) => {
+	$2
 }
 endsnippet
 
-snippet fne "function" w
-const $1 = function($2) {
-	$3
-};
-endsnippet
-
 snippet des "describe" b
-describe('$1', function() {
+describe('$1', () => {
 	${2:${VISUAL}}
 });
 endsnippet
 
 snippet desc "describe" b
-describe('$1', function() {
+describe('$1', () => {
 	${2:${VISUAL}}
 });
 endsnippet
@@ -96,13 +98,13 @@ beforeEach('$1', function() {
 endsnippet
 
 snippet spec "spec test" b
-describe('$1', function() {
+describe('$1', () => {
 
-	beforeEach(function() {
+	beforeEach(() => {
 		$2
 	});
 
-	it('', function() {
+	it('', () => {
 		$3
 	});
 
@@ -114,7 +116,7 @@ it('$1');$2
 endsnippet
 
 snippet it "it - function" b
-it('$1', function() {
+it('$1', () => {
 	$2
 });
 endsnippet

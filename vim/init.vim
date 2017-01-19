@@ -21,6 +21,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'SirVer/ultisnips'
 " Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
 " Version Control
@@ -41,7 +42,6 @@ Plug 'tpope/vim-repeat'
 Plug 'chip/vim-fat-finger'
 Plug 'tpope/vim-eunuch'
 Plug 'easymotion/vim-easymotion'
-Plug 'pelodelfuego/vim-swoop'
 
 " Code Modification
 Plug 'tpope/vim-surround'
@@ -63,9 +63,17 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'jacoborus/tender'
 Plug 'trevordmiller/nova-vim'
 Plug 'mhartington/oceanic-next'
+Plug 'dracula/vim'
 
 " All of your Plugins must be added before the following line
 call plug#end()
+
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+
+" deoplete tab-complete
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 
 " }}}
 " Vim Settings ---------------------------------------------------- {{{
@@ -104,6 +112,8 @@ endif
 
 " colorscheme OceanicNext
 " set background=dark
+
+" colorscheme dracula
 
 let g:seoul256_background = 236
 let g:airline_theme='zenburn'
@@ -164,6 +174,7 @@ set ignorecase                           " Makes searches case insensitive if se
 set smartcase                            " Makes searches case SENSITIVE if search string contains an uppercase letter
 set gdefault                             " Search/replace 'globally' (on a line) by default
 set incsearch                            " Start searching before pressing enter
+set inccommand=nosplit
 set showmatch                            " Highlight the matching bracket when one is inserted
 set hlsearch                             " Highlight search results (as you type)
 set noswapfile
@@ -514,9 +525,10 @@ let NERDTreeAutoDeleteBuffer=1
 autocmd! BufWritePost * Neomake
 
 let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
-let g:neomake_javascript_jscs_exe = $PWD .'/node_modules/.bin/jscs'
+let g:neomake_javascript_enabled_makers = ['eslint']
 
-let g:neomake_javascript_enabled_makers = ['jscs', 'eslint']
+let g:neomake_jsx_eslint_exe = $PWD .'/node_modules/.bin/eslint'
+let g:neomake_jsx_enabled_makers = ['eslint']
 
 " }}}
 " --- CtrlP --------------- {{{
