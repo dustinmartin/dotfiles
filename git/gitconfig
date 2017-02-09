@@ -28,3 +28,5 @@
 	default = simple
 [credential]
 	helper = osxkeychain
+[core]
+	excludesfile = /Users/dustinmartin/.gitignore

@@ -49,3 +49,9 @@ scribble/*
 ehthumbs.db
 Icon?
 Thumbs.db
+
+# Emacs #
+######################
+elpa
+elpa.old
+*.el~
