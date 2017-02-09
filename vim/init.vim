@@ -3,7 +3,7 @@
 
 " Plugins --------------------------------------------------------- {{{
 "
-" Load vim-plug
+" Install vim-plug if not yet installed
 if empty(glob("~/.config/nvim/autoload/plug.vim"))
   execute '!curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim'
 endif
@@ -14,25 +14,25 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'scrooloose/nerdtree', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-abolish'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
-" Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
 " Version Control
 Plug 'tpope/vim-fugitive'
+Plug 'lambdalisue/vim-gita'
 Plug 'airblade/vim-gitgutter'
 
 " Editor Usability
-Plug 'kshenoy/vim-signature'
+" Plug 'kshenoy/vim-signature'
+Plug 'MattesGroeger/vim-bookmarks'
+Plug 'itchyny/vim-cursorword'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'neomake/neomake'
@@ -52,18 +52,12 @@ Plug 'cohama/lexima.vim'
 " Language Support
 Plug 'sheerun/vim-polyglot'
 Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'chrisbra/csv.vim'
+Plug 'elzr/vim-json'
 
 " Color Schemes
-Plug 'chriskempson/base16-vim'
-Plug 'joshdick/onedark.vim'
-Plug 'raphamorim/lucario'
 Plug 'junegunn/seoul256.vim'
-Plug 'dracula/vim'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'jacoborus/tender'
-Plug 'trevordmiller/nova-vim'
 Plug 'mhartington/oceanic-next'
-Plug 'dracula/vim'
 
 " All of your Plugins must be added before the following line
 call plug#end()
@@ -80,16 +74,16 @@ inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 
 " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
-"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+" Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+" If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+" (see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
 if (empty($TMUX))
   if (has("nvim"))
-    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    " For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
     let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   endif
-  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+  " For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+  " Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
   " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
   if (has("termguicolors"))
     set termguicolors
@@ -110,19 +104,12 @@ if has('nvim')
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
 
-" colorscheme OceanicNext
-" set background=dark
+" let g:seoul256_background = 236
+" let g:airline_theme='zenburn'
+" colorscheme seoul256
 
-" colorscheme dracula
-
-let g:seoul256_background = 236
-let g:airline_theme='zenburn'
-colorscheme seoul256
-
-" colorscheme nova
-
-" colorscheme tender
-" let g:airline_theme = 'tender'
+let g:airline_theme='oceanicnext'
+colorscheme OceanicNext
 
 set shell=/bin/zsh                       " Setting shell to zsh
 set fileencoding=utf-8
@@ -184,6 +171,7 @@ set complete-=i
 set formatoptions-=r                     " Don't add comment prefix to next line
 set colorcolumn=120
 set completeopt=menu,menuone
+set diffopt+=vertical
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
@@ -365,14 +353,14 @@ nnoremap U u
 vnoremap U u
 
 " Bubble single lines
-nmap <C-Up> [e
-nmap <C-Down> ]e
-imap <C-Up> <esc>[e
-imap <C-Down> <esc>]e
+" nmap <C-Up> [e
+" nmap <C-Down> ]e
+" imap <C-Up> <esc>[e
+" imap <C-Down> <esc>]e
 
 " Bubble multiple lines
-vmap <C-Up> [egv
-vmap <C-Down> ]egv
+" vmap <C-Up> [egv
+" vmap <C-Down> ]egv
 
 " Keep a block selected after indenting
 vnoremap < <gv
@@ -398,8 +386,10 @@ nnoremap ; :
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
-" Open scratch file
-" nnoremap <leader>s :vsplit ~/Desktop/Scratch.txt<CR>
+nmap s <Plug>(easymotion-bd-f2)
+nmap S <Plug>(easymotion-bd-w)
+nmap <Leader>s <Plug>(easymotion-overwin-f2)
+nmap <Leader>S <Plug>(easymotion-overwin-w)
 
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
@@ -436,11 +426,6 @@ nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 " nnoremap <leader>l :Lines<CR>
-
-" nnoremap <leader>b :CtrlPBuffer<CR>
-" nnoremap <leader>f :CtrlP<CR>
-" nnoremap <leader>d :CtrlPBookmarkDir<CR>
-" nnoremap <leader>l :CtrlPLine<CR>
 
 " Tabularize
 nnoremap <Leader>a= :Tabularize /=<CR>
@@ -531,28 +516,6 @@ let g:neomake_jsx_eslint_exe = $PWD .'/node_modules/.bin/eslint'
 let g:neomake_jsx_enabled_makers = ['eslint']
 
 " }}}
-" --- CtrlP --------------- {{{
-
-" Search by filename
-" let g:ctrlp_by_filename = 1
-" let g:ctrlp_tabpage_position= 'al'
-" let g:ctrlp_cmd = 'CtrlP'
-" let g:ctrlp_custom_ignore = {
-"     \ 'dir':  '\v[\/]\.(git|hg|svn)$|node_modules',
-"     \ 'file': '\v\.(jpg|jpeg|png|gif|zip|pdf|dmg)$'
-"     \ }
-
-" let g:ctrlp_working_path_mode = 0
-" let g:ctrlp_clear_cache_on_exit = 0
-" let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-"       \ --ignore .git
-"       \ --ignore .svn
-"       \ --ignore .hg
-"       \ --ignore .DS_Store
-"       \ --ignore "**/*.pyc"
-"       \ -g ""'
-
-" }}}
 " --- Airline ------------- {{{
 
 let g:airline#extensions#whitespace#enabled = 0
@@ -602,10 +565,10 @@ let g:go_highlight_methods = 1
 " }}}
 " --- EasyMotion ---------- {{{
 
-let g:EasyMotion_do_mapping = 1 " Disable default mappings
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
 let g:EasyMotion_use_smartsign_us = 1
 let g:EasyMotion_smartcase = 1
-let g:EasyMotion_keys = 'abcdehijlmnopqrstuvwxyzfgkj'
+" let g:EasyMotion_keys = 'abcdehijlmnopqrstuvwxyzfgkj'
 
 hi EasyMotionTarget2First cterm=bold gui=bold ctermbg=none ctermfg=red
 hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
@@ -695,9 +658,9 @@ augroup ft_javascript
     au!
 
     au FileType javascript map <buffer> <F2> :!node % <CR>
-    " au FileType javascript setlocal foldmethod=syntax
-    au FileType javascript setlocal foldmethod=marker
-    au FileType javascript setlocal foldmarker={,}
+    au FileType javascript setlocal foldmethod=syntax
+    " au FileType javascript setlocal foldmethod=marker
+    " au FileType javascript setlocal foldmarker={,}
 
 augroup END
 
