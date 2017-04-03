@@ -91,9 +91,15 @@ describe('$1', () => {
 });
 endsnippet
 
+snippet beforeEach "beforeEach" b
+beforeEach(() => {
+	$2
+});
+endsnippet
+
 snippet bef "beforeEach" b
-beforeEach('$1', function() {
-	${2:${VISUAL}}
+beforeEach(() => {
+	$2
 });
 endsnippet
 
@@ -116,8 +122,8 @@ it('$1');$2
 endsnippet
 
 snippet it "it - function" b
-it('$1', () => {
-	$2
+it('$1', async () => {
+	${2:throw new Error('fail');}
 });
 endsnippet
 

@@ -11,10 +11,6 @@ scribble/*
 .idea/*
 *.iml
 
-# Temporary Files #
-###################
-*.swp
-
 # Compiled source #
 ###################
 *.com
@@ -55,3 +51,8 @@ Thumbs.db
 elpa
 elpa.old
 *.el~
+
+# Vim #
+######################
+.vim-bookmarks
+*.swp

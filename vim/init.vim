@@ -21,21 +21,21 @@ Plug 'junegunn/fzf.vim'
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
 " Version Control
 Plug 'tpope/vim-fugitive'
-Plug 'lambdalisue/vim-gita'
 Plug 'airblade/vim-gitgutter'
 
 " Editor Usability
-" Plug 'kshenoy/vim-signature'
-Plug 'MattesGroeger/vim-bookmarks'
+" Plug 'MattesGroeger/vim-bookmarks'
 Plug 'itchyny/vim-cursorword'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'neomake/neomake'
+Plug 'w0rp/ale'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-repeat'
@@ -61,13 +61,6 @@ Plug 'mhartington/oceanic-next'
 
 " All of your Plugins must be added before the following line
 call plug#end()
-
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
-
-" deoplete tab-complete
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 
 " }}}
 " Vim Settings ---------------------------------------------------- {{{
@@ -276,8 +269,13 @@ endfunction
 " }}}
 " Custom Commands ------------------------------------------------- {{{
 
+command! SaveSession mksession ~/session.vim
+command! LoadSession source ~/session.vim
+
+command! Scratch tabe ~/Desktop/Scratch.md
+
 " See all code TODOs
-" command! TODO Ag! TODO\|FIXME
+command! TODO Ag TODO|FIXME
 
 " Edit Vimrc
 command! Vimrc tabedit $MYVIMRC
@@ -285,7 +283,7 @@ command! Reload source $MYVIMRC
 
 " Close all buffers
 " command! BDA 1,1000 bd
-command! BDA bufdo bd
+command! BDA %bd
 
 " Set filetype to Javascript
 command! SetJS set ft=javscript
@@ -306,6 +304,9 @@ command! RemoveM %s/\//g
 
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
+
+" Open file in a new split
+nnoremap gf <C-W>gf
 
 " Disable zE from removing all {
 nnoremap zE <nop>
@@ -352,16 +353,6 @@ nnoremap Y y$
 nnoremap U u
 vnoremap U u
 
-" Bubble single lines
-" nmap <C-Up> [e
-" nmap <C-Down> ]e
-" imap <C-Up> <esc>[e
-" imap <C-Down> <esc>]e
-
-" Bubble multiple lines
-" vmap <C-Up> [egv
-" vmap <C-Down> ]egv
-
 " Keep a block selected after indenting
 vnoremap < <gv
 vnoremap > >gv
@@ -386,10 +377,8 @@ nnoremap ; :
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
-nmap s <Plug>(easymotion-bd-f2)
-nmap S <Plug>(easymotion-bd-w)
-nmap <Leader>s <Plug>(easymotion-overwin-f2)
-nmap <Leader>S <Plug>(easymotion-overwin-w)
+nmap S <Plug>(easymotion-bd-f)
+nmap s <Plug>(easymotion-bd-w)
 
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
@@ -425,7 +414,7 @@ nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 " FZF
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
-" nnoremap <leader>l :Lines<CR>
+nnoremap <leader>l :BLines<CR>
 
 " Tabularize
 nnoremap <Leader>a= :Tabularize /=<CR>
@@ -474,11 +463,59 @@ set foldtext=CustomFoldText()
 " }}}
 " Plugin Settings ------------------------------------------------- {{{
 
-" --- Session ------------- {{{
+" --- Bookmarks ----------- {{{
 
-" let g:session_autosave = 'yes'
-" let g:session_autoload = 'yes'
-" let g:session_default_to_last = 1
+" let g:bookmark_auto_close = 1
+" let g:bookmark_save_per_working_dir = 1
+" let g:bookmark_auto_save = 1
+
+" Ensure vim-bookmarks plugin works with Nerdtree
+" let g:bookmark_no_default_key_mappings = 1
+
+" function! BookmarkMapKeys()
+"     nmap mm :BookmarkToggle<CR>
+"     nmap mi :BookmarkAnnotate<CR>
+"     nmap mn :BookmarkNext<CR>
+"     nmap mp :BookmarkPrev<CR>
+"     nmap ma :BookmarkShowAll<CR>
+"     nmap mc :BookmarkClear<CR>
+"     nmap mx :BookmarkClearAll<CR>
+"     nmap mkk :BookmarkMoveUp
+"     nmap mjj :BookmarkMoveDown
+" endfunction
+" function! BookmarkUnmapKeys()
+"     unmap mm
+"     unmap mi
+"     unmap mn
+"     unmap mp
+"     unmap ma
+"     unmap mc
+"     unmap mx
+"     unmap mkk
+"     unmap mjj
+" endfunction
+
+" autocmd BufEnter * :call BookmarkMapKeys()
+" autocmd BufEnter NERD_tree_* :call BookmarkUnmapKeys()
+
+" }}}
+" --- FZF ----------------- {{{
+
+command! -nargs=* Ag call fzf#vim#ag(<q-args>, '--color-path 400 --color-line-number 400', fzf#vim#default_layout)
+
+" let g:fzf_colors =
+" \ { 'fg':      ['fg', 'Normal'],
+"   \ 'bg':      ['bg', 'Normal'],
+"   \ 'hl':      ['fg', 'Comment'],
+"   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"   \ 'bg+':     ['fg', 'CursorLine', 'CursorColumn'],
+"   \ 'hl+':     ['fg', 'Statement'],
+"   \ 'info':    ['fg', 'PreProc'],
+"   \ 'prompt':  ['fg', 'Conditional'],
+"   \ 'pointer': ['fg', 'Exception'],
+"   \ 'marker':  ['fg', 'Keyword'],
+"   \ 'spinner': ['fg', 'Label'],
+"   \ 'header':  ['fg', 'Comment'] }
 
 " }}}
 " --- Nerdtree ------------ {{{
@@ -505,22 +542,19 @@ let NERDTreeChDirMode=2
 let NERDTreeAutoDeleteBuffer=1
 
 " }}}
-" --- Neomake ------------- {{{
-
-autocmd! BufWritePost * Neomake
-
-let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
-let g:neomake_javascript_enabled_makers = ['eslint']
-
-let g:neomake_jsx_eslint_exe = $PWD .'/node_modules/.bin/eslint'
-let g:neomake_jsx_enabled_makers = ['eslint']
-
-" }}}
 " --- Airline ------------- {{{
 
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline_left_sep=''
 let g:airline_right_sep=''
+
+" let g:airline#extensions#tabline#buffer_nr_show = 0
+
+" Enable the list of buffers
+" let g:airline#extensions#tabline#enabled = 1
+
+" Show just the filename
+" let g:airline#extensions#tabline#fnamemod = ':t'
 
 " }}}
 " --- Ultisnips ----------- {{{
@@ -557,10 +591,13 @@ let g:go_auto_type_info = 1
 let g:go_highlight_methods = 1
 
 " }}}
-" --- YouCompleteMe ------- {{{
+" --- Deoplete ------- {{{
 
-" let g:ycm_collect_identifiers_from_comments_and_strings = 1
-" let g:ycm_complete_in_comments = 1
+" let g:deoplete#enable_at_startup = 1
+" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" autocmd FileType javascript setlocal omnifunc=tern#Complete
+" autocmd FileType javascript.jsx setlocal omnifunc=tern#Complete
+" autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
 
 " }}}
 " --- EasyMotion ---------- {{{
@@ -594,6 +631,15 @@ augroup END
 augroup window_resize
     au!
     au VimResized * :wincmd =
+augroup END
+
+" }}}
+" --- Python -------------- {{{
+
+augroup ft_python
+    au!
+
+    au FileType python setlocal foldmethod=indent
 augroup END
 
 " }}}
