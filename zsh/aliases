@@ -7,7 +7,7 @@ alias vim='nvim'
 
 alias pr='hub pull-request'
 
-alias twyladb='psql -h "localhost" -U twyla'
+alias todo='ag "TODO|FIXME"'
 
 # Fasd aliases
 alias a='fasd -a'        # any
