@@ -36,12 +36,13 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'w0rp/ale'
-Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'christoomey/vim-tmux-navigator'
+" Plug 'tmux-plugins/vim-tmux-focus-events'
+" Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-repeat'
 Plug 'chip/vim-fat-finger'
 Plug 'tpope/vim-eunuch'
 Plug 'easymotion/vim-easymotion'
+Plug 'mhinz/vim-startify'
 
 " Code Modification
 Plug 'tpope/vim-surround'
@@ -97,10 +98,6 @@ if has('nvim')
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
 
-" let g:seoul256_background = 236
-" let g:airline_theme='zenburn'
-" colorscheme seoul256
-
 let g:airline_theme='oceanicnext'
 colorscheme OceanicNext
 
@@ -111,12 +108,13 @@ set fileformats=unix,mac,dos
 set hidden                               " Allow unsaved buffers to be hidden
 set nowrap                               " Turn word wrapping off. :set wrap turns it back on.
 set tabpagemax=50                        " Increase the number of allowed tabs
-set showtabline=2                        " Always show the tabline
+set showtabline=0                        " Always show the tabline
 set ruler                                " Turn on row,column dislay on status bar
 set backspace=2                          " Allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,]               " Backspace and cursor keys wrap too
 set visualbell                           " Disable 'beep' for wrong commands and do screen flash
 set cursorline                           " Highlights the cursor line
+set cursorcolumn                         " Highlights the cursor column
 set laststatus=2                         " Always show the statusline
 set textwidth=0                          " Prevent Vim from wrapping lines
 set wrapmargin=0                         " Prevent Vim from wrapping lines
@@ -130,6 +128,7 @@ set showmode                             " Don't show the current Vim mode
 set lazyredraw                           " Don't update the display while executing macros
 set wrapscan                             " Set the search scan to wrap around the file
 set virtualedit=block                    " Allow the cursor to go in to invalid places in visual block mode
+set breakindent
 set shortmess+=I                         " Skip the splash screen
 set matchtime=3                          " How many tenths of a second to highlight a matching parentheses
 set spelllang=en_us                      " Set the spell check dictionary
@@ -150,6 +149,8 @@ set autoread                             " Automatically reread changed files wi
 set suffixesadd+=.js                     " Help VIM find .js files when using gf
 set list
 set listchars=tab:»\ ,eol:\ ,trail:·,extends:❯,precedes:❮
+set linebreak
+set showbreak=\ ↪\ 
 set ignorecase                           " Makes searches case insensitive if search string is all lower case
 set smartcase                            " Makes searches case SENSITIVE if search string contains an uppercase letter
 set gdefault                             " Search/replace 'globally' (on a line) by default
@@ -165,6 +166,8 @@ set formatoptions-=r                     " Don't add comment prefix to next line
 set colorcolumn=120
 set completeopt=menu,menuone
 set diffopt+=vertical
+
+highlight CursorColumn guibg=#383737
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
@@ -269,8 +272,8 @@ endfunction
 " }}}
 " Custom Commands ------------------------------------------------- {{{
 
-command! SaveSession mksession ~/session.vim
-command! LoadSession source ~/session.vim
+command! SaveSession mksession! ~/.vim-sessions/session.vim
+command! OpenSession source ~/.vim-sessions/session.vim
 
 command! Scratch tabe ~/Desktop/Scratch.md
 
@@ -307,6 +310,11 @@ command! RemoveM %s/\//g
 
 " Open file in a new split
 nnoremap gf <C-W>gf
+
+nnoremap <c-j> <c-w><c-j>
+nnoremap <c-k> <c-w><c-k>
+nnoremap <c-l> <c-w><c-l>
+nnoremap <c-h> <c-w><c-h>
 
 " Disable zE from removing all {
 nnoremap zE <nop>
@@ -366,6 +374,8 @@ imap jj <ESC>
 " Movement by screen line instead of file line
 nnoremap j gj
 nnoremap k gk
+vnoremap j gj
+vnoremap k gk
 
 nnoremap <down> gj
 nnoremap <up> gk
@@ -591,13 +601,10 @@ let g:go_auto_type_info = 1
 let g:go_highlight_methods = 1
 
 " }}}
-" --- Deoplete ------- {{{
+" --- Startify ------- {{{
 
-" let g:deoplete#enable_at_startup = 1
-" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" autocmd FileType javascript setlocal omnifunc=tern#Complete
-" autocmd FileType javascript.jsx setlocal omnifunc=tern#Complete
-" autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
+let g:startify_session_dir = '~/.vim-sessions'
+let g:startify_custom_header = []
 
 " }}}
 " --- EasyMotion ---------- {{{
