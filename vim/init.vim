@@ -21,8 +21,6 @@ Plug 'junegunn/fzf.vim'
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
 " Version Control
 Plug 'tpope/vim-fugitive'
