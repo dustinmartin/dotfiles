@@ -621,7 +621,7 @@ hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
 augroup misc_fixes
     " Fix vim/tmux from displaying ^[[o when switching to another tmux pane
     " au FocusGained * silent redraw!
-    au FocusGained,BufEnter,CursorHold,CursorHoldI * checktime
+    " au FocusGained,BufEnter,CursorHold,CursorHoldI * checktime
 augroup END
 
 " Only show cursorline in the current window and in normal mode.
