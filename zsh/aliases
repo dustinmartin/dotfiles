@@ -2,27 +2,20 @@
 alias ..="cd .."
 alias ...="cd ../.."
 
+# Vim aliases
 alias vi='nvim'
 alias vim='nvim'
 
+# Create a Github pull-request
 alias pr='hub pull-request'
 
+# List TODOs
 alias todo='ag "TODO|FIXME"'
 
-# Fasd aliases
-alias a='fasd -a'        # any
-alias s='fasd -si'       # show / search / select
-alias d='fasd -d'        # directory
-alias f='fasd -f'        # file
-alias sd='fasd -sid'     # interactive directory selection
-alias sf='fasd -sif'     # interactive file selection
-alias j='fasd_cd -d'     # cd, same functionality as j in autojump
-alias z='fasd_cd -d'     # cd, same functionality as j in autojump
-alias zz='fasd_cd -d -i' # cd with interactive selection
-alias v='f -e vim'       # quick opening files with vim
+# Jump to a directory
+alias j='fasd_cd -d'
 
 # Tmux
-# alias tmx='tmux -2'
 alias tmux="TERM=screen-256color-bce tmux"
 
 # Make psql point to pgcli
@@ -38,7 +31,6 @@ alias reload="source ~/.zshrc"
 export EDITOR='nvim'
 
 # Make FZF ignore files on .gitignore by piping to Ag
-# export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 
 # List all files colorized in long format, including dot files
@@ -47,12 +39,6 @@ alias ll="ls -Gla"
 
 # Show colors for ls
 alias ls="ls -G"
-
-# Show all hidden files
-alias showf="defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder"
-
-# Hide all hidden files
-alias hidef="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder"
 
 # Git
 alias g='git'
@@ -83,19 +69,5 @@ alias gcob='git checkout -b'
 # Stage all updated/added/deleted files
 alias gaa='git add -u && git add . && git status'
 
+# Interactive git add
 alias gap='git add -p && git status'
-
-# Get the current branch
-current_branch() {
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-    echo ${ref#refs/heads/}
-}
-
-# Returns if the git repo in the current directory is dirty
-is_git_dirty() {
-    if [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit (working directory clean)" ]] then
-        echo true
-    else
-        echo false
-    fi
-}
