@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AllowClipboardAccess</key>
+	<true/>
 	<key>AppleAntiAliasingThreshold</key>
 	<integer>1</integer>
 	<key>AppleScrollAnimationEnabled</key>
@@ -676,13 +678,15 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>378 190 606 456 0 0 2560 1440 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>351 884 796 473 0 0 2560 1440 </string>
+	<string>128 357 796 473 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 72 1297 806 0 0 2560 1418 </string>
+	<string>120 52 1225 825 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>8 362 745 502 0 0 1440 900 </string>
+	<string>248 500 1018 749 0 0 2560 1418 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>13 20 712 502 0 0 1440 877 </string>
+	<string>213 148 1045 635 0 0 1440 878 </string>
+	<key>NSWindow Frame iTerm Window 3</key>
+	<string>218 25 730 502 0 0 1440 878 </string>
 	<key>NeverWarnAboutShortLivedSessions_9E84056B-DC32-4A46-9356-2C6D44A909B6</key>
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_9E84056B-DC32-4A46-9356-2C6D44A909B6_selection</key>
@@ -2124,7 +2128,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-02-13T15:37:14Z</date>
+	<date>2017-06-19T18:51:59Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowPaneTitles</key>
@@ -2150,7 +2154,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.13</string>
+	<string>3.0.15</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>2</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
