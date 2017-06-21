@@ -1,10 +1,10 @@
-#Read Me
+# Read Me
 
-##Installation:
+## Installation:
 
     git clone git://github.com/dustinmartin/dotfiles.git ~/dotfiles
 
-##Create symlinks:
+## Create symlinks:
 
     ln -s ~/dotfiles/vim/vimrc ~/.vimrc
     ln -s ~/dotfiles/vim ~/.vim
