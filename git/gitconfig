@@ -1,6 +1,6 @@
 [user]
-	name = Dustin Martin
-	email = dm@dustinmartin.net
+  name = Dustin Martin
+  email = dm@dustinmartin.net
 [alias]
   # alias = config --get-regexp alias
   # ec = config --global -e
@@ -11,22 +11,22 @@
   pb = !git push --set-upstream origin "$(git rev-parse --abbrev-ref HEAD)"
   db = !f() { git branch -d $1; git push origin :$1; }; f
   # cm = !git add -A && git commit -m
-  wip = !git add -A && git commit -m ‘WIP'
+  wip = !git add -A && git commit -m 'WIP'
   undo = reset HEAD~1 --mixed
   amend = commit --amend
   wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
   # bclean = !f() { git branch --merged ${1-master} | grep -v  ${1-master}$ | xargs -r git branch -d; }; f
   # bdone = !f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f    
-	hist = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
+  hist = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
   l = log --graph --stat --abbrev-commit --date=relative
   b = for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
 [color]
-	diff = true
-	ui = true
+  diff = true
+  ui = true
 [push]
-	default = simple
+  default = simple
 [credential]
-	helper = osxkeychain
+  helper = osxkeychain
 [core]
-	excludesfile = /Users/dustinmartin/.gitignore
+  excludesfile = /Users/dustinmartin/.gitignore
