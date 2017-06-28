@@ -16,5 +16,5 @@ ln -s ~/dotfiles/git/gitignore ~/.gitignore
 ln -s ~/dotfiles/git/gitconfig ~/.gitconfig
 ln -s ~/dotfiles/zsh/aliases ~/.aliases
 ln -s ~/dotfiles/zsh/zshrc ~/.zshrc
-ln -s ~/dotfiles/tmux/tmux-osx.conf ~/.tmux.conf
+ln -s ~/dotfiles/tmux/tmux.conf ~/.tmux.conf
 ln -s ~/dotfiles/ssh/config ~/.ssh/config
