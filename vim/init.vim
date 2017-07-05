@@ -13,8 +13,6 @@ call plug#begin('~/.config/nvim/plugged')
 " Finding/Navigation
 Plug 'scrooloose/nerdtree', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-abolish'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
@@ -27,22 +25,17 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " Editor Usability
-" Plug 'MattesGroeger/vim-bookmarks'
 Plug 'itchyny/vim-cursorword'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'editorconfig/editorconfig-vim'
 Plug 'w0rp/ale'
-Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sleuth'
 Plug 'chip/vim-fat-finger'
 Plug 'tpope/vim-eunuch'
 Plug 'easymotion/vim-easymotion'
 Plug 'mhinz/vim-startify'
-
-" Code Modification
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular', { 'on':  'Tabularize' }
 Plug 'tpope/vim-commentary'
@@ -51,11 +44,9 @@ Plug 'cohama/lexima.vim'
 " Language Support
 Plug 'sheerun/vim-polyglot'
 Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'chrisbra/csv.vim'
 Plug 'elzr/vim-json'
 
 " Color Schemes
-Plug 'junegunn/seoul256.vim'
 Plug 'mhartington/oceanic-next'
 
 " All of your Plugins must be added before the following line
@@ -64,22 +55,13 @@ call plug#end()
 " }}}
 " Vim Settings ---------------------------------------------------- {{{
 
-" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+if (has("nvim"))
+  " For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
 
-" Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-" If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-" (see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-if (empty($TMUX))
-  if (has("nvim"))
-    " For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  " For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-  " Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-  if (has("termguicolors"))
-    set termguicolors
-  endif
+if (has("termguicolors"))
+  set termguicolors
 endif
 
 syntax on                                " Enable syntax highlighting
@@ -87,14 +69,6 @@ filetype plugin indent on                " Detect and handle filetypes
 
 let mapleader = ","                      " Set leader key to comma
 let maplocalleader = "\\"
-
-if has('nvim')
-    " Fix <ctrl>+h for vim-tmux-navigator
-    nmap <BS> <C-W>h
-
-    " Change cursor shape in insert mode
-    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-endif
 
 let g:airline_theme='oceanicnext'
 colorscheme OceanicNext
@@ -122,8 +96,12 @@ set scrolloff=1                          " Number of rows to keep above/below th
 set mouse=a                              " Enable mouse
 set showcmd                              " Show command in bottom right of window
 set clipboard=unnamed                    " Default to the system clipboard
-set showmode                             " Don't show the current Vim mode
-set lazyredraw                           " Don't update the display while executing macros
+set showmode                             " Show the current Vim mode
+" Keep this off for now since Neovim has a
+" but that, when paired with Airline, causes
+" Neovim to not redraw properly when the
+" window changes size.
+" set lazyredraw                         " Don't update the display while executing macros
 set wrapscan                             " Set the search scan to wrap around the file
 set virtualedit=block                    " Allow the cursor to go in to invalid places in visual block mode
 set breakindent
@@ -140,7 +118,7 @@ set autoindent                           " Copy the indent from the current line
 set nosmartindent
 set nocindent
 set linespace=0
-set switchbuf=newtab                     " Open new buffers always in new tabs
+" set switchbuf=newtab                     " Open new buffers always in new tabs
 set splitright                           " Split vertical windows right to the current windows
 set splitbelow                           " Split horizontal windows below to the current windows
 set autoread                             " Automatically reread changed files without asking me anything
@@ -217,57 +195,6 @@ if has("gui_running")
 endif
 
 " }}}
-" Tab Line -------------------------------------------------------- {{{
-
-set tabline=%!MyTabLine()
-
-function! MyTabLine()
-    let s = ''
-
-    for i in range(tabpagenr('$'))
-        " select the highlighting
-        if i + 1 == tabpagenr()
-            let s .= '%#TabLineSel#'
-        else
-            let s .= '%#TabLine#'
-        endif
-
-        " set the tab page number (for mouse clicks)
-        let s .= '%' . (i + 1) . 'T'
-
-        let tabNum = i + 1
-        let s .= ' '. tabNum . ') '
-
-        " the label is made by MyTabLabel()
-        let s .= '%{MyTabLabel(' . (i + 1) . ')}'
-    endfor
-
-    " after the last tab fill with TabLineFill and reset tab page nr
-    let s .= '%#TabLineFill#%T'
-
-    " right-align the label to close the current tab page
-    if tabpagenr('$') > 1
-        let s .= '%=%#TabLine#%999X[X]'
-    endif
-
-    return s
-endfunction
-
-function! MyTabLabel(n)
-    let buflist = tabpagebuflist(a:n)
-    let winnr = tabpagewinnr(a:n)
-    let label  = bufname(buflist[winnr - 1])
-
-    if label == ''
-        let label = 'Untitled'
-    endif
-
-    let label .= (getbufvar(buflist[winnr - 1], "&mod")?' + ':'   ')
-
-    return fnamemodify(label, ":t")
-endfunction
-
-" }}}
 " Custom Commands ------------------------------------------------- {{{
 
 command! SaveSession mksession! ~/.vim-sessions/session.vim
@@ -279,7 +206,7 @@ command! Scratch tabe ~/Desktop/Scratch.md
 command! TODO Ag TODO|FIXME
 
 " Edit Vimrc
-command! Vimrc tabedit $MYVIMRC
+command! Vimrc e $MYVIMRC
 command! Reload source $MYVIMRC
 
 " Close all buffers
@@ -303,16 +230,30 @@ command! FormatXML ToXML|SetXML
 " Remove \ (caret M) from files
 command! RemoveM %s/\//g
 
+" Terminal commands
+command! -nargs=* TermHorizontal split | terminal <args>
+command! -nargs=* TermVertical vsplit | terminal <args>
+
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
+
+tnoremap <Esc> <C-\><C-n>
 
 " Open file in a new split
 nnoremap gf <C-W>gf
 
-nnoremap <c-j> <c-w><c-j>
-nnoremap <c-k> <c-w><c-k>
-nnoremap <c-l> <c-w><c-l>
-nnoremap <c-h> <c-w><c-h>
+tnoremap <c-h> <C-\><C-N><C-w>h
+tnoremap <c-j> <C-\><C-N><C-w>j
+tnoremap <c-k> <C-\><C-N><C-w>k
+tnoremap <c-l> <C-\><C-N><C-w>l
+inoremap <c-h> <C-\><C-N><C-w>h
+inoremap <c-j> <C-\><C-N><C-w>j
+inoremap <c-k> <C-\><C-N><C-w>k
+inoremap <c-l> <C-\><C-N><C-w>l
+nnoremap <c-h> <C-w>h
+nnoremap <c-j> <C-w>j
+nnoremap <c-k> <C-w>k
+nnoremap <c-l> <C-w>l
 
 " Disable zE from removing all {
 nnoremap zE <nop>
@@ -387,6 +328,8 @@ nnoremap ; :
 
 nmap S <Plug>(easymotion-bd-f)
 nmap s <Plug>(easymotion-bd-w)
+vmap S <Plug>(easymotion-bd-f)
+vmap s <Plug>(easymotion-bd-w)
 
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
@@ -471,59 +414,9 @@ set foldtext=CustomFoldText()
 " }}}
 " Plugin Settings ------------------------------------------------- {{{
 
-" --- Bookmarks ----------- {{{
-
-" let g:bookmark_auto_close = 1
-" let g:bookmark_save_per_working_dir = 1
-" let g:bookmark_auto_save = 1
-
-" Ensure vim-bookmarks plugin works with Nerdtree
-" let g:bookmark_no_default_key_mappings = 1
-
-" function! BookmarkMapKeys()
-"     nmap mm :BookmarkToggle<CR>
-"     nmap mi :BookmarkAnnotate<CR>
-"     nmap mn :BookmarkNext<CR>
-"     nmap mp :BookmarkPrev<CR>
-"     nmap ma :BookmarkShowAll<CR>
-"     nmap mc :BookmarkClear<CR>
-"     nmap mx :BookmarkClearAll<CR>
-"     nmap mkk :BookmarkMoveUp
-"     nmap mjj :BookmarkMoveDown
-" endfunction
-" function! BookmarkUnmapKeys()
-"     unmap mm
-"     unmap mi
-"     unmap mn
-"     unmap mp
-"     unmap ma
-"     unmap mc
-"     unmap mx
-"     unmap mkk
-"     unmap mjj
-" endfunction
-
-" autocmd BufEnter * :call BookmarkMapKeys()
-" autocmd BufEnter NERD_tree_* :call BookmarkUnmapKeys()
-
-" }}}
 " --- FZF ----------------- {{{
 
 command! -nargs=* Ag call fzf#vim#ag(<q-args>, '--color-path 400 --color-line-number 400', fzf#vim#default_layout)
-
-" let g:fzf_colors =
-" \ { 'fg':      ['fg', 'Normal'],
-"   \ 'bg':      ['bg', 'Normal'],
-"   \ 'hl':      ['fg', 'Comment'],
-"   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-"   \ 'bg+':     ['fg', 'CursorLine', 'CursorColumn'],
-"   \ 'hl+':     ['fg', 'Statement'],
-"   \ 'info':    ['fg', 'PreProc'],
-"   \ 'prompt':  ['fg', 'Conditional'],
-"   \ 'pointer': ['fg', 'Exception'],
-"   \ 'marker':  ['fg', 'Keyword'],
-"   \ 'spinner': ['fg', 'Label'],
-"   \ 'header':  ['fg', 'Comment'] }
 
 " }}}
 " --- Nerdtree ------------ {{{
@@ -556,21 +449,10 @@ let g:airline#extensions#whitespace#enabled = 0
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 
-" let g:airline#extensions#tabline#buffer_nr_show = 0
-
-" Enable the list of buffers
-" let g:airline#extensions#tabline#enabled = 1
-
-" Show just the filename
-" let g:airline#extensions#tabline#fnamemod = ':t'
-
 " }}}
 " --- Ultisnips ----------- {{{
 
 let g:UltiSnipsExpandTrigger="<c-j>"
-" let g:UltiSnipsListSnippets="<c-s-space>"
-" let g:UltiSnipsJumpForwardTrigger="<c-j>"
-" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 " }}}
 " --- Javascript Lib ------ {{{
@@ -617,12 +499,6 @@ hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
 
 " }}}
 " Autocmd --------------------------------------------------------- {{{
-
-augroup misc_fixes
-    " Fix vim/tmux from displaying ^[[o when switching to another tmux pane
-    " au FocusGained * silent redraw!
-    " au FocusGained,BufEnter,CursorHold,CursorHoldI * checktime
-augroup END
 
 " Only show cursorline in the current window and in normal mode.
 augroup cursor_line
@@ -671,23 +547,8 @@ augroup ft_css
     au Filetype less,css,sass setlocal foldmethod=marker
     au Filetype less,css,sass setlocal foldmarker={,}
 
-    au BufRead,BufNewFile *.css setlocal shiftwidth=4 softtabstop=4
-    au BufRead,BufNewFile *.less setlocal shiftwidth=4 softtabstop=4
-    au BufRead,BufNewFile *.scss setlocal shiftwidth=4 softtabstop=4
-    au BufRead,BufNewFile *.sass setlocal shiftwidth=4 softtabstop=4
-
     " Use <leader>S to sort properties.  Turns this:
     au BufNewFile,BufRead *.less,*.css,*.scss nnoremap <buffer> <localleader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
-augroup END
-
-" }}}
-" --- Java ---------------- {{{
-
-augroup ft_java
-    au!
-
-    au FileType java setlocal foldmethod=marker
-    au FileType java setlocal foldmarker={,}
 augroup END
 
 " }}}
@@ -716,111 +577,4 @@ augroup ft_javascript
 augroup END
 
 " }}}
-" --- Markdown ------------ {{{
-
-augroup ft_markdown
-    au!
-
-    au BufNewFile,BufRead *.m*down setlocal filetype=markdown foldlevel=1
-    au BufNewFile,BufRead *.md setlocal filetype=markdown foldlevel=1
-
-    " Use <localleader>1/2/3 to add headings.
-    au Filetype markdown nnoremap <buffer> <localleader>1 I#<space><ESC>
-    au Filetype markdown nnoremap <buffer> <localleader>2 I##<space><ESC>
-    au Filetype markdown nnoremap <buffer> <localleader>3 I###<space><ESC>
-
-    au Filetype markdown nnoremap <buffer> <localleader>h mzI#<ESC>`zl
-
-augroup END
-
-" }}}
-" --- Ruby ---------------- {{{
-
-augroup ft_ruby
-    au!
-
-    au Filetype ruby setlocal foldmethod=syntax
-
-    au BufRead,BufNewFile Gemfile setlocal filetype=ruby
-    au BufRead,BufNewFile Capfile setlocal filetype=ruby
-    au BufRead,BufNewFile *.rabl setlocal filetype=ruby
-
-    au BufRead,BufNewFile *.rb setlocal shiftwidth=2 softtabstop=2
-    au BufRead,BufNewFile *.rabl setlocal shiftwidth=2 softtabstop=2
-
-augroup END
-
-" }}}
-" --- Scala --------------- {{{
-
-augroup ft_scala
-    au!
-    au Filetype scala setlocal foldmethod=marker foldmarker={,}
-augroup END
-
-" }}}
-" --- Vagrant ------------- {{{
-
-augroup ft_vagrant
-    au!
-    au BufRead,BufNewFile Vagrantfile setlocal filetype=ruby
-augroup END
-
-" }}}
-" --- HTML ---------------- {{{
-
-augroup ft_html
-    au!
-
-    au FileType html setlocal foldmethod=manual
-
-    " Use <localleader>f to fold the current tag.
-    au FileType html nnoremap <buffer> <localleader>f Vatzf
-
-    " Indent tag
-    au FileType html nnoremap <buffer> <localleader>= Vat=
-
-    " Don't highlight HTML links
-    " au FileType html :hi link htmlLink NONE<CR>
-
-augroup END
-
-" }}}
-" --- Yaml ---------------- {{{
-
-augroup ft_yaml
-    au!
-
-    au BufNewFile,BufRead *.yml setlocal filetype=yaml
-
-    au Filetype yaml setlocal foldmethod=indent
-    au Filetype yaml setlocal shiftwidth=2 softtabstop=2
-
-augroup END
-
-" }}}
-" --- Go ------------------ {{{
-
-augroup ft_go
-    au!
-
-    au FileType go setlocal foldmethod=marker
-    au FileType go setlocal foldmarker={,}
-
-augroup END
-
-" }}}
-" --- XML ----------------- {{{
-
-augroup ft_xml
-    au!
-
-    au FileType xml setlocal foldmethod=indent
-    au Filetype xml setlocal foldmethod=indent
-    au Filetype xml setlocal shiftwidth=2 softtabstop=2
-
-augroup END
-
-" }}}
-
 " }}}
