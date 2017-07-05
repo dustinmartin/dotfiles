@@ -80,7 +80,7 @@ set fileformats=unix,mac,dos
 set hidden                               " Allow unsaved buffers to be hidden
 set nowrap                               " Turn word wrapping off. :set wrap turns it back on.
 set tabpagemax=50                        " Increase the number of allowed tabs
-set showtabline=0                        " Always show the tabline
+set showtabline=2                        " Always show the tabline
 set ruler                                " Turn on row,column dislay on status bar
 set backspace=2                          " Allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,]               " Backspace and cursor keys wrap too
@@ -195,6 +195,57 @@ if has("gui_running")
 endif
 
 " }}}
+" Tab Line -------------------------------------------------------- {{{
+
+set tabline=%!MyTabLine()
+
+function! MyTabLine()
+    let s = ''
+
+    for i in range(tabpagenr('$'))
+        " select the highlighting
+        if i + 1 == tabpagenr()
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
+        endif
+
+        " set the tab page number (for mouse clicks)
+        let s .= '%' . (i + 1) . 'T'
+
+        let tabNum = i + 1
+        let s .= ' '. tabNum . ') '
+
+        " the label is made by MyTabLabel()
+        let s .= '%{MyTabLabel(' . (i + 1) . ')}'
+    endfor
+
+    " after the last tab fill with TabLineFill and reset tab page nr
+    let s .= '%#TabLineFill#%T'
+
+    " right-align the label to close the current tab page
+    if tabpagenr('$') > 1
+        let s .= '%=%#TabLine#%999X[X]'
+    endif
+
+    return s
+endfunction
+
+function! MyTabLabel(n)
+    let buflist = tabpagebuflist(a:n)
+    let winnr = tabpagewinnr(a:n)
+    let label  = bufname(buflist[winnr - 1])
+
+    if label == ''
+        let label = 'Untitled'
+    endif
+
+    let label .= (getbufvar(buflist[winnr - 1], "&mod")?' + ':'   ')
+
+    return fnamemodify(label, ":t")
+endfunction
+
+" }}}
 " Custom Commands ------------------------------------------------- {{{
 
 command! SaveSession mksession! ~/.vim-sessions/session.vim
@@ -237,7 +288,7 @@ command! -nargs=* TermVertical vsplit | terminal <args>
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
 
-tnoremap <Esc> <C-\><C-n>
+tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
 
 " Open file in a new split
 nnoremap gf <C-W>gf
