@@ -43,6 +43,7 @@ Plug 'cohama/lexima.vim'
 
 " Language Support
 Plug 'sheerun/vim-polyglot'
+Plug 'moll/vim-node'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'elzr/vim-json'
 

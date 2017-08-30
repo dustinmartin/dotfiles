@@ -45,12 +45,16 @@ snippet line "line" b
 // -- ${0:Private} -------------------------------------- //
 endsnippet
 
+snippet log "logger.info()" b
+logger.${1:info}({ ${2} }, '${3}');
+endsnippet
+
 snippet con "console.log()" b
-console.log(${0:${VISUAL}});
+console.log('${1} >>>>>>>', $1);
 endsnippet
 
 snippet pretty "JSON.stringify" b
-console.log(JSON.stringify(${0:${VISUAL:variable}}, null, 2));
+console.log('${1} >>>>>>>', JSON.stringify($1, null, 2));
 endsnippet
 
 # snippet time "console.log()" b

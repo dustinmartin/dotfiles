@@ -56,6 +56,8 @@ alias ga='git add'
 alias gl='git log --graph --stat --abbrev-commit --date=relative'
 alias gpb='git pb'
 alias gup='echo "\nGitty up!\n" && git up'
+alias gamend='git amend'
+alias gwip='git wip'
 
 # Commit staged changed and provide some stats on the commit
 alias gc='git commit -v -m'

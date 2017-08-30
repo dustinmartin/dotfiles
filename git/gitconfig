@@ -7,7 +7,7 @@
   # st = status
   # co = checkout
   # cob = checkout -b
-  up = pull --rebase upstream master
+  up = pull --rebase origin master
   pb = !git push --set-upstream origin "$(git rev-parse --abbrev-ref HEAD)"
   db = !f() { git branch -d $1; git push origin :$1; }; f
   # cm = !git add -A && git commit -m
