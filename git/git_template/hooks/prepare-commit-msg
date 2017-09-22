@@ -27,6 +27,11 @@ BRANCH_EXCLUDED=$(printf "%s\n" "${BRANCHES_TO_SKIP[@]}" | grep -c "^$BRANCH_NAM
 TRIMMED=$(echo $BRANCH_NAME | sed -e 's:^\([^-]*-[^-]*\)-.*:\1:' -e \
     'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/')
 
+if [[ $(fgrep -ix $TRIMMED <<< $BRANCH_NAME) ]]; then
+    echo "No ticket number found";
+    exit
+fi
+
 # If it isn't excluded, preprend the trimmed branch identifier to the given message
 if [ -n "$BRANCH_NAME" ] &&  ! [[ $BRANCH_EXCLUDED -eq 1 ]]; then
   sed -i.bak -e "1s/^/$TRIMMED /" $1

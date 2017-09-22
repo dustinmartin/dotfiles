@@ -1,6 +1,6 @@
 [user]
   name = Dustin Martin
-  email = dm@dustinmartin.net
+  email = dmartin2@atlassian.com
 [alias]
   # alias = config --get-regexp alias
   # ec = config --global -e
@@ -9,14 +9,14 @@
   # cob = checkout -b
   up = pull --rebase origin master
   pb = !git push --set-upstream origin "$(git rev-parse --abbrev-ref HEAD)"
-  db = !f() { git branch -d $1; git push origin :$1; }; f
+  db = !f() { git branch -D $1 }
   # cm = !git add -A && git commit -m
   wip = !git add -A && git commit -m 'WIP'
   undo = reset HEAD~1 --mixed
   amend = commit --amend
   wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
   # bclean = !f() { git branch --merged ${1-master} | grep -v  ${1-master}$ | xargs -r git branch -d; }; f
-  # bdone = !f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f    
+  # bdone = !f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f
   hist = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
   today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
   l = log --graph --stat --abbrev-commit --date=relative
@@ -29,4 +29,14 @@
 [credential]
   helper = osxkeychain
 [core]
-  excludesfile = /Users/dustinmartin/.gitignore
+  excludesfile = /Users/dmartin2/.gitignore
+[init]
+  templatedir = ~/.git_template
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+  template = /Users/dmartin2/.stCommitMsg
