@@ -1,38 +1,51 @@
-#!/bin/bash
-COMMIT_TYPE="${2}"
-TREEISH="${3}"
+#!/usr/bin/env node
+const { execSync } = require('child_process');
+const { writeFileSync, readFileSync } = require('fs');
 
-# Ignore amend/reword
-if [ ${COMMIT_TYPE} == "commit" ] && [ ${TREEISH} == "HEAD" ]; then
-	echo "DEBUG: amend/reword ignored"
-	exit 0
-fi
+const messageFilePath = process.argv[2];
+const commitMode = process.argv[3];
+const branchName = execSync('git symbolic-ref --short HEAD')
+    .toString()
+    .trim();
+const ticketPattern = /(^[A-Za-z]+-[0-9]+)/g;
+const matches = branchName.match(ticketPattern);
 
-# Ignore squash and merge commits: proceed with default file
-if [ "${COMMIT_TYPE}" == "merge" ] || [ "${COMMIT_TYPE}" == "squash" ]; then
-	echo "DEBUG: squash/merge ignored"
-	exit 0
-fi
+const exit = message => {
+    console.log(`PREPARE-COMMIT-MSG: ${message}`);
+    process.exit(0);
+};
 
-# Include any branches for which you wish to disable this script
-if [ -z "$BRANCHES_TO_SKIP" ]; then
-  BRANCHES_TO_SKIP=(master develop staging test)
-fi
+if (!matches) {
+    exit('no ticket in branch name');
+}
 
-# Get the current branch name and check if it is excluded
-BRANCH_NAME=$(git symbolic-ref --short HEAD)
-BRANCH_EXCLUDED=$(printf "%s\n" "${BRANCHES_TO_SKIP[@]}" | grep -c "^$BRANCH_NAME$")
+if (commitMode === 'merge' || commitMode === 'squash') {
+    exit(`${commitMode} ignored`);
+}
 
-# Trim it down to get the parts we're interested in
-TRIMMED=$(echo $BRANCH_NAME | sed -e 's:^\([^-]*-[^-]*\)-.*:\1:' -e \
-    'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/')
+let ticket;
 
-if [[ $(fgrep -ix $TRIMMED <<< $BRANCH_NAME) ]]; then
-    echo "No ticket number found";
-    exit
-fi
+// If there is a match when we've successfully found the ticket number
+if (matches.length) {
+    ticket = matches[0].trim().toUpperCase();
+}
 
-# If it isn't excluded, preprend the trimmed branch identifier to the given message
-if [ -n "$BRANCH_NAME" ] &&  ! [[ $BRANCH_EXCLUDED -eq 1 ]]; then
-  sed -i.bak -e "1s/^/$TRIMMED /" $1
-fi
+if (ticket) {
+    const oldCommitMessage = readFileSync(messageFilePath).toString();
+    const firstLine = oldCommitMessage.split('\n')[0];
+
+    // When ammending the first line of the message file will be empty
+    const existingMessage = firstLine.trim().length !== 0;
+
+    if (commitMode === 'commit' && existingMessage) {
+        exit(`amend ignored`);
+    }
+
+    if (oldCommitMessage.startsWith(ticket)) {
+        exit('ticket already on commit message');
+    }
+
+    const newCommitMessage = `${ticket} ${oldCommitMessage}`;
+
+    writeFileSync(messageFilePath, newCommitMessage);
+}
