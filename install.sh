@@ -1,5 +1,10 @@
 chsh -s /bin/zsh
 
+sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+# Move the .zshrc file that oh-my-zsh creates
+mv ~/.zshrc ~/.zshrc.oh-my-zsh
+
 # Install Homebrew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -15,7 +20,7 @@ ln -s ~/dotfiles/vim ~/.config/nvim
 ln -s ~/dotfiles/git/gitignore ~/.gitignore
 ln -s ~/dotfiles/ssh/config ~/.ssh/config
 
-cat <<EOF > ~/.gitignore
+cat <<EOF > ~/.gitconfig
 [user]
   email = <EMAIL HERE>
 [include]
@@ -23,6 +28,17 @@ cat <<EOF > ~/.gitignore
 EOF
 
 cat <<EOF > ~/.zshrc
+export ZSH=/Users/dmartin2/.oh-my-zsh
+
+ZSH_THEME="af-magic"
+
+plugins=(
+  git
+  vi-mode
+)
+
+source $ZSH/oh-my-zsh.sh
+
 source ~/dotfiles/zsh/zshrc
 EOF
 

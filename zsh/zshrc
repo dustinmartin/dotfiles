@@ -1,18 +1,18 @@
-source /usr/local/share/antigen/antigen.zsh
+# source /usr/local/share/antigen/antigen.zsh
 
-# Load the oh-my-zsh's library.
-antigen use oh-my-zsh
+# # Load the oh-my-zsh's library.
+# antigen use oh-my-zsh
 
-# Syntax highlighting bundle.
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-completions
-antigen bundle zsh-users/zsh-autosuggestions
+# # Syntax highlighting bundle.
+# antigen bundle zsh-users/zsh-syntax-highlighting
+# antigen bundle zsh-users/zsh-completions
+# antigen bundle zsh-users/zsh-autosuggestions
 
-# Load the theme.
-antigen theme af-magic
+# # Load the theme.
+# antigen theme af-magic
 
-# Tell Antigen that you're done.
-antigen apply
+# # Tell Antigen that you're done.
+# antigen apply
 
 # Load custom aliases
 source ~/dotfiles/zsh/aliases
