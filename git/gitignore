@@ -1,7 +1,6 @@
 .sass-cache
 *.sublime-project
 *.sublime-workspace
-.vscode/*
 # node_modules/*
 # node_modules
 
