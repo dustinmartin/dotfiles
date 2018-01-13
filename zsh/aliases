@@ -67,7 +67,7 @@ alias gl='g log --graph --stat --abbrev-commit --date=relative'
 alias gpb='g push --set-upstream origin "$(g rev-parse --abbrev-ref HEAD)"'
 
 # Safer force push
-alias gpbf='g push --force-with-lease'
+alias gpbf='g push --set-upstream --force-with-lease origin "$(g rev-parse --abbrev-ref HEAD)"'
 
 # Pull the latest from master and rebase
 alias gup='g pull --rebase origin master'
@@ -109,4 +109,7 @@ alias gap='g add -p && g status'
 alias gir="g rebase -i origin/master"
 
 # Stash changes
-alias gas="g stash"
+alias gt="g stash"
+
+# Pop stash changes
+alias gtp="g stash pop"
