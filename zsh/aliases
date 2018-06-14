@@ -5,9 +5,6 @@ alias ...="cd ../.."
 alias vi='nvim'
 alias vim='nvim'
 
-# Create a Github pull-request
-alias pr='hub pull-request'
-
 # List TODOs
 alias todo='ag "TODO|FIXME"'
 
@@ -47,6 +44,10 @@ alias grbc='g rebase --continue'
 alias grba='g rebase --abort'
 alias ga='g add'
 alias gm='g merge'
+alias gsp='git stash push' # Push is implied with `git stash` but push allows a file to be specified without -- separator
+alias gspi='git stash push --patch'
+alias gspp='git stash pop'
+alias gspc='git stash clear'
 
 # More succinct status
 alias gs='g status -sb'
@@ -107,9 +108,3 @@ alias gap='g add -p && g status'
 
 # Interactive rebase for squashing commits
 alias gir="g rebase -i origin/master"
-
-# Stash changes
-alias gt="g stash"
-
-# Pop stash changes
-alias gtp="g stash pop"
