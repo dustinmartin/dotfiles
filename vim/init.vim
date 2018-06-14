@@ -2,7 +2,7 @@
 " Source: https://github.com/dustinmartin/dotfiles
 
 " Plugins --------------------------------------------------------- {{{
-"
+
 " Install vim-plug if not yet installed
 if empty(glob("~/.config/nvim/autoload/plug.vim"))
   execute '!curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim'
@@ -11,44 +11,44 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
 " Finding/Navigation
-Plug 'scrooloose/nerdtree', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind'] }
+Plug 'tpope/vim-vinegar'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'ajh17/VimCompletesMe'
 
 " Version Control
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " Editor Usability
-Plug 'itchyny/vim-cursorword'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'nathanaelkane/vim-indent-guides'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
-Plug 'chip/vim-fat-finger'
 Plug 'tpope/vim-eunuch'
 Plug 'easymotion/vim-easymotion'
-Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-surround'
-Plug 'godlygeek/tabular', { 'on':  'Tabularize' }
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 
 " Language Support
 Plug 'sheerun/vim-polyglot'
+" Plug 'othree/yajs.vim'
+" Plug 'othree/es.next.syntax.vim'
+Plug 'jparise/vim-graphql'
 Plug 'moll/vim-node'
-Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'elzr/vim-json'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
 " Color Schemes
 Plug 'mhartington/oceanic-next'
+Plug 'chriskempson/base16-vim'
+
+imap <expr> <c-x><c-f> fzf#vim#complete#path('git ls-files $(git rev-parse --show-toplevel)')
 
 " All of your Plugins must be added before the following line
 call plug#end()
@@ -86,8 +86,8 @@ set ruler                                " Turn on row,column dislay on status b
 set backspace=2                          " Allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,]               " Backspace and cursor keys wrap too
 set visualbell                           " Disable 'beep' for wrong commands and do screen flash
-set cursorline                           " Highlights the cursor line
-set cursorcolumn                         " Highlights the cursor column
+" set cursorline                           " Highlights the cursor line
+" set cursorcolumn                         " Highlights the cursor column
 set laststatus=2                         " Always show the statusline
 set textwidth=0                          " Prevent Vim from wrapping lines
 set wrapmargin=0                         " Prevent Vim from wrapping lines
@@ -140,7 +140,7 @@ set nobackup
 set undolevels=1000                      " The number of undo levels to allow
 set complete-=i
 set formatoptions-=r                     " Don't add comment prefix to next line
-set colorcolumn=120
+" set colorcolumn=120
 set completeopt=menu,menuone
 set diffopt+=vertical
 
@@ -148,7 +148,8 @@ highlight CursorColumn guibg=#383737
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
-set foldlevel=0
+" set foldlevel=0
+set foldlevelstart=20
 
 " Time out on key codes but not mappings.
 " Basically this makes terminal Vim work sanely.
@@ -177,23 +178,23 @@ set wildignore+=log/**,node_modules/**,target/**,tmp/**,*.rbc
 " }}}
 " GUI Settings ---------------------------------------------------- {{{
 
-if has("gui_running")
+" if has("gui_running")
 
-    " Set the tab labels
-    set guitablabel=%t\ %m
+"     " Set the tab labels
+"     set guitablabel=%t\ %m
 
-    set guioptions-=T                        " Hide the toolbar
-    set guioptions-=e                        " Don't use GUI tabs
-    set guioptions-=L                        " Disable left scrollbar
-    set guioptions-=r                        " Disable right scrollbar
+"     set guioptions-=T                        " Hide the toolbar
+"     set guioptions-=e                        " Don't use GUI tabs
+"     set guioptions-=L                        " Disable left scrollbar
+"     set guioptions-=r                        " Disable right scrollbar
 
-    " Set the font
-    set guifont=Source\ Code\ Pro:h17             " Set the font style and size
+"     " Set the font
+"     " set guifont=Source\ Code\ Pro:h17             " Set the font style and size
 
-    " Window size
-    " set lines=35 columns=115                 " Set the window size
+"     " Window size
+"     " set lines=35 columns=115                 " Set the window size
 
-endif
+" endif
 
 " }}}
 " Tab Line -------------------------------------------------------- {{{
@@ -258,21 +259,12 @@ command! Scratch tabe ~/Desktop/Scratch.md
 command! TODO Ag TODO|FIXME
 
 " Edit Vimrc
-command! Vimrc e $MYVIMRC
+command! Vimrc tabe $MYVIMRC
 command! Reload source $MYVIMRC
 
 " Close all buffers
 " command! BDA 1,1000 bd
 command! BDA %bd
-
-" Set filetype to Javascript
-command! SetJS set ft=javscript
-" command! RunJS :!node %
-
-" Format the JSON in the current file
-command! -bar ToJSON %!python -m json.tool
-command! SetJSON set ft=json
-command! FormatJSON ToJSON|SetJSON
 
 " Format Selected XML
 command! -bar ToXML silent %!xmllint --encode UTF-8 --format -
@@ -298,10 +290,10 @@ tnoremap <c-h> <C-\><C-N><C-w>h
 tnoremap <c-j> <C-\><C-N><C-w>j
 tnoremap <c-k> <C-\><C-N><C-w>k
 tnoremap <c-l> <C-\><C-N><C-w>l
-inoremap <c-h> <C-\><C-N><C-w>h
-inoremap <c-j> <C-\><C-N><C-w>j
-inoremap <c-k> <C-\><C-N><C-w>k
-inoremap <c-l> <C-\><C-N><C-w>l
+" inoremap <c-h> <C-\><C-N><C-w>h
+" inoremap <c-j> <C-\><C-N><C-w>j
+" inoremap <c-k> <C-\><C-N><C-w>k
+" inoremap <c-l> <C-\><C-N><C-w>l
 nnoremap <c-h> <C-w>h
 nnoremap <c-j> <C-w>j
 nnoremap <c-k> <C-w>k
@@ -408,11 +400,11 @@ nnoremap <leader>ww :set wrap! linebreak nolist<CR>
 " nnoremap <leader>p :set paste<cr>:put  *<cr>:set nopaste<cr>
 
 " Toggle nerdtree
-vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
-nnoremap <leader>nt :NERDTreeToggle<CR>
+" vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
+" nnoremap <leader>nt :NERDTreeToggle<CR>
 
 " Open up current file in NERDTree
-nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
+" nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 
 " FZF
 nnoremap <leader>f :Files<CR>
@@ -420,12 +412,12 @@ nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>l :BLines<CR>
 
 " Tabularize
-nnoremap <Leader>a= :Tabularize /=<CR>
-vnoremap <Leader>a= :Tabularize /=<CR>
-nnoremap <Leader>a: :Tabularize /:<CR>
-vnoremap <Leader>a: :Tabularize /:<CR>
-vnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
-nnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
+" nnoremap <Leader>a= :Tabularize /=<CR>
+" vnoremap <Leader>a= :Tabularize /=<CR>
+" nnoremap <Leader>a: :Tabularize /:<CR>
+" vnoremap <Leader>a: :Tabularize /:<CR>
+" vnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
+" nnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
 
 " Ag
 nnoremap <leader>ag :Ag 
@@ -435,64 +427,99 @@ nnoremap <leader>c :checktime<CR>
 " }}}
 " Folding --------------------------------------------------------- {{{
 
-function! CustomFoldText()
 
-    "get first non-blank line
-    let fs = v:foldstart
+set foldtext=FoldText()
 
-    while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
-    endwhile
+function! FoldText()
+  let l:lpadding = &fdc
+  redir => l:signs
+    execute 'silent sign place buffer='.bufnr('%')
+  redir End
+  let l:lpadding += l:signs =~ 'id=' ? 2 : 0
 
-    if fs > v:foldend
-        let line = getline(v:foldstart)
-    else
-        let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
+  if exists("+relativenumber")
+    if (&number)
+      let l:lpadding += max([&numberwidth, strlen(line('$'))]) + 1
+    elseif (&relativenumber)
+      let l:lpadding += max([&numberwidth, strlen(v:foldstart - line('w0')), strlen(line('w$') - v:foldstart), strlen(v:foldstart)]) + 1
     endif
+  else
+    if (&number)
+      let l:lpadding += max([&numberwidth, strlen(line('$'))]) + 1
+    endif
+  endif
 
-    let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
-    let foldSize = 1 + v:foldend - v:foldstart
-    let foldSizeStr = " " . foldSize . " lines "
-    let foldLevelStr = repeat("+--", v:foldlevel)
-    let lineCount = line("$")
-    let foldPercentage = printf("[%.1f", (foldSize*1.0)/lineCount*100) . "%] "
-    let expansionString = repeat(" ", w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
+  " expand tabs
+  let l:start = substitute(getline(v:foldstart), '\t', repeat(' ', &tabstop), 'g')
+  let l:end = substitute(substitute(getline(v:foldend), '\t', repeat(' ', &tabstop), 'g'), '^\s*', '', 'g')
 
-    return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
+  let l:info = ' (' . (v:foldend - v:foldstart) . ')'
+  let l:infolen = strlen(substitute(l:info, '.', 'x', 'g'))
+  let l:width = winwidth(0) - l:lpadding - l:infolen
 
+  let l:separator = ' … '
+  let l:separatorlen = strlen(substitute(l:separator, '.', 'x', 'g'))
+  let l:start = strpart(l:start , 0, l:width - strlen(substitute(l:end, '.', 'x', 'g')) - l:separatorlen)
+  let l:text = l:start . ' … ' . l:end
+
+  return l:text . repeat(' ', l:width - strlen(substitute(l:text, ".", "x", "g"))) . l:info
 endfunction
 
-set foldtext=CustomFoldText()
+
+
+" function! CustomFoldText()
+"     " Get first non-blank line
+"     let fs = v:foldstart
+
+"     while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
+"     endwhile
+
+"     if fs > v:foldend
+"         let line = getline(v:foldstart)
+"     else
+"         let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
+"     endif
+
+"     let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
+"     let foldSize = 1 + v:foldend - v:foldstart
+"     let foldSizeStr = " " . foldSize . " lines "
+"     let foldLevelStr = repeat("+--", v:foldlevel)
+"     let lineCount = line("$")
+"     let foldPercentage = printf("[%.1f", (foldSize*1.0)/lineCount*100) . "%] "
+"     let expansionString = repeat(" ", w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
+
+"     return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
+" endfunction
+
+" set foldtext=CustomFoldText()
 
 " }}}
 " Plugin Settings ------------------------------------------------- {{{
 
-" --- FZF ----------------- {{{
+" --- Polygot ----------------- {{{
 
-command! -nargs=* Ag call fzf#vim#ag(<q-args>, '--color-path 400 --color-line-number 400', fzf#vim#default_layout)
+" let g:polyglot_disabled = ['javascript']
 
 " }}}
-" --- Nerdtree ------------ {{{
+" --- Prettier ----------------- {{{
 
-" Show the bookmarks table on startup
-let NERDTreeShowBookmarks=0
+let g:prettier#quickfix_enabled = 0
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
 
-" Show hidden files, too
-let NERDTreeShowFiles=1
+" }}}
+" --- ALE ----------------- {{{
 
-" Quit on opening files from the tree
-let NERDTreeQuitOnOpen=0
+let g:ale_linters = {
+\  'javascript': ['flow', 'eslint']
+\}
+highlight clear ALEErrorSign " otherwise uses error bg color (typically red)
+highlight clear ALEWarningSign " otherwise uses error bg color (typically red)
 
-" Highlight the selected entry in the tree
-let NERDTreeHighlightCursorline=1
-
-" Use a single click to fold/unfold directories and a double click to open files
-let NERDTreeMouseMode=2
-
-" Allow NerdTree to change Vim's CD
-let NERDTreeChDirMode=2
-
-" Automatically remove a buffer when a file is being deleted or renamed via a context menu command
-let NERDTreeAutoDeleteBuffer=1
+let g:ale_sign_error = 'X' " could use emoji
+let g:ale_sign_warning = '?' " could use emoji
+let g:ale_statusline_format = ['X %d', '? %d', '']
+let g:ale_echo_msg_format = '%linter% says %s'
 
 " }}}
 " --- Airline ------------- {{{
@@ -507,18 +534,6 @@ let g:airline_right_sep=''
 let g:UltiSnipsExpandTrigger="<c-j>"
 
 " }}}
-" --- Javascript Lib ------ {{{
-
-let g:used_javascript_libs = 'angularjs,jquery,underscore,chai,react,flux'
-let g:jsx_ext_required = 0
-
-" }}}
-" --- Indent Guides ------- {{{
-
-let g:indent_guides_guide_size = 1
-let g:indent_guides_start_level = 1
-
-" }}}
 " --- MatchTagAlways ------ {{{
 
 let g:mta_set_default_matchtag_color = 0
@@ -527,24 +542,11 @@ let g:mta_use_matchparen_group = 0
 highlight MatchTag ctermfg=black ctermbg=darkgrey guifg=black guibg=darkgrey
 
 " }}}
-" --- Go ------------------ {{{
-
-let g:go_auto_type_info = 1
-let g:go_highlight_methods = 1
-
-" }}}
-" --- Startify ------- {{{
-
-let g:startify_session_dir = '~/.vim-sessions'
-let g:startify_custom_header = []
-
-" }}}
 " --- EasyMotion ---------- {{{
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 let g:EasyMotion_use_smartsign_us = 1
 let g:EasyMotion_smartcase = 1
-" let g:EasyMotion_keys = 'abcdehijlmnopqrstuvwxyzfgkj'
 
 hi EasyMotionTarget2First cterm=bold gui=bold ctermbg=none ctermfg=red
 hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
@@ -582,8 +584,6 @@ augroup ft_vim
     au!
 
     au FileType vim setlocal foldmethod=marker
-    " au FileType help setlocal textwidth=78
-    " au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
 
 " }}}
@@ -598,9 +598,6 @@ augroup ft_css
 
     au Filetype less,css,sass setlocal foldmethod=marker
     au Filetype less,css,sass setlocal foldmarker={,}
-
-    " Use <leader>S to sort properties.  Turns this:
-    au BufNewFile,BufRead *.less,*.css,*.scss nnoremap <buffer> <localleader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 augroup END
 
 " }}}
@@ -612,7 +609,6 @@ augroup ft_json
     au BufNewFile,BufRead *.json setlocal filetype=json
 
     au FileType json setlocal foldmarker={,}
-
 augroup END
 
 " }}}
@@ -623,9 +619,6 @@ augroup ft_javascript
 
     au FileType javascript map <buffer> <F2> :!node % <CR>
     au FileType javascript setlocal foldmethod=syntax
-    " au FileType javascript setlocal foldmethod=marker
-    " au FileType javascript setlocal foldmarker={,}
-
 augroup END
 
 " }}}
