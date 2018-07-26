@@ -20,6 +20,8 @@ source ~/dotfiles/zsh/aliases
 # Load fasd
 eval "$(fasd --init auto)"
 
+export PATH="/Users/dmartin2/dotfiles/bin:$PATH"
+
 # Make sure Homebrew's packages before others
 export PATH="/usr/local/bin:$PATH"
 

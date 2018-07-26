@@ -47,7 +47,6 @@ alias gm='g merge'
 alias gsp='git stash push' # Push is implied with `git stash` but push allows a file to be specified without -- separator
 alias gspi='git stash push --patch'
 alias gspp='git stash pop'
-alias gspc='git stash clear'
 
 # More succinct status
 alias gs='g status -sb'
@@ -80,7 +79,8 @@ alias gum='g pull origin master'
 alias gam='g commit --amend'
 
 # Save changes temporarily
-alias gwip='g add -A && g commit --no-verify -m "WIP"'
+alias gwip='g commit --no-verify -m "WIP"'
+alias gwipa='g add -A && g commit --no-verify -m "WIP"'
 
 # Undo the last commit
 alias gun='g reset HEAD~1 --mixed'

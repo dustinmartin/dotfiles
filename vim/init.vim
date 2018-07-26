@@ -11,14 +11,13 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
 " Finding/Navigation
-Plug 'tpope/vim-vinegar'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'scrooloose/nerdtree'
 
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
-" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-Plug 'ajh17/VimCompletesMe'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 
 " Version Control
 Plug 'tpope/vim-fugitive'
@@ -31,35 +30,25 @@ Plug 'w0rp/ale'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
-Plug 'easymotion/vim-easymotion'
+" Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 
 " Language Support
 Plug 'sheerun/vim-polyglot'
-" Plug 'othree/yajs.vim'
-" Plug 'othree/es.next.syntax.vim'
-Plug 'jparise/vim-graphql'
 Plug 'moll/vim-node'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'fatih/vim-go'
 
 " Color Schemes
 Plug 'mhartington/oceanic-next'
-Plug 'chriskempson/base16-vim'
-
-imap <expr> <c-x><c-f> fzf#vim#complete#path('git ls-files $(git rev-parse --show-toplevel)')
 
 " All of your Plugins must be added before the following line
 call plug#end()
 
 " }}}
 " Vim Settings ---------------------------------------------------- {{{
-
-if (has("nvim"))
-  " For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-endif
 
 if (has("termguicolors"))
   set termguicolors
@@ -102,7 +91,7 @@ set showmode                             " Show the current Vim mode
 " but that, when paired with Airline, causes
 " Neovim to not redraw properly when the
 " window changes size.
-" set lazyredraw                         " Don't update the display while executing macros
+set lazyredraw                         " Don't update the display while executing macros
 set wrapscan                             " Set the search scan to wrap around the file
 set virtualedit=block                    " Allow the cursor to go in to invalid places in visual block mode
 set breakindent
@@ -124,8 +113,8 @@ set splitright                           " Split vertical windows right to the c
 set splitbelow                           " Split horizontal windows below to the current windows
 set autoread                             " Automatically reread changed files without asking me anything
 set suffixesadd+=.js                     " Help VIM find .js files when using gf
-set list
-set listchars=tab:»\ ,eol:\ ,trail:·,extends:❯,precedes:❮
+" set list
+" set listchars=tab:»\ ,eol:\ ,trail:·,extends:❯,precedes:❮
 set linebreak
 set showbreak=\ ↪\ 
 set ignorecase                           " Makes searches case insensitive if search string is all lower case
@@ -174,27 +163,6 @@ set wildignore+=*.luac                           " Lua byte code
 set wildignore+=*.pyc                            " Python byte code
 set wildignore+=*.orig                           " Merge resolution files
 set wildignore+=log/**,node_modules/**,target/**,tmp/**,*.rbc
-
-" }}}
-" GUI Settings ---------------------------------------------------- {{{
-
-" if has("gui_running")
-
-"     " Set the tab labels
-"     set guitablabel=%t\ %m
-
-"     set guioptions-=T                        " Hide the toolbar
-"     set guioptions-=e                        " Don't use GUI tabs
-"     set guioptions-=L                        " Disable left scrollbar
-"     set guioptions-=r                        " Disable right scrollbar
-
-"     " Set the font
-"     " set guifont=Source\ Code\ Pro:h17             " Set the font style and size
-
-"     " Window size
-"     " set lines=35 columns=115                 " Set the window size
-
-" endif
 
 " }}}
 " Tab Line -------------------------------------------------------- {{{
@@ -253,7 +221,7 @@ endfunction
 command! SaveSession mksession! ~/.vim-sessions/session.vim
 command! OpenSession source ~/.vim-sessions/session.vim
 
-command! Scratch tabe ~/Desktop/Scratch.md
+" command! Scratch tabe ~/Desktop/Scratch.md
 
 " See all code TODOs
 command! TODO Ag TODO|FIXME
@@ -280,8 +248,6 @@ command! -nargs=* TermVertical vsplit | terminal <args>
 
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
-
-tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
 
 " Open file in a new split
 nnoremap gf <C-W>gf
@@ -321,9 +287,9 @@ noremap ' `
 nnoremap K k
 
 " Easier to type, and I never use the default behavior.
-noremap H ^
-noremap L $
-vnoremap L g_
+" noremap H ^
+" noremap L $
+" vnoremap L g_
 
 " Use standard regexes
 nnoremap / /\v
@@ -349,7 +315,7 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Visually select the text that was last edited/pasted
-nmap gV `[v`]
+" nmap gV `[v`]
 
 " Map ESC
 imap jj <ESC>
@@ -370,17 +336,13 @@ nnoremap ; :
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
-nmap S <Plug>(easymotion-bd-f)
-nmap s <Plug>(easymotion-bd-w)
-vmap S <Plug>(easymotion-bd-f)
-vmap s <Plug>(easymotion-bd-w)
+" nmap S <Plug>(easymotion-bd-f)
+" nmap s <Plug>(easymotion-bd-w)
+" vmap S <Plug>(easymotion-bd-f)
+" vmap s <Plug>(easymotion-bd-w)
 
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
-
-" Change quotation marks
-nnoremap <Leader>"" :%s/'/"<CR>
-nnoremap <Leader>'' :%s/"/'<CR>
 
 " Trim Whitespace
 nnoremap <Leader>ws :%s/\s\+$//e<CR>
@@ -392,37 +354,22 @@ nnoremap <leader>gd :Gdiff<cr>
 nnoremap <leader>t :tabnew<CR>
 vnoremap <leader>t :tabnew<CR>
 
-" nnoremap <Leader>sp :set spell!<CR>
-
 nnoremap <leader>ww :set wrap! linebreak nolist<CR>
 
-" Preserve indentation while pasting text from the os x clipboard
-" nnoremap <leader>p :set paste<cr>:put  *<cr>:set nopaste<cr>
-
 " Toggle nerdtree
-" vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
-" nnoremap <leader>nt :NERDTreeToggle<CR>
+vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
+nnoremap <leader>nt :NERDTreeToggle<CR>
 
 " Open up current file in NERDTree
-" nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
+nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 
 " FZF
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>l :BLines<CR>
 
-" Tabularize
-" nnoremap <Leader>a= :Tabularize /=<CR>
-" vnoremap <Leader>a= :Tabularize /=<CR>
-" nnoremap <Leader>a: :Tabularize /:<CR>
-" vnoremap <Leader>a: :Tabularize /:<CR>
-" vnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
-" nnoremap <Leader>a, :Tabularize /[^,]\+,<CR>
-
 " Ag
 nnoremap <leader>ag :Ag 
-
-nnoremap <leader>c :checktime<CR>
 
 " }}}
 " Folding --------------------------------------------------------- {{{
@@ -465,43 +412,10 @@ function! FoldText()
   return l:text . repeat(' ', l:width - strlen(substitute(l:text, ".", "x", "g"))) . l:info
 endfunction
 
-
-
-" function! CustomFoldText()
-"     " Get first non-blank line
-"     let fs = v:foldstart
-
-"     while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
-"     endwhile
-
-"     if fs > v:foldend
-"         let line = getline(v:foldstart)
-"     else
-"         let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
-"     endif
-
-"     let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
-"     let foldSize = 1 + v:foldend - v:foldstart
-"     let foldSizeStr = " " . foldSize . " lines "
-"     let foldLevelStr = repeat("+--", v:foldlevel)
-"     let lineCount = line("$")
-"     let foldPercentage = printf("[%.1f", (foldSize*1.0)/lineCount*100) . "%] "
-"     let expansionString = repeat(" ", w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
-
-"     return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
-" endfunction
-
-" set foldtext=CustomFoldText()
-
 " }}}
 " Plugin Settings ------------------------------------------------- {{{
 
-" --- Polygot ----------------- {{{
-
-" let g:polyglot_disabled = ['javascript']
-
-" }}}
-" --- Prettier ----------------- {{{
+" --- Prettier ------------ {{{
 
 let g:prettier#quickfix_enabled = 0
 let g:prettier#autoformat = 0
@@ -544,15 +458,41 @@ highlight MatchTag ctermfg=black ctermbg=darkgrey guifg=black guibg=darkgrey
 " }}}
 " --- EasyMotion ---------- {{{
 
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-let g:EasyMotion_use_smartsign_us = 1
-let g:EasyMotion_smartcase = 1
+" let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" let g:EasyMotion_use_smartsign_us = 1
+" let g:EasyMotion_smartcase = 1
 
-hi EasyMotionTarget2First cterm=bold gui=bold ctermbg=none ctermfg=red
-hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
+" hi EasyMotionTarget2First cterm=bold gui=bold ctermbg=none ctermfg=red
+" hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
+
+" }}}
+" --- Javascript ---------- {{{
+
+set conceallevel=1
+let g:javascript_plugin_flow = 1
+
+" }}}
+" --- FZF ----------------- {{{
+
+function! s:make_path(path)
+  let bPath = expand('%:p:h')
+  let fPath = system("realpath " . join(a:path))
+  let relPath = system("relative-path " . bPath . " " . fPath)
+  let relPathNoExtension = system("strip-extension " . relPath)
+  return substitute(relPathNoExtension, '\n\+$', '', '')
+endfunction
+
+" Get the relative path of a file
+inoremap <expr> <c-h> fzf#complete(fzf#wrap({
+  \ 'source':  'ag -g ""',
+  \ 'reducer': function('<sid>make_path')}))
+
+" }}}
 
 " }}}
 " Autocmd --------------------------------------------------------- {{{
+
+" --- CursorLine ---------- {{{
 
 " Only show cursorline in the current window and in normal mode.
 augroup cursor_line
@@ -561,6 +501,7 @@ augroup cursor_line
     au WinEnter,InsertLeave * set cursorline
 augroup END
 
+" }}}
 " --- Window Resize ------- {{{
 
 augroup window_resize
@@ -617,7 +558,6 @@ augroup END
 augroup ft_javascript
     au!
 
-    au FileType javascript map <buffer> <F2> :!node % <CR>
     au FileType javascript setlocal foldmethod=syntax
 augroup END
 

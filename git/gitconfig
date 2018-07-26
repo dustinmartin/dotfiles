@@ -11,3 +11,5 @@
   excludesfile = ~/dotfiles/git/gitignore
 [init]
   templatedir = ~/.git_template
+[rebase]
+  autoStash = true
