@@ -1,6 +1,8 @@
 alias ..="cd .."
 alias ...="cd ../.."
 
+alias ctags="`brew --prefix`/bin/ctags"
+
 # Vim aliases
 alias vi='nvim'
 alias vim='nvim'
