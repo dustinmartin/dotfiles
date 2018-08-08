@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+/* eslint-disable no-console */
+const {writeFileSync, readFileSync} = require('fs');
+const {execSync, exec} = require('child_process');
+const {resolve} = require('path');
+
+const blog = `${process.env.BLOG_DIR}/content/post`;
+const title = process.argv.slice(2, process.argv.length).join(' ');
+const slug = title
+  .toLowerCase()
+  .trim()
+  .replace(/\s/g, '-');
+const publishDate = new Date().toISOString();
+const year = new Date().getFullYear();
+
+const frontMatter = `+++
+date = "${publishDate}"
+draft = "false"
+title = "${title}"
+slug = "${slug}"
++++
+
+`;
+
+execSync(`mkdir -p ${blog}/${year}`);
+
+const filePath = `${blog}/${year}/${slug}.md`;
+
+writeFileSync(filePath, frontMatter);
+
+exec(`code ${filePath}`);
+
+console.log(`Created '${filePath}'`);
+
+process.exit(0);
