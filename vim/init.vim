@@ -13,6 +13,7 @@ call plug#begin('~/.config/nvim/plugged')
 " Finding/Navigation
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'dyng/ctrlsf.vim'
 Plug 'scrooloose/nerdtree'
 
 " Completion and Snippets
@@ -24,18 +25,22 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " Editor Usability
+Plug 'moll/vim-bbye'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
-" Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
+Plug 'alvan/vim-closetag'
 
 " Language Support
+Plug 'flowtype/vim-flow'
 Plug 'sheerun/vim-polyglot'
 Plug 'moll/vim-node'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
@@ -58,7 +63,7 @@ syntax on                                " Enable syntax highlighting
 filetype plugin indent on                " Detect and handle filetypes
 
 let mapleader = ","                      " Set leader key to comma
-let maplocalleader = "\\"
+let maplocalleader = ","
 
 let g:airline_theme='oceanicnext'
 colorscheme OceanicNext
@@ -70,13 +75,11 @@ set fileformats=unix,mac,dos
 set hidden                               " Allow unsaved buffers to be hidden
 set nowrap                               " Turn word wrapping off. :set wrap turns it back on.
 set tabpagemax=50                        " Increase the number of allowed tabs
-set showtabline=2                        " Always show the tabline
+set showtabline=0                        " Always show the tabline
 set ruler                                " Turn on row,column dislay on status bar
 set backspace=2                          " Allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,]               " Backspace and cursor keys wrap too
 set visualbell                           " Disable 'beep' for wrong commands and do screen flash
-" set cursorline                           " Highlights the cursor line
-" set cursorcolumn                         " Highlights the cursor column
 set laststatus=2                         " Always show the statusline
 set textwidth=0                          " Prevent Vim from wrapping lines
 set wrapmargin=0                         " Prevent Vim from wrapping lines
@@ -87,11 +90,6 @@ set mouse=a                              " Enable mouse
 set showcmd                              " Show command in bottom right of window
 set clipboard=unnamed                    " Default to the system clipboard
 set showmode                             " Show the current Vim mode
-" Keep this off for now since Neovim has a
-" but that, when paired with Airline, causes
-" Neovim to not redraw properly when the
-" window changes size.
-set lazyredraw                         " Don't update the display while executing macros
 set wrapscan                             " Set the search scan to wrap around the file
 set virtualedit=block                    " Allow the cursor to go in to invalid places in visual block mode
 set breakindent
@@ -108,7 +106,6 @@ set autoindent                           " Copy the indent from the current line
 set nosmartindent
 set nocindent
 set linespace=0
-" set switchbuf=newtab                     " Open new buffers always in new tabs
 set splitright                           " Split vertical windows right to the current windows
 set splitbelow                           " Split horizontal windows below to the current windows
 set autoread                             " Automatically reread changed files without asking me anything
@@ -116,7 +113,7 @@ set suffixesadd+=.js                     " Help VIM find .js files when using gf
 " set list
 " set listchars=tab:»\ ,eol:\ ,trail:·,extends:❯,precedes:❮
 set linebreak
-set showbreak=\ ↪\ 
+set showbreak=\ ↪\
 set ignorecase                           " Makes searches case insensitive if search string is all lower case
 set smartcase                            " Makes searches case SENSITIVE if search string contains an uppercase letter
 set gdefault                             " Search/replace 'globally' (on a line) by default
@@ -129,15 +126,11 @@ set nobackup
 set undolevels=1000                      " The number of undo levels to allow
 set complete-=i
 set formatoptions-=r                     " Don't add comment prefix to next line
-" set colorcolumn=120
 set completeopt=menu,menuone
 set diffopt+=vertical
 
-highlight CursorColumn guibg=#383737
-
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
-" set foldlevel=0
 set foldlevelstart=20
 
 " Time out on key codes but not mappings.
@@ -145,6 +138,24 @@ set foldlevelstart=20
 set notimeout
 set ttimeout
 set ttimeoutlen=10
+
+if has("gui_running")
+
+    " Set the tab labels
+    set guitablabel=%t\ %m
+
+    set guioptions-=T                        " Hide the toolbar
+    set guioptions-=e                        " Don't use GUI tabs
+    set guioptions-=L                        " Disable left scrollbar
+    set guioptions-=r                        " Disable right scrollbar
+
+    " Set the font
+    " set guifont=Source\ Code\ Pro:h17             " Set the font style and size
+
+    " Window size
+    set lines=35 columns=115                 " Set the window size
+
+endif
 
 " }}}
 " Wildmenu Completion --------------------------------------------- {{{
@@ -216,12 +227,70 @@ function! MyTabLabel(n)
 endfunction
 
 " }}}
+" Zoom ------------------------------------------------------------ {{{
+
+" Zoom / Restore window.
+function! s:ZoomToggle() abort
+    if exists('t:zoomed') && t:zoomed
+        execute t:zoom_winrestcmd
+        let t:zoomed = 0
+    else
+        let t:zoom_winrestcmd = winrestcmd()
+        resize
+        vertical resize
+        let t:zoomed = 1
+    endif
+endfunction
+
+command! ZoomToggle call s:ZoomToggle()
+
+" }}}
+" Reveal ---------------------------------------------------------- {{{
+
+function! s:RevealInFinder()
+  if filereadable(expand("%"))
+    let l:command = "open -R " . shellescape("%")
+  elseif getftype(expand("%:p:h")) == "dir"
+    let l:command = "open " . shellescape("%") . ":p:h"
+  else
+    let l:command = "open ."
+  endif
+
+  execute ":silent! !" . l:command
+
+  " For terminal Vim not to look messed up.
+  redraw!
+endfunction
+
+command! Reveal call <SID>RevealInFinder()
+
+" }}}
+" Flow ------------------------------------------------------------ {{{
+
+" Use locally installed flow
+let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
+
+if matchstr(local_flow, "^\/\\w") == ''
+    let local_flow= getcwd() . "/" . local_flow
+endif
+
+if executable(local_flow)
+  let g:flow#flowpath = local_flow
+endif
+
+let g:flow#showquickfix = 0
+let g:flow#autoclose = 1
+
+" }}}
 " Custom Commands ------------------------------------------------- {{{
+"
+command! CloseOthers %bd|e#
 
-command! SaveSession mksession! ~/.vim-sessions/session.vim
-command! OpenSession source ~/.vim-sessions/session.vim
+" Trim whitespace
+command! Trim %s/\s\+$//e
 
-" command! Scratch tabe ~/Desktop/Scratch.md
+" Word wrap
+command! Wrap set wrap! linebreak nolist
 
 " See all code TODOs
 command! TODO Ag TODO|FIXME
@@ -231,14 +300,9 @@ command! Vimrc tabe $MYVIMRC
 command! Reload source $MYVIMRC
 
 " Close all buffers
-" command! BDA 1,1000 bd
-command! BDA %bd
+command! BDA bufdo Bdelete
 
-" Format Selected XML
-command! -bar ToXML silent %!xmllint --encode UTF-8 --format -
-command! SetXML set ft=xml
-command! FormatXML ToXML|SetXML
-
+" TODO: move to script
 " Remove \ (caret M) from files
 command! RemoveM %s/\//g
 
@@ -249,17 +313,22 @@ command! -nargs=* TermVertical vsplit | terminal <args>
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
 
-" Open file in a new split
-nnoremap gf <C-W>gf
+nnoremap ]g :GitGutterNextHunk<CR>
+nnoremap [g :GitGutterPrevHunk<CR>
+
+nnoremap - :Buffers<CR>
+
+" Flip between two files
+nnoremap <C-e> :e#<CR>
+
+" Move between open buffers.
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-p> :bprev<CR>
 
 tnoremap <c-h> <C-\><C-N><C-w>h
 tnoremap <c-j> <C-\><C-N><C-w>j
 tnoremap <c-k> <C-\><C-N><C-w>k
 tnoremap <c-l> <C-\><C-N><C-w>l
-" inoremap <c-h> <C-\><C-N><C-w>h
-" inoremap <c-j> <C-\><C-N><C-w>j
-" inoremap <c-k> <C-\><C-N><C-w>k
-" inoremap <c-l> <C-\><C-N><C-w>l
 nnoremap <c-h> <C-w>h
 nnoremap <c-j> <C-w>j
 nnoremap <c-k> <C-w>k
@@ -277,47 +346,37 @@ nnoremap <left> :tabm -1<CR>
 nnoremap c "xc
 xnoremap c "xc
 
-" Select (charwise) the contents of the current line, excluding indentation.
+" Select the contents of the current line, excluding indentation.
 nnoremap vv ^vg_
 
 " Make ' go to the exact position
 noremap ' `
 
-" I always accidentally hit K when I mean k
-nnoremap K k
-
-" Easier to type, and I never use the default behavior.
-" noremap H ^
-" noremap L $
-" vnoremap L g_
+" I accidentally type these
+nnoremap K <nop>
+nnoremap Q <nop>
+nnoremap U <nop>
+vnoremap U <nop>
 
 " Use standard regexes
 nnoremap / /\v
 vnoremap / /\v
 
 " Keep the result in the center of the screen
-nnoremap <silent> n nzzzv
-nnoremap <silent> N Nzzzv
-nnoremap <silent> * *zzzv
-nnoremap <silent> # #zzzv
-nnoremap <silent> g* g*zzzv
-nnoremap <silent> g# g#zzzv
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap * *zzzv
+nnoremap # #zzzv
+nnoremap g* g*zzzv
+nnoremap g# g#zzzv
 
 " Yank till end of line
 nnoremap Y y$
-
-" U does some weird stuff. Remap to u
-nnoremap U u
-vnoremap U u
 
 " Keep a block selected after indenting
 vnoremap < <gv
 vnoremap > >gv
 
-" Visually select the text that was last edited/pasted
-" nmap gV `[v`]
-
-" Map ESC
 imap jj <ESC>
 
 " Movement by screen line instead of file line
@@ -336,25 +395,37 @@ nnoremap ; :
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
-" nmap S <Plug>(easymotion-bd-f)
-" nmap s <Plug>(easymotion-bd-w)
-" vmap S <Plug>(easymotion-bd-f)
-" vmap s <Plug>(easymotion-bd-w)
+nnoremap <leader>c :checktime<CR>
+
+nnoremap <Leader>v :FlowJumpToDef<CR>
+
+nnoremap <Leader>s :Obsession ./.session.vim<CR>
+nnoremap <Leader>d :source ./.session.vim<CR>
+
+nnoremap <Leader>p :PrettierAsync<CR>
+
+nnoremap <leader>o :ZoomToggle<CR>
+
+nnoremap <leader>r :Wrap<CR>
+
+nnoremap <leader>e :noh<CR>
+
+nnoremap <leader>w :w<CR>
+
+" Delete the current buffer without killing the pane
+nnoremap <leader>x :Bdelete<CR>
+
+nnoremap <leader>q :bd<CR>
 
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
 
-" Trim Whitespace
-nnoremap <Leader>ws :%s/\s\+$//e<CR>
-
 " Fugitive
-nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gb :Gblame<CR>
 
 nnoremap <leader>t :tabnew<CR>
-vnoremap <leader>t :tabnew<CR>
-
-nnoremap <leader>ww :set wrap! linebreak nolist<CR>
 
 " Toggle nerdtree
 vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
@@ -367,13 +438,13 @@ nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>l :BLines<CR>
+" nnoremap <leader>v :Tags<CR>
 
-" Ag
-nnoremap <leader>ag :Ag 
+" Search
+nnoremap <leader>a :CtrlSF<space>
 
 " }}}
 " Folding --------------------------------------------------------- {{{
-
 
 set foldtext=FoldText()
 
@@ -417,9 +488,9 @@ endfunction
 
 " --- Prettier ------------ {{{
 
+let g:prettier#exec_cmd_async = 1
 let g:prettier#quickfix_enabled = 0
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
 
 " }}}
 " --- ALE ----------------- {{{
@@ -430,8 +501,8 @@ let g:ale_linters = {
 highlight clear ALEErrorSign " otherwise uses error bg color (typically red)
 highlight clear ALEWarningSign " otherwise uses error bg color (typically red)
 
-let g:ale_sign_error = 'X' " could use emoji
-let g:ale_sign_warning = '?' " could use emoji
+let g:ale_sign_error = '**'
+let g:ale_sign_warning = '**'
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'
 
@@ -439,8 +510,13 @@ let g:ale_echo_msg_format = '%linter% says %s'
 " --- Airline ------------- {{{
 
 let g:airline#extensions#whitespace#enabled = 0
-let g:airline_left_sep=''
-let g:airline_right_sep=''
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+let g:airline_detect_paste = 0
+let g:airline_section_b = ''
+let g:airline_section_x = ''
+let g:airline_section_y = ''
+let g:airline_section_z = airline#section#create(['%{fugitive#head()}'])
 
 " }}}
 " --- Ultisnips ----------- {{{
@@ -456,16 +532,6 @@ let g:mta_use_matchparen_group = 0
 highlight MatchTag ctermfg=black ctermbg=darkgrey guifg=black guibg=darkgrey
 
 " }}}
-" --- EasyMotion ---------- {{{
-
-" let g:EasyMotion_do_mapping = 0 " Disable default mappings
-" let g:EasyMotion_use_smartsign_us = 1
-" let g:EasyMotion_smartcase = 1
-
-" hi EasyMotionTarget2First cterm=bold gui=bold ctermbg=none ctermfg=red
-" hi EasyMotionTarget2Second cterm=bold gui=bold ctermbg=none ctermfg=lightred
-
-" }}}
 " --- Javascript ---------- {{{
 
 set conceallevel=1
@@ -475,9 +541,9 @@ let g:javascript_plugin_flow = 1
 " --- FZF ----------------- {{{
 
 function! s:make_path(path)
-  let bPath = expand('%:p:h')
+  let bufferPath = expand('%:p:h')
   let fPath = system("realpath " . join(a:path))
-  let relPath = system("relative-path " . bPath . " " . fPath)
+  let relPath = system("relative-path " . bufferPath . " " . fPath)
   let relPathNoExtension = system("strip-extension " . relPath)
   return substitute(relPathNoExtension, '\n\+$', '', '')
 endfunction
@@ -486,6 +552,44 @@ endfunction
 inoremap <expr> <c-h> fzf#complete(fzf#wrap({
   \ 'source':  'ag -g ""',
   \ 'reducer': function('<sid>make_path')}))
+
+" }}}
+" --- GitGutter ----------- {{{
+
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '~'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_modified_removed = '-'
+
+
+" }}}
+" --- CloseTag ------------ {{{
+
+let g:closetag_filenames = '*.html,*.xhtml,*.jsx'
+
+" }}}
+" --- NerdTree ------------ {{{
+
+" Show the bookmarks table on startup
+let NERDTreeShowBookmarks=0
+
+" Show hidden files, too
+let NERDTreeShowFiles=1
+
+" Quit on opening files from the tree
+let NERDTreeQuitOnOpen=0
+
+" Highlight the selected entry in the tree
+let NERDTreeHighlightCursorline=1
+
+" Use a single click to fold/unfold directories and a double click to open files
+let NERDTreeMouseMode=2
+
+" Allow NerdTree to change Vim's CD
+let NERDTreeChDirMode=2
+
+" Automatically remove a buffer when a file is being deleted or renamed via a context menu command
+let NERDTreeAutoDeleteBuffer=1
 
 " }}}
 
@@ -497,13 +601,13 @@ inoremap <expr> <c-h> fzf#complete(fzf#wrap({
 " Only show cursorline in the current window and in normal mode.
 augroup cursor_line
     au!
-    au WinLeave,InsertEnter * set nocursorline
     au WinEnter,InsertLeave * set cursorline
 augroup END
 
 " }}}
 " --- Window Resize ------- {{{
 
+" Resize panes when the window is resized
 augroup window_resize
     au!
     au VimResized * :wincmd =
@@ -562,4 +666,19 @@ augroup ft_javascript
 augroup END
 
 " }}}
+" --- Misc ---------- {{{
+
+" Remove trailing whitespace
+augroup remove_trailing_whitespace
+    autocmd!
+    autocmd BufWritePre * :%s/\s\+$//e
+augroup end
+
+augroup reload_vimrc
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup end
+
+" }}}
+
 " }}}
