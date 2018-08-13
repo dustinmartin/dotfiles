@@ -14,7 +14,8 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'dyng/ctrlsf.vim'
-Plug 'scrooloose/nerdtree'
+" Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-vinegar'
 
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
@@ -35,9 +36,11 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 Plug 'alvan/vim-closetag'
+Plug 'machakann/vim-highlightedyank'
 
 " Language Support
 Plug 'flowtype/vim-flow'
@@ -75,7 +78,7 @@ set fileformats=unix,mac,dos
 set hidden                               " Allow unsaved buffers to be hidden
 set nowrap                               " Turn word wrapping off. :set wrap turns it back on.
 set tabpagemax=50                        " Increase the number of allowed tabs
-set showtabline=0                        " Always show the tabline
+set showtabline=0                        " Hide tabs
 set ruler                                " Turn on row,column dislay on status bar
 set backspace=2                          " Allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,]               " Backspace and cursor keys wrap too
@@ -118,7 +121,7 @@ set ignorecase                           " Makes searches case insensitive if se
 set smartcase                            " Makes searches case SENSITIVE if search string contains an uppercase letter
 set gdefault                             " Search/replace 'globally' (on a line) by default
 set incsearch                            " Start searching before pressing enter
-set inccommand=nosplit
+set inccommand=split
 set showmatch                            " Highlight the matching bracket when one is inserted
 set hlsearch                             " Highlight search results (as you type)
 set noswapfile
@@ -313,13 +316,17 @@ command! -nargs=* TermVertical vsplit | terminal <args>
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
 
+" Alow enter to insert new line in normal mode
+nmap <CR> :a<CR><CR>.<CR>
+
 nnoremap ]g :GitGutterNextHunk<CR>
 nnoremap [g :GitGutterPrevHunk<CR>
 
-nnoremap - :Buffers<CR>
+" nnoremap - :Buffers<CR>
 
 " Flip between two files
-nnoremap <C-e> :e#<CR>
+nnoremap <silent> <C-e> :e#<CR>
+inoremap <silent> <C-e> <esc>:e#<CR>
 
 " Move between open buffers.
 nnoremap <C-n> :bnext<CR>
@@ -516,7 +523,7 @@ let g:airline_detect_paste = 0
 let g:airline_section_b = ''
 let g:airline_section_x = ''
 let g:airline_section_y = ''
-let g:airline_section_z = airline#section#create(['%{fugitive#head()}'])
+" let g:airline_section_z = airline#section#create(['%{fugitive#head()}'])
 
 " }}}
 " --- Ultisnips ----------- {{{
@@ -590,6 +597,11 @@ let NERDTreeChDirMode=2
 
 " Automatically remove a buffer when a file is being deleted or renamed via a context menu command
 let NERDTreeAutoDeleteBuffer=1
+
+" }}}
+" --- Markdown ------------ {{{
+
+let g:vim_markdown_conceal = 0
 
 " }}}
 

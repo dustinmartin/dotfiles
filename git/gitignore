@@ -1,3 +1,4 @@
+*.netrwhist
 Session.vim
 .session.vim
 tags
