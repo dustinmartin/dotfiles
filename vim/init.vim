@@ -14,12 +14,13 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'dyng/ctrlsf.vim'
-" Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-vinegar'
 
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'ervandew/supertab'
+" Plug 'ajh17/VimCompletesMe'
 
 " Version Control
 Plug 'tpope/vim-fugitive'
@@ -40,7 +41,6 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 Plug 'alvan/vim-closetag'
-Plug 'machakann/vim-highlightedyank'
 
 " Language Support
 Plug 'flowtype/vim-flow'
@@ -51,6 +51,12 @@ Plug 'fatih/vim-go'
 
 " Color Schemes
 Plug 'mhartington/oceanic-next'
+Plug 'tyrannicaltoucan/vim-quantum'
+Plug 'chriskempson/base16-vim'
+
+" Tmux Support
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tmux-plugins/vim-tmux-focus-events'
 
 " All of your Plugins must be added before the following line
 call plug#end()
@@ -58,18 +64,22 @@ call plug#end()
 " }}}
 " Vim Settings ---------------------------------------------------- {{{
 
-if (has("termguicolors"))
-  set termguicolors
-endif
-
 syntax on                                " Enable syntax highlighting
 filetype plugin indent on                " Detect and handle filetypes
 
 let mapleader = ","                      " Set leader key to comma
 let maplocalleader = ","
 
-let g:airline_theme='oceanicnext'
-colorscheme OceanicNext
+" This block get's 256 colors working with base16
+" https://github.com/chriskempson/base16-shell
+" https://github.com/aaron-williamson/base16-alacritty
+" https://github.com/chriskempson/base16-vim
+" https://github.com/chriskempson/base16-iterm2
+set notermguicolors
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
 
 set shell=/bin/zsh                       " Setting shell to zsh
 set fileencoding=utf-8
@@ -90,7 +100,6 @@ set sidescroll=1                         " Number of columns to scroll horizonta
 set sidescrolloff=10                     " Number of columns to keep to the left and right of cursor
 set scrolloff=1                          " Number of rows to keep above/below the cursor
 set mouse=a                              " Enable mouse
-set showcmd                              " Show command in bottom right of window
 set clipboard=unnamed                    " Default to the system clipboard
 set showmode                             " Show the current Vim mode
 set wrapscan                             " Set the search scan to wrap around the file
@@ -113,8 +122,7 @@ set splitright                           " Split vertical windows right to the c
 set splitbelow                           " Split horizontal windows below to the current windows
 set autoread                             " Automatically reread changed files without asking me anything
 set suffixesadd+=.js                     " Help VIM find .js files when using gf
-" set list
-" set listchars=tab:»\ ,eol:\ ,trail:·,extends:❯,precedes:❮
+set suffixesadd+=.jsx                    " Help VIM find .jsx files when using gf
 set linebreak
 set showbreak=\ ↪\
 set ignorecase                           " Makes searches case insensitive if search string is all lower case
@@ -131,6 +139,9 @@ set complete-=i
 set formatoptions-=r                     " Don't add comment prefix to next line
 set completeopt=menu,menuone
 set diffopt+=vertical
+" set lazyredraw
+set synmaxcol=200
+set noshowcmd
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
@@ -300,6 +311,9 @@ command! TODO Ag TODO|FIXME
 
 " Edit Vimrc
 command! Vimrc tabe $MYVIMRC
+command! Aliases tabe ~/dotfiles/zsh/aliases
+command! Zshrc tabe ~/dotfiles/zsh/zshrc
+command! Tmuxconf tabe ~/dotfiles/tmux/tmux.conf
 command! Reload source $MYVIMRC
 
 " Close all buffers
@@ -316,13 +330,8 @@ command! -nargs=* TermVertical vsplit | terminal <args>
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
 
-" Alow enter to insert new line in normal mode
-nmap <CR> :a<CR><CR>.<CR>
-
 nnoremap ]g :GitGutterNextHunk<CR>
 nnoremap [g :GitGutterPrevHunk<CR>
-
-" nnoremap - :Buffers<CR>
 
 " Flip between two files
 nnoremap <silent> <C-e> :e#<CR>
@@ -374,8 +383,6 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 nnoremap * *zzzv
 nnoremap # #zzzv
-nnoremap g* g*zzzv
-nnoremap g# g#zzzv
 
 " Yank till end of line
 nnoremap Y y$
@@ -433,13 +440,6 @@ nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gb :Gblame<CR>
 
 nnoremap <leader>t :tabnew<CR>
-
-" Toggle nerdtree
-vnoremap <leader>nt <ESC> :NERDTreeToggle<CR>
-nnoremap <leader>nt :NERDTreeToggle<CR>
-
-" Open up current file in NERDTree
-nnoremap <leader>nf :NERDTree<CR><C-w>p:NERDTreeFind<CR>
 
 " FZF
 nnoremap <leader>f :Files<CR>
@@ -505,13 +505,16 @@ let g:prettier#autoformat = 0
 let g:ale_linters = {
 \  'javascript': ['flow', 'eslint']
 \}
-highlight clear ALEErrorSign " otherwise uses error bg color (typically red)
-highlight clear ALEWarningSign " otherwise uses error bg color (typically red)
 
-let g:ale_sign_error = '**'
-let g:ale_sign_warning = '**'
+" highlight clear ALEErrorSign " otherwise uses error bg color (typically red)
+" highlight clear ALEWarningSign " otherwise uses error bg color (typically red)
+
+let g:ale_sign_error = '*'
+let g:ale_sign_warning = '*'
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'
+let g:ale_set_highlights = 0
+let g:ale_lint_delay = 1000
 
 " }}}
 " --- Airline ------------- {{{
@@ -523,7 +526,7 @@ let g:airline_detect_paste = 0
 let g:airline_section_b = ''
 let g:airline_section_x = ''
 let g:airline_section_y = ''
-" let g:airline_section_z = airline#section#create(['%{fugitive#head()}'])
+let g:airline_section_z = airline#section#create(['%{fugitive#head()}'])
 
 " }}}
 " --- Ultisnips ----------- {{{
@@ -575,33 +578,15 @@ let g:gitgutter_sign_modified_removed = '-'
 let g:closetag_filenames = '*.html,*.xhtml,*.jsx'
 
 " }}}
-" --- NerdTree ------------ {{{
-
-" Show the bookmarks table on startup
-let NERDTreeShowBookmarks=0
-
-" Show hidden files, too
-let NERDTreeShowFiles=1
-
-" Quit on opening files from the tree
-let NERDTreeQuitOnOpen=0
-
-" Highlight the selected entry in the tree
-let NERDTreeHighlightCursorline=1
-
-" Use a single click to fold/unfold directories and a double click to open files
-let NERDTreeMouseMode=2
-
-" Allow NerdTree to change Vim's CD
-let NERDTreeChDirMode=2
-
-" Automatically remove a buffer when a file is being deleted or renamed via a context menu command
-let NERDTreeAutoDeleteBuffer=1
-
-" }}}
 " --- Markdown ------------ {{{
 
 let g:vim_markdown_conceal = 0
+
+" }}}
+" --- YouCompleteMe ------- {{{
+
+" let b:vcm_tab_complete = "omni"
+" let g:ycm_auto_trigger = 1
 
 " }}}
 
