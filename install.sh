@@ -17,6 +17,7 @@ mkdir -p "$HOME/Projects"
 mkdir -p "$HOME/.config"
 
 ln -s ~/dotfiles/vim ~/.config/nvim
+ln -s ~/dotfiles/alacritty ~/.config/alacritty
 ln -s ~/dotfiles/git/gitignore ~/.gitignore
 ln -s ~/dotfiles/ssh/config ~/.ssh/config
 

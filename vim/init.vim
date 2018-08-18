@@ -13,13 +13,11 @@ call plug#begin('~/.config/nvim/plugged')
 " Finding/Navigation
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'dyng/ctrlsf.vim'
 Plug 'tpope/vim-vinegar'
 
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-" Plug 'ervandew/supertab'
 " Plug 'ajh17/VimCompletesMe'
 
 " Version Control
@@ -41,6 +39,7 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 Plug 'alvan/vim-closetag'
+Plug 'rhysd/clever-f.vim'
 
 " Language Support
 Plug 'flowtype/vim-flow'
@@ -50,8 +49,6 @@ Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'fatih/vim-go'
 
 " Color Schemes
-Plug 'mhartington/oceanic-next'
-Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'chriskempson/base16-vim'
 
 " Tmux Support
@@ -126,6 +123,7 @@ set suffixesadd+=.jsx                    " Help VIM find .jsx files when using g
 set linebreak
 set showbreak=\ ↪\
 set ignorecase                           " Makes searches case insensitive if search string is all lower case
+set infercase
 set smartcase                            " Makes searches case SENSITIVE if search string contains an uppercase letter
 set gdefault                             " Search/replace 'globally' (on a line) by default
 set incsearch                            " Start searching before pressing enter
@@ -142,6 +140,8 @@ set diffopt+=vertical
 " set lazyredraw
 set synmaxcol=200
 set noshowcmd
+set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+set grepformat=%f:%l:%c:%m,%f:%l:%m
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
@@ -154,7 +154,6 @@ set ttimeout
 set ttimeoutlen=10
 
 if has("gui_running")
-
     " Set the tab labels
     set guitablabel=%t\ %m
 
@@ -163,12 +162,8 @@ if has("gui_running")
     set guioptions-=L                        " Disable left scrollbar
     set guioptions-=r                        " Disable right scrollbar
 
-    " Set the font
-    " set guifont=Source\ Code\ Pro:h17             " Set the font style and size
-
     " Window size
     set lines=35 columns=115                 " Set the window size
-
 endif
 
 " }}}
@@ -259,6 +254,16 @@ endfunction
 command! ZoomToggle call s:ZoomToggle()
 
 " }}}
+" Visual Macros --------------------------------------------------- {{{
+
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
+endfunction
+
+" }}}
 " Reveal ---------------------------------------------------------- {{{
 
 function! s:RevealInFinder()
@@ -316,6 +321,9 @@ command! Zshrc tabe ~/dotfiles/zsh/zshrc
 command! Tmuxconf tabe ~/dotfiles/tmux/tmux.conf
 command! Reload source $MYVIMRC
 
+" Count the occurences
+command! Count :%~n
+
 " Close all buffers
 command! BDA bufdo Bdelete
 
@@ -330,6 +338,14 @@ command! -nargs=* TermVertical vsplit | terminal <args>
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
 
+" Easily change the word under the cursor and repeat
+nnoremap c* *Ncgn
+nnoremap c# #NcgN
+
+" Duplicate the current selection
+vnoremap D y'>p
+
+" Move to the next changed hunk
 nnoremap ]g :GitGutterNextHunk<CR>
 nnoremap [g :GitGutterPrevHunk<CR>
 
@@ -341,6 +357,7 @@ inoremap <silent> <C-e> <esc>:e#<CR>
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprev<CR>
 
+" Make it easy to jump between panes
 tnoremap <c-h> <C-\><C-N><C-w>h
 tnoremap <c-j> <C-\><C-N><C-w>j
 tnoremap <c-k> <C-\><C-N><C-w>k
@@ -369,7 +386,7 @@ nnoremap vv ^vg_
 noremap ' `
 
 " I accidentally type these
-nnoremap K <nop>
+" nnoremap K <nop>
 nnoremap Q <nop>
 nnoremap U <nop>
 vnoremap U <nop>
@@ -405,6 +422,9 @@ nnoremap <up> gk
 " Remap ; to :
 vnoremap ; :
 nnoremap ; :
+
+" Lookup the word under the cursor
+nnoremap K :Ag \b<C-R><C-W>\b<CR>
 
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
@@ -445,10 +465,9 @@ nnoremap <leader>t :tabnew<CR>
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>l :BLines<CR>
-" nnoremap <leader>v :Tags<CR>
 
 " Search
-nnoremap <leader>a :CtrlSF<space>
+nnoremap <leader>a :Ag<space>
 
 " }}}
 " Folding --------------------------------------------------------- {{{
@@ -506,9 +525,12 @@ let g:ale_linters = {
 \  'javascript': ['flow', 'eslint']
 \}
 
+" let g:ale_fixers = {}
+" let g:ale_fixers['javascript'] = ['prettier']
 " highlight clear ALEErrorSign " otherwise uses error bg color (typically red)
 " highlight clear ALEWarningSign " otherwise uses error bg color (typically red)
 
+" let g:ale_fix_on_save = 1
 let g:ale_sign_error = '*'
 let g:ale_sign_warning = '*'
 let g:ale_statusline_format = ['X %d', '? %d', '']
@@ -593,6 +615,15 @@ let g:vim_markdown_conceal = 0
 " }}}
 " Autocmd --------------------------------------------------------- {{{
 
+" --- AutoSave/Read ------- {{{
+
+augroup autoSaveAndRead
+    autocmd!
+    autocmd TextChanged,InsertLeave,FocusLost * silent! wall
+    autocmd CursorHold * silent! checktime
+augroup END
+
+" }}}
 " --- CursorLine ---------- {{{
 
 " Only show cursorline in the current window and in normal mode.
