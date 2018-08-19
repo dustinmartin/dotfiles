@@ -47,6 +47,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'moll/vim-node'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'fatih/vim-go'
+Plug 'tpope/vim-scriptease'
 
 " Color Schemes
 Plug 'chriskempson/base16-vim'
@@ -256,7 +257,7 @@ command! ZoomToggle call s:ZoomToggle()
 " }}}
 " Visual Macros --------------------------------------------------- {{{
 
-xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<cr>
 
 function! ExecuteMacroOverVisualRange()
   echo "@".getcmdline()
@@ -309,7 +310,7 @@ command! CloseOthers %bd|e#
 command! Trim %s/\s\+$//e
 
 " Word wrap
-command! Wrap set wrap! linebreak nolist
+command! Wrap setlocal wrap! linebreak nolist
 
 " See all code TODOs
 command! TODO Ag TODO|FIXME
@@ -346,16 +347,16 @@ nnoremap c# #NcgN
 vnoremap D y'>p
 
 " Move to the next changed hunk
-nnoremap ]g :GitGutterNextHunk<CR>
-nnoremap [g :GitGutterPrevHunk<CR>
+nnoremap ]g :GitGutterNextHunk<cr>
+nnoremap [g :GitGutterPrevHunk<cr>
 
 " Flip between two files
-nnoremap <silent> <C-e> :e#<CR>
-inoremap <silent> <C-e> <esc>:e#<CR>
+nnoremap <silent> <C-e> :e#<cr>
+inoremap <silent> <C-e> <esc>:e#<cr>
 
 " Move between open buffers.
-nnoremap <C-n> :bnext<CR>
-nnoremap <C-p> :bprev<CR>
+nnoremap <C-n> :bnext<cr>
+nnoremap <C-p> :bprev<cr>
 
 " Make it easy to jump between panes
 tnoremap <c-h> <C-\><C-N><C-w>h
@@ -372,8 +373,8 @@ nnoremap zE <nop>
 vnoremap zE <nop>
 
 " Move tabs
-nnoremap <right> :tabm +1<CR>
-nnoremap <left> :tabm -1<CR>
+nnoremap <right> :tabm +1<cr>
+nnoremap <left> :tabm -1<cr>
 
 " Don't yank to default register when changing something, e.g. ciw, ci(
 nnoremap c "xc
@@ -408,7 +409,7 @@ nnoremap Y y$
 vnoremap < <gv
 vnoremap > >gv
 
-imap jj <ESC>
+inoremap kj <esc>
 
 " Movement by screen line instead of file line
 nnoremap j gj
@@ -424,47 +425,45 @@ vnoremap ; :
 nnoremap ; :
 
 " Lookup the word under the cursor
-nnoremap K :Ag \b<C-R><C-W>\b<CR>
+nnoremap K :Ag \b<C-R><C-W>\b<cr>
 
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
-nnoremap <leader>c :checktime<CR>
+nnoremap <leader>c :checktime<cr>
 
-nnoremap <Leader>v :FlowJumpToDef<CR>
+nnoremap <Leader>v :FlowJumpToDef<cr>
 
-nnoremap <Leader>s :Obsession ./.session.vim<CR>
-nnoremap <Leader>d :source ./.session.vim<CR>
+nnoremap <Leader>s :Obsession ./.session.vim<cr>
+nnoremap <Leader>d :source ./.session.vim<cr>
 
-nnoremap <Leader>p :PrettierAsync<CR>
+nnoremap <Leader>p :PrettierAsync<cr>
 
-nnoremap <leader>o :ZoomToggle<CR>
+nnoremap <leader>o :ZoomToggle<cr>
 
-nnoremap <leader>r :Wrap<CR>
+nnoremap <leader>e :noh<cr>
 
-nnoremap <leader>e :noh<CR>
-
-nnoremap <leader>w :w<CR>
+nnoremap <leader>w :w<cr>
 
 " Delete the current buffer without killing the pane
-nnoremap <leader>x :Bdelete<CR>
+nnoremap <leader>x :Bdelete<cr>
 
-nnoremap <leader>q :bd<CR>
+nnoremap <leader>q :bd<cr>
 
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
 
 " Fugitive
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gd :Gdiff<CR>
-nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gb :Gblame<cr>
 
-nnoremap <leader>t :tabnew<CR>
+nnoremap <leader>t :tabnew<cr>
 
 " FZF
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>l :BLines<CR>
+nnoremap <leader>f :Files<cr>
+nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>l :BLines<cr>
 
 " Search
 nnoremap <leader>a :Ag<space>
@@ -525,14 +524,9 @@ let g:ale_linters = {
 \  'javascript': ['flow', 'eslint']
 \}
 
-" let g:ale_fixers = {}
-" let g:ale_fixers['javascript'] = ['prettier']
-" highlight clear ALEErrorSign " otherwise uses error bg color (typically red)
-" highlight clear ALEWarningSign " otherwise uses error bg color (typically red)
-
 " let g:ale_fix_on_save = 1
-let g:ale_sign_error = '*'
-let g:ale_sign_warning = '*'
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '>>'
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'
 let g:ale_set_highlights = 0
@@ -572,18 +566,32 @@ let g:javascript_plugin_flow = 1
 " }}}
 " --- FZF ----------------- {{{
 
-function! s:make_path(path)
-  let bufferPath = expand('%:p:h')
-  let fPath = system("realpath " . join(a:path))
-  let relPath = system("relative-path " . bufferPath . " " . fPath)
-  let relPathNoExtension = system("strip-extension " . relPath)
+function! s:GetRelativePath(targetFile)
+  " When a file is chozen from FZF, the script gets the file path
+  " relative to Vim's current working directory of vim (pwd). It
+  " passes in an array. We need to join that array together before
+  " operating on it.
+  let targetFilePath = join(a:targetFile)
+
+  " Convert the relative path to a full path
+  let targetFileAbsolutePath = fnamemodify(targetFilePath, ':p')
+
+  " Get the directory of the current open buffer
+  let currentFileDirectory = expand('%:p:h')
+
+  " Now call the Golang script (in dotfiles) that calculates
+  " the relative path between the two paths
+  let relativePath = system("relative-path " . currentFileDirectory . " " . targetFileAbsolutePath)
+
+  " Now strip the extentions off the file
+  let relPathNoExtension = system("strip-extension " . relativePath)
+
+  " Remove any new lines from the path
   return substitute(relPathNoExtension, '\n\+$', '', '')
 endfunction
 
 " Get the relative path of a file
-inoremap <expr> <c-h> fzf#complete(fzf#wrap({
-  \ 'source':  'ag -g ""',
-  \ 'reducer': function('<sid>make_path')}))
+inoremap <expr> <c-h> fzf#complete(fzf#wrap({ 'reducer': function('<sid>GetRelativePath') }))
 
 " }}}
 " --- GitGutter ----------- {{{
@@ -628,8 +636,8 @@ augroup END
 
 " Only show cursorline in the current window and in normal mode.
 augroup cursor_line
-    au!
-    au WinEnter,InsertLeave * set cursorline
+    autocmd!
+    autocmd WinEnter,InsertLeave * set cursorline
 augroup END
 
 " }}}
@@ -637,60 +645,53 @@ augroup END
 
 " Resize panes when the window is resized
 augroup window_resize
-    au!
-    au VimResized * :wincmd =
+    autocmd!
+    autocmd VimResized * :wincmd =
 augroup END
 
 " }}}
 " --- Python -------------- {{{
 
 augroup ft_python
-    au!
-
-    au FileType python setlocal foldmethod=indent
+    autocmd!
+    autocmd FileType python setlocal foldmethod=indent
 augroup END
 
 " }}}
 " --- Vim ----------------- {{{
 
 augroup ft_vim
-    au!
-
-    au FileType vim setlocal foldmethod=marker
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
 " }}}
 " --- CSS ----------------- {{{
 
 augroup ft_css
-    au!
-
-    au BufNewFile,BufRead *.less setlocal filetype=less
-    au BufNewFile,BufRead *.scss setlocal filetype=sass
-    au BufNewFile,BufRead *.sass setlocal filetype=sass
-
-    au Filetype less,css,sass setlocal foldmethod=marker
-    au Filetype less,css,sass setlocal foldmarker={,}
+    autocmd!
+    autocmd BufNewFile,BufRead *.less setlocal filetype=less
+    autocmd BufNewFile,BufRead *.scss setlocal filetype=sass
+    autocmd BufNewFile,BufRead *.sass setlocal filetype=sass
+    autocmd Filetype less,css,sass setlocal foldmethod=marker
+    autocmd Filetype less,css,sass setlocal foldmarker={,}
 augroup END
 
 " }}}
 " --- JSON ---------------- {{{
 
 augroup ft_json
-    au!
-
-    au BufNewFile,BufRead *.json setlocal filetype=json
-
-    au FileType json setlocal foldmarker={,}
+    autocmd!
+    autocmd BufNewFile,BufRead *.json setlocal filetype=json
+    autocmd FileType json setlocal foldmarker={,}
 augroup END
 
 " }}}
 " --- Javascript ---------- {{{
 
 augroup ft_javascript
-    au!
-
-    au FileType javascript setlocal foldmethod=syntax
+    autocmd!
+    autocmd FileType javascript setlocal foldmethod=syntax
 augroup END
 
 " }}}
