@@ -118,7 +118,9 @@ describe('$1', () => {
 endsnippet
 
 snippet ite "it - empty" b
-it('$1');$2
+xit('$1', () => {
+	throw new Error('fail');
+});$2
 endsnippet
 
 snippet it "it - function" b

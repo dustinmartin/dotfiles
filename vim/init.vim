@@ -42,12 +42,14 @@ Plug 'alvan/vim-closetag'
 Plug 'rhysd/clever-f.vim'
 
 " Language Support
+Plug 'metakirby5/codi.vim'
 Plug 'flowtype/vim-flow'
 Plug 'sheerun/vim-polyglot'
 Plug 'moll/vim-node'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'fatih/vim-go'
 Plug 'tpope/vim-scriptease'
+Plug 'suy/vim-context-commentstring'
 
 " Color Schemes
 Plug 'chriskempson/base16-vim'
@@ -142,7 +144,7 @@ set diffopt+=vertical
 set synmaxcol=200
 set noshowcmd
 set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
-set grepformat=%f:%l:%c:%m,%f:%l:%m
+set grepformat=%f:%l:%m,%f:%l:%m
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
@@ -387,7 +389,6 @@ nnoremap vv ^vg_
 noremap ' `
 
 " I accidentally type these
-" nnoremap K <nop>
 nnoremap Q <nop>
 nnoremap U <nop>
 vnoremap U <nop>
@@ -410,6 +411,7 @@ vnoremap < <gv
 vnoremap > >gv
 
 inoremap kj <esc>
+inoremap jj <esc>
 
 " Movement by screen line instead of file line
 nnoremap j gj
@@ -437,7 +439,7 @@ nnoremap <Leader>v :FlowJumpToDef<cr>
 nnoremap <Leader>s :Obsession ./.session.vim<cr>
 nnoremap <Leader>d :source ./.session.vim<cr>
 
-nnoremap <Leader>p :PrettierAsync<cr>
+nnoremap <Leader>p :PrettierAsync<cr>:w<cr>
 
 nnoremap <leader>o :ZoomToggle<cr>
 
