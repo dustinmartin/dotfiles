@@ -1,0 +1,12 @@
+# /Users/dmartin2/.config/tmuxinator/blog.yml
+
+name: Blog
+root: ~/Projects/Personal/dustinmartin.net
+
+windows:
+  - Editor:
+      layout: main-vertical
+      panes:
+        - vim
+        -
+  - Server: hugo server

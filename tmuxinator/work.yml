@@ -1,0 +1,27 @@
+# /Users/dmartin2/.config/tmuxinator/daily.yml
+
+name: Work
+root: ~/
+
+windows:
+  - CASSI:
+      root: ~/Projects/Atlassian/cassi
+      layout: main-vertical
+      panes:
+        - vim
+        - yarn test
+  - Hydra API:
+      root: ~/Projects/Atlassian/hydra-api
+      layout: main-vertical
+      panes:
+        -
+        -
+  - Dotfiles:
+      root: ~/dotfiles
+      layout: main-vertical
+      panes:
+        - vim ~/dotfiles
+  - Top:
+      layout: main-vertical
+      panes:
+        - htop
