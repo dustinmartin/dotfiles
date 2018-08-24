@@ -39,7 +39,7 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 Plug 'alvan/vim-closetag'
-Plug 'rhysd/clever-f.vim'
+
 
 " Language Support
 Plug 'metakirby5/codi.vim'
@@ -148,7 +148,7 @@ set grepformat=%f:%l:%m,%f:%l:%m
 
 " What actions open a fold?
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
-set foldlevelstart=20
+set foldlevelstart=99
 
 " Time out on key codes but not mappings.
 " Basically this makes terminal Vim work sanely.
@@ -330,7 +330,7 @@ command! Count :%~n
 " Close all buffers
 command! BDA bufdo Bdelete
 
-" TODO: move to script
+" TODO: Move to script
 " Remove \ (caret M) from files
 command! RemoveM %s/\//g
 
@@ -528,7 +528,7 @@ let g:ale_linters = {
 
 " let g:ale_fix_on_save = 1
 let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '>>'
+let g:ale_sign_warning = '--'
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'
 let g:ale_set_highlights = 0
@@ -694,9 +694,21 @@ augroup END
 augroup ft_javascript
     autocmd!
     autocmd FileType javascript setlocal foldmethod=syntax
+    autocmd BufNewFile,BufRead .eslintrc setlocal filetype=JavaScript
+    autocmd BufNewFile,BufRead .babelrc setlocal filetype=JavaScript
 augroup END
 
 " }}}
+" --- Shell --------------- {{{
+
+augroup ft_zsh
+    autocmd!
+    autocmd BufNewFile,BufRead *aliases setlocal filetype=zsh
+    autocmd BufNewFile,BufRead *zsh* setlocal filetype=zsh
+augroup END
+
+" }}}
+
 " --- Misc ---------- {{{
 
 " Remove trailing whitespace
@@ -711,5 +723,11 @@ augroup reload_vimrc
 augroup end
 
 " }}}
+
+" }}}
+" Project Specific Commands --------------------------------------- {{{
+
+" CASSI
+command! LocalSecret :e ~/Projects/Atlassian/cassi/config/env/includes/local-secret.js
 
 " }}}

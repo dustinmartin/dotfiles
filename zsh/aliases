@@ -3,6 +3,12 @@ alias ...="cd ../.."
 
 alias ctags="`brew --prefix`/bin/ctags"
 
+alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+
+alias cat='bat'
+
 # Vim aliases
 alias vi='nvim'
 alias vim='nvim'
@@ -46,6 +52,7 @@ alias gm='g merge'
 alias gsp='git stash push' # Push is implied with `git stash` but push allows a file to be specified without -- separator
 alias gspi='git stash push --patch'
 alias gspp='git stash pop'
+alias gua='git reset HEAD --'
 
 # More succinct status
 alias gs='g status -sb'
