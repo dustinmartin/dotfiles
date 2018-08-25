@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -e
+
+audio_file=$1
+
+# Gets the audio file length in seconds
+audio_length=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$audio_file")
+
+node -e "console.log(Math.ceil($audio_length))"
