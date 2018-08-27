@@ -8,5 +8,4 @@ windows:
       layout: main-vertical
       panes:
         - vim
-        -
-  - Server: hugo server
+        - hugo server

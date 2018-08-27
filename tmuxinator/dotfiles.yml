@@ -1,0 +1,24 @@
+# /Users/dmartin2/.config/tmuxinator/dotfiles.yml
+
+name: Dotfiles
+root: ~/dotsfiles
+
+windows:
+  - Vim:
+      layout: main-vertical
+      root: ~/dotfiles/vim
+      panes:
+        - vim ~/dotfiles/vim/init.vim
+  - Zsh:
+      layout: main-vertical
+      root: ~/dotfiles/zsh
+      panes:
+        - vim ~/dotfiles/zsh/zshrc
+  - Tmux:
+      layout: main-vertical
+      root: ~/dotfiles/tmux
+      panes:
+        - vim ~/dotfiles/tmux/tmux.conf
+  - Bin:
+      layout: main-vertical
+      root: ~/dotfiles/bin

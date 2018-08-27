@@ -28,8 +28,12 @@ const filePath = `${blog}/${year}/${slug}.md`;
 
 writeFileSync(filePath, frontMatter);
 
-exec(`code ${filePath}`);
+execSync(`echo "${filePath}" | pbcopy`)
 
-console.log(`Created '${filePath}'`);
+console.log(`Created '${filePath}'.`);
+console.log('Copied file name to clipboard.\n');
+console.log('Opening browser to http://localhost:1313/')
+execSync(`open http://localhost:1313`)
+console.log('Ensure the Hugo is running with `hugo server`\n');
 
 process.exit(0);
