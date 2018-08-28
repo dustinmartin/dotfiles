@@ -13,9 +13,6 @@ alias cat='bat'
 alias vi='nvim'
 alias vim='nvim'
 
-# List TODOs
-alias todo='ag "TODO|FIXME"'
-
 # Jump to a directory
 alias j='fasd_cd -d'
 

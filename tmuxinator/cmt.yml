@@ -1,0 +1,12 @@
+# /Users/dmartin2/.config/tmuxinator/cmt.yml
+
+name: CMT
+root: ~/Projects/Atlassian/cac-cms-infrastructure
+
+windows:
+  - Code:
+      layout: main-vertical
+      panes:
+        - vim
+        - 
+  - Docker:

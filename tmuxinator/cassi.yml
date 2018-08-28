@@ -1,10 +1,10 @@
 # /Users/dmartin2/.config/tmuxinator/daily.yml
 
-name: Work
+name: CASSI
 root: ~/
 
 windows:
-  - CASSI:
+  - Code:
       root: ~/Projects/Atlassian/cassi
       layout: main-vertical
       panes:
@@ -16,11 +16,6 @@ windows:
       panes:
         -
         -
-  - Dotfiles:
-      root: ~/dotfiles
-      layout: main-vertical
-      panes:
-        - vim ~/dotfiles
   - Top:
       layout: main-vertical
       panes:
