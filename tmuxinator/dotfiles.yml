@@ -1,7 +1,7 @@
 # /Users/dmartin2/.config/tmuxinator/dotfiles.yml
 
 name: Dotfiles
-root: ~/dotsfiles
+root: ~/dotfiles
 
 windows:
   - Vim:

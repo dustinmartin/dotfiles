@@ -14,6 +14,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-vinegar'
+" Plug 'scrooloose/nerdtree'
 
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
@@ -39,7 +40,6 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 Plug 'alvan/vim-closetag'
-
 
 " Language Support
 Plug 'metakirby5/codi.vim'
@@ -331,12 +331,19 @@ command! Count :%~n
 command! BDA bufdo Bdelete
 
 " TODO: Move to script
-" Remove \ (caret M) from files
+" Remove \ (Windows line endings) from files
 command! RemoveM %s/\//g
 
 " Terminal commands
 command! -nargs=* TermHorizontal split | terminal <args>
 command! -nargs=* TermVertical vsplit | terminal <args>
+
+" Run ESLint and populate the quick fix list
+let local_eslint = findfile('node_modules/.bin/eslint', '.;')
+let local_eslint_ignore = findfile('.eslintignore', '.;')
+
+" TODO: Add if statement for when eslint or eslintignore doesn't exist
+command! ESLint cexpr system(local_eslint . ' --cache --ext .jsx --ext .js --ignore-path ' . local_eslint_ignore . ' --fix --format unix .')
 
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
@@ -427,7 +434,7 @@ vnoremap ; :
 nnoremap ; :
 
 " Lookup the word under the cursor
-nnoremap K :Ag \b<C-R><C-W>\b<cr>
+nnoremap K :Ag <C-R><C-W><cr>
 
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
@@ -518,6 +525,15 @@ endfunction
 let g:prettier#exec_cmd_async = 1
 let g:prettier#quickfix_enabled = 0
 let g:prettier#autoformat = 0
+
+" }}}
+" --- NerdTree ------------ {{{
+
+" let NERDTreeDirArrows = 1
+" let NERDTreeAutoDeleteBuffer = 1
+" let NERDTreeQuitOnOpen = 1
+
+" nnoremap - :NERDTreeToggle<cr>
 
 " }}}
 " --- ALE ----------------- {{{

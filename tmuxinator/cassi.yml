@@ -9,14 +9,10 @@ windows:
       layout: main-vertical
       panes:
         - vim
-        - yarn test
+        - 
   - Hydra API:
       root: ~/Projects/Atlassian/hydra-api
       layout: main-vertical
       panes:
         -
         -
-  - Top:
-      layout: main-vertical
-      panes:
-        - htop

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+fromPath=$1
+toPath=$2
+
+# This will copy all the files in a folder,
+# including # hidden files, to a new folder
+# cp -ri "$fromPath/." "$toPath"
+rsync -a "$fromPath/." "$toPath" --exclude .git

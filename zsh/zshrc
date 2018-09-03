@@ -9,7 +9,6 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 
 dark () {
   base16_solarflare
-  # base16_oceanicnext
 }
 
 light () {
@@ -38,7 +37,7 @@ man() {
 }
 
 # Make FZF ignore files on .gitignore by piping to Ag
-export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
 
 # Load FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -51,6 +50,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export NVM_SCRIPT="$NVM_DIR/nvm.sh"
+
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # place this after nvm initialization!
 # autoload -U add-zsh-hook

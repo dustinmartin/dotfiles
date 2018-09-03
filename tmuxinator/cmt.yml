@@ -4,9 +4,20 @@ name: CMT
 root: ~/Projects/Atlassian/cac-cms-infrastructure
 
 windows:
-  - Code:
+  - CMT:
+      layout: main-vertical
+      panes:
+        -
+  - Content Gateway:
+      root: ~/Projects/Atlassian/cac-cms-infrastructure/src/content-gateway
       layout: main-vertical
       panes:
         - vim
-        - 
+        -
+  - Content Publisher:
+      root: ~/Projects/Atlassian/cac-cms-infrastructure/src/content-publisher
+      layout: main-vertical
+      panes:
+        - vim
+        -
   - Docker:

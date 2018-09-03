@@ -1,3 +1,6 @@
+# Ripgrep ignore file
+.ignore
+
 *.netrwhist
 Session.vim
 .session.vim
