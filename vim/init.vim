@@ -14,12 +14,10 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-vinegar'
-" Plug 'scrooloose/nerdtree'
 
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-" Plug 'ajh17/VimCompletesMe'
 
 " Version Control
 Plug 'tpope/vim-fugitive'
@@ -31,7 +29,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
@@ -42,7 +40,6 @@ Plug 'cohama/lexima.vim'
 Plug 'alvan/vim-closetag'
 
 " Language Support
-Plug 'metakirby5/codi.vim'
 Plug 'flowtype/vim-flow'
 Plug 'sheerun/vim-polyglot'
 Plug 'moll/vim-node'
@@ -305,7 +302,9 @@ let g:flow#autoclose = 1
 
 " }}}
 " Custom Commands ------------------------------------------------- {{{
-"
+
+command! FixSyntax syntax sync fromstart
+
 command! CloseOthers %bd|e#
 
 " Trim whitespace
@@ -347,6 +346,15 @@ command! ESLint cexpr system(local_eslint . ' --cache --ext .jsx --ext .js --ign
 
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
+
+nnoremap ]q :cnext<cr>
+nnoremap [q :cprevious<cr>
+
+nnoremap ]l :lnext<cr>
+nnoremap [l :lprevious<cr>
+
+nnoremap ]g :GitGutterNextHunk<cr>
+nnoremap [g :GitGutterPrevHunk<cr>
 
 " Easily change the word under the cursor and repeat
 nnoremap c* *Ncgn
@@ -549,6 +557,7 @@ let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'
 let g:ale_set_highlights = 0
 let g:ale_lint_delay = 1000
+let g:ale_set_loclist = 1
 
 " }}}
 " --- Airline ------------- {{{

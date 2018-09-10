@@ -12,12 +12,9 @@ windows:
       root: ~/Projects/Atlassian/cac-cms-infrastructure/src/content-gateway
       layout: main-vertical
       panes:
-        - vim
         -
   - Content Publisher:
       root: ~/Projects/Atlassian/cac-cms-infrastructure/src/content-publisher
       layout: main-vertical
       panes:
-        - vim
         -
-  - Docker:
