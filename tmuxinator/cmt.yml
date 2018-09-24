@@ -1,7 +1,7 @@
 # /Users/dmartin2/.config/tmuxinator/cmt.yml
 
 name: CMT
-root: ~/Projects/Atlassian/cac-cms-infrastructure
+root: ~/Projects/Atlassian/cmt
 
 windows:
   - CMT:
@@ -9,12 +9,12 @@ windows:
       panes:
         -
   - Content Gateway:
-      root: ~/Projects/Atlassian/cac-cms-infrastructure/src/content-gateway
+      root: ~/Projects/Atlassian/cmt/src/content-gateway
       layout: main-vertical
       panes:
         -
   - Content Publisher:
-      root: ~/Projects/Atlassian/cac-cms-infrastructure/src/content-publisher
+      root: ~/Projects/Atlassian/cmt/src/content-publisher
       layout: main-vertical
       panes:
         -

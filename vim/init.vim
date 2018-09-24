@@ -710,7 +710,6 @@ augroup END
 augroup ft_json
     autocmd!
     autocmd BufNewFile,BufRead *.json setlocal filetype=json
-    autocmd FileType json setlocal foldmarker={,}
 augroup END
 
 " }}}
