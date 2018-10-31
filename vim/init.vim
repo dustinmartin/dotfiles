@@ -312,6 +312,7 @@ command! Trim %s/\s\+$//e
 
 " Word wrap
 command! Wrap setlocal wrap! linebreak nolist
+command! WrapAll set wrap! linebreak nolist
 
 " See all code TODOs
 command! TODO Ag TODO|FIXME
@@ -465,7 +466,7 @@ nnoremap <leader>w :w<cr>
 " Delete the current buffer without killing the pane
 nnoremap <leader>x :Bdelete<cr>
 
-nnoremap <leader>q :bd<cr>
+nnoremap <leader>r :FZFMru<cr>
 
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
@@ -592,6 +593,19 @@ let g:javascript_plugin_flow = 1
 
 " }}}
 " --- FZF ----------------- {{{
+
+function! s:all_files()
+  return extend(
+  \ filter(copy(v:oldfiles),
+  \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
+  \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
+endfunction
+
+command! FZFMru call fzf#run({
+  \ 'source':  reverse(s:all_files()),
+  \ 'sink':    'edit',
+  \ 'options': '-m -x +s',
+  \ 'down':    '40%' })
 
 function! s:GetRelativePath(targetFile)
   " When a file is chozen from FZF, the script gets the file path

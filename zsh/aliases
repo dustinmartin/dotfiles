@@ -109,3 +109,6 @@ alias gap='g add -p && g status'
 
 # Interactive rebase for squashing commits
 alias gir="g rebase -i origin/master"
+
+alias dockerstop="docker kill $(docker ps -q)"
+alias dockerclean="docker rm $(docker ps -a -q) && docker rmi $(docker images -q)"
