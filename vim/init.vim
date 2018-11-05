@@ -18,6 +18,7 @@ Plug 'tpope/vim-vinegar'
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'Quramy/tsuquyomi'
 
 " Version Control
 Plug 'tpope/vim-fugitive'
@@ -29,7 +30,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-obsession'
-" Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
@@ -42,6 +42,8 @@ Plug 'alvan/vim-closetag'
 " Language Support
 Plug 'flowtype/vim-flow'
 Plug 'sheerun/vim-polyglot'
+" YCM file path completion was breaking because of the JSX plugin
+let g:polyglot_disabled = ['jsx']
 Plug 'moll/vim-node'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'fatih/vim-go'
@@ -450,7 +452,7 @@ nnoremap K :Ag <C-R><C-W><cr>
 
 nnoremap <leader>c :checktime<cr>
 
-nnoremap <Leader>v :FlowJumpToDef<cr>
+" nnoremap <Leader>v :FlowJumpToDef<cr>
 
 nnoremap <Leader>s :Obsession ./.session.vim<cr>
 nnoremap <Leader>d :source ./.session.vim<cr>
@@ -724,6 +726,7 @@ augroup END
 augroup ft_json
     autocmd!
     autocmd BufNewFile,BufRead *.json setlocal filetype=json
+    autocmd FileType json setlocal foldmethod=syntax
 augroup END
 
 " }}}
@@ -734,6 +737,8 @@ augroup ft_javascript
     autocmd FileType javascript setlocal foldmethod=syntax
     autocmd BufNewFile,BufRead .eslintrc setlocal filetype=JavaScript
     autocmd BufNewFile,BufRead .babelrc setlocal filetype=JavaScript
+    autocmd FileType javascript nmap <buffer> <C-]> :YcmCompleter GoTo<CR>
+    autocmd FileType javascript nmap <buffer> <C-^> :YcmCompleter GoToReferences<CR>
 augroup END
 
 " }}}

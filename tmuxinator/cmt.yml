@@ -8,13 +8,3 @@ windows:
       layout: main-vertical
       panes:
         -
-  - Content Gateway:
-      root: ~/Projects/Atlassian/cmt/src/content-gateway
-      layout: main-vertical
-      panes:
-        -
-  - Content Publisher:
-      root: ~/Projects/Atlassian/cmt/src/content-publisher
-      layout: main-vertical
-      panes:
-        -
