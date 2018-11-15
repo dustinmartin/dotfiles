@@ -4,7 +4,7 @@ const { writeFileSync, readFileSync } = require('fs');
 
 const messageFilePath = process.argv[2];
 const commitMode = process.argv[3];
-const branchName = execSync('git symbolic-ref --short HEAD')
+const branchName = execSync('git rev-parse --abbrev-ref HEAD')
     .toString()
     .trim();
 const ticketPattern = /(^[A-Za-z]+-[0-9]+)/g;

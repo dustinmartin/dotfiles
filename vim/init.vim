@@ -43,7 +43,7 @@ Plug 'alvan/vim-closetag'
 Plug 'flowtype/vim-flow'
 Plug 'sheerun/vim-polyglot'
 " YCM file path completion was breaking because of the JSX plugin
-let g:polyglot_disabled = ['jsx']
+" let g:polyglot_disabled = ['jsx']
 Plug 'moll/vim-node'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'fatih/vim-go'
@@ -305,6 +305,10 @@ let g:flow#autoclose = 1
 " }}}
 " Custom Commands ------------------------------------------------- {{{
 
+command! -nargs=* RefactorRename YcmCompleter RefactorRename <args>
+
+command! FixSyntax syntax sync fromstart
+
 command! FixSyntax syntax sync fromstart
 
 command! CloseOthers %bd|e#
@@ -325,9 +329,6 @@ command! Aliases tabe ~/dotfiles/zsh/aliases
 command! Zshrc tabe ~/dotfiles/zsh/zshrc
 command! Tmuxconf tabe ~/dotfiles/tmux/tmux.conf
 command! Reload source $MYVIMRC
-
-" Count the occurences
-command! Count :%~n
 
 " Close all buffers
 command! BDA bufdo Bdelete
@@ -770,7 +771,5 @@ augroup end
 " }}}
 " Project Specific Commands --------------------------------------- {{{
 
-" CASSI
-command! LocalSecret :e ~/Projects/Atlassian/cassi/config/env/includes/local-secret.js
 
 " }}}

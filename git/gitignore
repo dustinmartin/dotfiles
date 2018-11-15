@@ -1,6 +1,8 @@
 # Ripgrep ignore file
 .ignore
 
+tsconfig.json
+
 *.netrwhist
 Session.vim
 .session.vim
