@@ -87,7 +87,7 @@ set fileformats=unix,mac,dos
 set hidden                               " Allow unsaved buffers to be hidden
 set nowrap                               " Turn word wrapping off. :set wrap turns it back on.
 set tabpagemax=50                        " Increase the number of allowed tabs
-set showtabline=0                        " Hide tabs
+set showtabline=1                        " Hide tabs
 set ruler                                " Turn on row,column dislay on status bar
 set backspace=2                          " Allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,]               " Backspace and cursor keys wrap too
@@ -129,18 +129,18 @@ set infercase
 set smartcase                            " Makes searches case SENSITIVE if search string contains an uppercase letter
 set gdefault                             " Search/replace 'globally' (on a line) by default
 set incsearch                            " Start searching before pressing enter
-set inccommand=split
+set inccommand=nosplit
 set showmatch                            " Highlight the matching bracket when one is inserted
 set hlsearch                             " Highlight search results (as you type)
 set noswapfile
 set nobackup
 set undolevels=1000                      " The number of undo levels to allow
-set complete-=i
 set formatoptions-=r                     " Don't add comment prefix to next line
+set complete=.,w,b,u,t
 set completeopt=menu,menuone
 set diffopt+=vertical
-" set lazyredraw
-set synmaxcol=200
+set lazyredraw
+set synmaxcol=800
 set noshowcmd
 set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 set grepformat=%f:%l:%m,%f:%l:%m
@@ -283,7 +283,7 @@ function! s:RevealInFinder()
   redraw!
 endfunction
 
-command! Reveal call <SID>RevealInFinder()
+command! Finder call <SID>RevealInFinder()
 
 " }}}
 " Flow ------------------------------------------------------------ {{{
@@ -305,9 +305,11 @@ let g:flow#autoclose = 1
 " }}}
 " Custom Commands ------------------------------------------------- {{{
 
-command! -nargs=* RefactorRename YcmCompleter RefactorRename <args>
+command! SpellFile tabe ~/dotfiles/vim/custom-dictionary.utf-8.add
 
-command! FixSyntax syntax sync fromstart
+command! SpellFileLocal tabe ~/.vim-local-dictionary.utf-8.add
+
+command! -nargs=* RefactorRename YcmCompleter RefactorRename <args>
 
 command! FixSyntax syntax sync fromstart
 
@@ -333,7 +335,6 @@ command! Reload source $MYVIMRC
 " Close all buffers
 command! BDA bufdo Bdelete
 
-" TODO: Move to script
 " Remove \ (Windows line endings) from files
 command! RemoveM %s/\//g
 
@@ -351,6 +352,43 @@ command! ESLint cexpr system(local_eslint . ' --cache --ext .jsx --ext .js --ign
 " }}}
 " Key Mappings ---------------------------------------------------- {{{
 
+" Don't move on *
+" I'd use a function for this but Vim clobbers the last search when you're in
+" a function so fuck it, practicality beats purity.
+nnoremap <silent> * :let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<cr>
+
+" There are three dictionaries I use for spell checking:
+"
+"   /usr/share/dict/words
+"   Basic stuff.
+"
+"   ~/.vim/custom-dictionary.utf-8.add
+"   Custom words (like my name).  This is in my (version-controlled) dotfiles.
+"
+"   ~/.vim-local-dictionary.utf-8.add
+"   More custom words.  This is *not* version controlled, so I can stick
+"   work stuff in here without leaking internal names and shit.
+"
+" I also remap zG to add to the local dict (vanilla zG is useless anyway).
+set dictionary=/usr/share/dict/words
+set spellfile=~/dotfiles/vim/custom-dictionary.utf-8.add,~/.vim-local-dictionary.utf-8.add
+nnoremap zG 2zg
+nnoremap zs :set spell!<cr>
+
+" Easy resizing of panes
+nnoremap <m-right> :vertical resize +3<cr>
+nnoremap <m-left> :vertical resize -3<cr>
+nnoremap <m-up> :resize +3<cr>
+nnoremap <m-down> :resize -3<cr>
+
+" Substitute
+nnoremap <c-s> :%s/
+vnoremap <c-s> :s/
+" Remap H and L to beginning and end of line
+noremap H ^
+noremap L $
+vnoremap L g_
+
 nnoremap ]q :cnext<cr>
 nnoremap [q :cprevious<cr>
 
@@ -363,9 +401,6 @@ nnoremap [g :GitGutterPrevHunk<cr>
 " Easily change the word under the cursor and repeat
 nnoremap c* *Ncgn
 nnoremap c# #NcgN
-
-" Duplicate the current selection
-vnoremap D y'>p
 
 " Move to the next changed hunk
 nnoremap ]g :GitGutterNextHunk<cr>
@@ -419,8 +454,8 @@ vnoremap / /\v
 " Keep the result in the center of the screen
 nnoremap n nzzzv
 nnoremap N Nzzzv
-nnoremap * *zzzv
-nnoremap # #zzzv
+" nnoremap * *zzzv
+" nnoremap # #zzzv
 
 " Yank till end of line
 nnoremap Y y$
@@ -451,42 +486,31 @@ nnoremap K :Ag <C-R><C-W><cr>
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
+nnoremap <leader>= :wincmd =<cr>
 nnoremap <leader>c :checktime<cr>
-
-" nnoremap <Leader>v :FlowJumpToDef<cr>
-
-nnoremap <Leader>s :Obsession ./.session.vim<cr>
-nnoremap <Leader>d :source ./.session.vim<cr>
-
-nnoremap <Leader>p :PrettierAsync<cr>:w<cr>
-
 nnoremap <leader>o :ZoomToggle<cr>
-
 nnoremap <leader>e :noh<cr>
-
 nnoremap <leader>w :w<cr>
-
-" Delete the current buffer without killing the pane
-nnoremap <leader>x :Bdelete<cr>
-
-nnoremap <leader>r :FZFMru<cr>
+nnoremap <leader>t :tabnew<cr>
 
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
 
+nnoremap <Leader>p :PrettierAsync<cr>:w<cr>
+
+" Delete the current buffer without killing the pane
+nnoremap <leader>x :Bdelete<cr>
+
 " Fugitive
-nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gd :Gdiff<cr>
 nnoremap <leader>gb :Gblame<cr>
 
-nnoremap <leader>t :tabnew<cr>
-
 " FZF
 nnoremap <leader>f :Files<cr>
+nnoremap <leader>r :FZFMru<cr>
 nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>d :GFiles --modified<cr>
 nnoremap <leader>l :BLines<cr>
-
-" Search
 nnoremap <leader>a :Ag<space>
 
 " }}}
@@ -539,15 +563,6 @@ let g:prettier#quickfix_enabled = 0
 let g:prettier#autoformat = 0
 
 " }}}
-" --- NerdTree ------------ {{{
-
-" let NERDTreeDirArrows = 1
-" let NERDTreeAutoDeleteBuffer = 1
-" let NERDTreeQuitOnOpen = 1
-
-" nnoremap - :NERDTreeToggle<cr>
-
-" }}}
 " --- ALE ----------------- {{{
 
 let g:ale_linters = {
@@ -579,14 +594,6 @@ let g:airline_section_z = airline#section#create(['%{fugitive#head()}'])
 " --- Ultisnips ----------- {{{
 
 let g:UltiSnipsExpandTrigger="<c-j>"
-
-" }}}
-" --- MatchTagAlways ------ {{{
-
-let g:mta_set_default_matchtag_color = 0
-let g:mta_use_matchparen_group = 0
-
-highlight MatchTag ctermfg=black ctermbg=darkgrey guifg=black guibg=darkgrey
 
 " }}}
 " --- Javascript ---------- {{{
@@ -667,6 +674,18 @@ let g:vim_markdown_conceal = 0
 " }}}
 " Autocmd --------------------------------------------------------- {{{
 
+" --- Return to Line ------ {{{
+
+" Make sure Vim returns to the same line when you reopen a file.
+augroup line_return
+    au!
+    au BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \     execute 'normal! g`"zvzz' |
+        \ endif
+augroup END
+
+" }}}
 " --- AutoSave/Read ------- {{{
 
 augroup autoSaveAndRead
@@ -769,7 +788,49 @@ augroup end
 " }}}
 
 " }}}
-" Project Specific Commands --------------------------------------- {{{
+" Highlight Words ------------------------------------------------- {{{
 
+" This mini-plugin provides a few mappings for highlighting words temporarily.
+"
+" Sometimes you're looking at a hairy piece of code and would like a certain
+" word or two to stand out temporarily.  You can search for it, but that only
+" gives you one color of highlighting.  Now you can use <leader>N where N is
+" a number from 1-6 to highlight the current word in a specific color.
+function! HiInterestingWord(n)
+    " Save our location.
+    normal! mz
+
+    " Yank the current word into the z register.
+    normal! "zyiw
+
+    " Calculate an arbitrary match ID.  Hopefully nothing else is using it.
+    let mid = 86750 + a:n
+
+    " Clear existing matches, but don't worry if they don't exist.
+    silent! call matchdelete(mid)
+
+    " Construct a literal pattern that has to match at boundaries.
+    let pat = '\V\<' . escape(@z, '\') . '\>'
+
+    " Actually match the words.
+    call matchadd("InterestingWord" . a:n, pat, 1, mid)
+
+    " Move back to our original location.
+    normal! `z
+endfunction
+
+nnoremap <silent> <leader>1 :call HiInterestingWord(1)<cr>
+nnoremap <silent> <leader>2 :call HiInterestingWord(2)<cr>
+nnoremap <silent> <leader>3 :call HiInterestingWord(3)<cr>
+nnoremap <silent> <leader>4 :call HiInterestingWord(4)<cr>
+nnoremap <silent> <leader>5 :call HiInterestingWord(5)<cr>
+nnoremap <silent> <leader>6 :call HiInterestingWord(6)<cr>
+
+hi def InterestingWord1 guifg=#000000 ctermfg=255 guibg=#00afff ctermbg=39
+hi def InterestingWord2 guifg=#000000 ctermfg=255 guibg=#008700 ctermbg=28
+hi def InterestingWord3 guifg=#000000 ctermfg=0 guibg=#8cffba ctermbg=220
+hi def InterestingWord4 guifg=#000000 ctermfg=255 guibg=#b88853 ctermbg=197
+hi def InterestingWord5 guifg=#000000 ctermfg=255 guibg=#ff9eb8 ctermbg=93
+hi def InterestingWord6 guifg=#000000 ctermfg=0 guibg=#ff2c4b ctermbg=254
 
 " }}}

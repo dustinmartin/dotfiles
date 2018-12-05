@@ -13,6 +13,8 @@ alias cat='bat --paging always'
 alias vi='nvim'
 alias vim='nvim'
 
+alias day="dayone2 new "
+
 # Jump to a directory
 alias j='fasd_cd -d'
 alias v='f -e nvim'
@@ -53,7 +55,14 @@ alias gua='git reset HEAD --'
 alias gs='g status -sb'
 
 # Show all branches in the order of last change
-alias gb='g for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
+show_branches() {
+  local branches branch
+  branches=$(git branch -v --sort=-committerdate | grep -v HEAD) &&
+  branch=$(echo "$branches" | fzf +m) &&
+  git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+}
+alias gb='show_branches'
+# alias gb='g for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
 
 # Nicer diff
 alias gd='g diff --word-diff'

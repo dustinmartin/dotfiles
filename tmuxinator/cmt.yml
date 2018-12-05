@@ -4,7 +4,7 @@ name: CMT
 root: ~/Projects/Atlassian/cmt
 
 windows:
-  - CMT:
+  - Code:
       layout: main-vertical
       panes:
         -

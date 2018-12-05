@@ -8,11 +8,4 @@ windows:
       root: ~/Projects/Atlassian/cassi
       layout: main-vertical
       panes:
-        - vim
-        - 
-  - Hydra API:
-      root: ~/Projects/Atlassian/hydra-api
-      layout: main-vertical
-      panes:
-        -
         -
