@@ -22,6 +22,7 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 
 " Version Control
 Plug 'tpope/vim-fugitive'
+Plug 'tommcdo/vim-fubitive'
 Plug 'airblade/vim-gitgutter'
 
 " Editor Usability
@@ -502,6 +503,7 @@ nnoremap <Leader>p :PrettierAsync<cr>:w<cr>
 nnoremap <leader>x :Bdelete<cr>
 
 " Fugitive
+nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gd :Gdiff<cr>
 nnoremap <leader>gb :Gblame<cr>
 
