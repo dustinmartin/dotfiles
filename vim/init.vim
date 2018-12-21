@@ -22,8 +22,9 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 
 " Version Control
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 Plug 'tommcdo/vim-fubitive'
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 
 " Editor Usability
 Plug 'moll/vim-bbye'
@@ -41,14 +42,11 @@ Plug 'cohama/lexima.vim'
 Plug 'alvan/vim-closetag'
 
 " Language Support
-Plug 'flowtype/vim-flow'
 Plug 'sheerun/vim-polyglot'
 " YCM file path completion was breaking because of the JSX plugin
 " let g:polyglot_disabled = ['jsx']
 Plug 'moll/vim-node'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
-Plug 'fatih/vim-go'
-Plug 'tpope/vim-scriptease'
 Plug 'suy/vim-context-commentstring'
 
 " Color Schemes
@@ -676,12 +674,17 @@ let g:vim_markdown_conceal = 0
 " }}}
 " Autocmd --------------------------------------------------------- {{{
 
+augroup disable_syntax_folding
+    autocmd!
+    autocmd BufWinEnter * if line2byte(line("$") + 1) > 500 | setlocal foldmethod=manual | endif
+augroup END
+
 " --- Return to Line ------ {{{
 
 " Make sure Vim returns to the same line when you reopen a file.
 augroup line_return
-    au!
-    au BufReadPost *
+    autocmd!
+    autocmd BufReadPost *
         \ if line("'\"") > 0 && line("'\"") <= line("$") |
         \     execute 'normal! g`"zvzz' |
         \ endif
