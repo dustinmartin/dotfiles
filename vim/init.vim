@@ -17,14 +17,13 @@ Plug 'tpope/vim-vinegar'
 
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-" Plug 'Quramy/tsuquyomi'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 " Version Control
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'tommcdo/vim-fubitive'
-" Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 
 " Editor Usability
 Plug 'moll/vim-bbye'
@@ -43,8 +42,6 @@ Plug 'alvan/vim-closetag'
 
 " Language Support
 Plug 'sheerun/vim-polyglot'
-" YCM file path completion was breaking because of the JSX plugin
-" let g:polyglot_disabled = ['jsx']
 Plug 'moll/vim-node'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'suy/vim-context-commentstring'
@@ -308,11 +305,13 @@ command! SpellFile tabe ~/dotfiles/vim/custom-dictionary.utf-8.add
 
 command! SpellFileLocal tabe ~/.vim-local-dictionary.utf-8.add
 
-command! -nargs=* RefactorRename YcmCompleter RefactorRename <args>
-
 command! FixSyntax syntax sync fromstart
 
 command! CloseOthers %bd|e#
+
+" Create commands for opening files in splits
+command! -bar -complete=file -nargs=0 Vedit vsplit|edit <args>
+command! -bar -complete=file -nargs=* Hedit split|edit <args>
 
 " Trim whitespace
 command! Trim %s/\s\+$//e
@@ -380,9 +379,6 @@ nnoremap <m-left> :vertical resize -3<cr>
 nnoremap <m-up> :resize +3<cr>
 nnoremap <m-down> :resize -3<cr>
 
-" Substitute
-nnoremap <c-s> :%s/
-vnoremap <c-s> :s/
 " Remap H and L to beginning and end of line
 noremap H ^
 noremap L $
@@ -393,9 +389,6 @@ nnoremap [q :cprevious<cr>
 
 nnoremap ]l :lnext<cr>
 nnoremap [l :lprevious<cr>
-
-nnoremap ]g :GitGutterNextHunk<cr>
-nnoremap [g :GitGutterPrevHunk<cr>
 
 " Easily change the word under the cursor and repeat
 nnoremap c* *Ncgn
@@ -480,7 +473,14 @@ vnoremap ; :
 nnoremap ; :
 
 " Lookup the word under the cursor
-nnoremap K :Ag <C-R><C-W><cr>
+nnoremap gK :Ag <C-R><C-W><cr>
+
+
+
+
+
+
+
 
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
@@ -566,7 +566,8 @@ let g:prettier#autoformat = 0
 " --- ALE ----------------- {{{
 
 let g:ale_linters = {
-\  'javascript': ['flow', 'eslint']
+\  'javascript': ['eslint'],
+\  'typescript': ['tslint']
 \}
 
 " let g:ale_fix_on_save = 1
@@ -589,6 +590,8 @@ let g:airline_section_b = ''
 let g:airline_section_x = ''
 let g:airline_section_y = ''
 let g:airline_section_z = airline#section#create(['%{fugitive#head()}'])
+let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 " }}}
 " --- Ultisnips ----------- {{{
@@ -664,19 +667,67 @@ let g:closetag_filenames = '*.html,*.xhtml,*.jsx'
 let g:vim_markdown_conceal = 0
 
 " }}}
-" --- YouCompleteMe ------- {{{
+" --- COC ----------------- {{{
 
-" let b:vcm_tab_complete = "omni"
-" let g:ycm_auto_trigger = 1
+" Allow tabbing through completion menu
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Rename the symbol under the cursor
+command! -nargs=* RenameSymbol call CocAction('rename') <args>
+
+" Do the suggested quickfix
+command! -nargs=* FixIt call CocAction('doQuickfix') <args>
+
+" Show the diagnostic message (usually an error)
+command! -nargs=* Error call CocAction('diagnosticInfo') <args>
+
+" Use `[c` and `]c` for errors and whatnot
+nnoremap <silent> [c <Plug>(coc-diagnostic-prev)
+nnoremap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Shortcuts for jumping to definitions and viewing references
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gr <Plug>(coc-references)
+
+" use <tab> for trigger completion and navigate to next complete item
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~ '\s'
+" endfunction
+
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" This function will show vim docs for vim files,
+" otherwise it'll use COC to find docs
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
 " }}}
 
 " }}}
 " Autocmd --------------------------------------------------------- {{{
 
+" Syntax folding can be extremely slow so disable for long files
 augroup disable_syntax_folding
     autocmd!
-    autocmd BufWinEnter * if line2byte(line("$") + 1) > 500 | setlocal foldmethod=manual | endif
+    autocmd BufWinEnter *
+          \ if line2byte(line("$") + 1) > 500 |
+          \    setlocal foldmethod=indent |
+          \ endif
 augroup END
 
 " --- Return to Line ------ {{{
@@ -762,8 +813,12 @@ augroup ft_javascript
     autocmd FileType javascript setlocal foldmethod=syntax
     autocmd BufNewFile,BufRead .eslintrc setlocal filetype=JavaScript
     autocmd BufNewFile,BufRead .babelrc setlocal filetype=JavaScript
-    autocmd FileType javascript nmap <buffer> <C-]> :YcmCompleter GoTo<CR>
-    autocmd FileType javascript nmap <buffer> <C-^> :YcmCompleter GoToReferences<CR>
+augroup END
+
+augroup ft_typescript
+    autocmd!
+    autocmd FileType typescript setlocal foldmethod=syntax
+    autocmd FileType typescript UltiSnipsAddFiletypes javascript
 augroup END
 
 " }}}
