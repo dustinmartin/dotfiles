@@ -301,6 +301,10 @@ let g:flow#autoclose = 1
 " }}}
 " Custom Commands ------------------------------------------------- {{{
 
+command! SaveSession Obsession .
+command! KillSession Obsession!
+command! OpenSession source ./Session.vim
+
 command! SpellFile tabe ~/dotfiles/vim/custom-dictionary.utf-8.add
 
 command! SpellFileLocal tabe ~/.vim-local-dictionary.utf-8.add
@@ -310,8 +314,8 @@ command! FixSyntax syntax sync fromstart
 command! CloseOthers %bd|e#
 
 " Create commands for opening files in splits
-command! -bar -complete=file -nargs=0 Vedit vsplit|edit <args>
-command! -bar -complete=file -nargs=* Hedit split|edit <args>
+command! -bar -complete=file -nargs=1 Vedit vsplit|edit <args>
+command! -bar -complete=file -nargs=1 Hedit split|edit <args>
 
 " Trim whitespace
 command! Trim %s/\s\+$//e
