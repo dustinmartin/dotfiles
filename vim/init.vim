@@ -152,16 +152,16 @@ set ttimeout
 set ttimeoutlen=10
 
 if has("gui_running")
-    " Set the tab labels
-    set guitablabel=%t\ %m
+  " Set the tab labels
+  set guitablabel=%t\ %m
 
-    set guioptions-=T                        " Hide the toolbar
-    set guioptions-=e                        " Don't use GUI tabs
-    set guioptions-=L                        " Disable left scrollbar
-    set guioptions-=r                        " Disable right scrollbar
+  set guioptions-=T                        " Hide the toolbar
+  set guioptions-=e                        " Don't use GUI tabs
+  set guioptions-=L                        " Disable left scrollbar
+  set guioptions-=r                        " Disable right scrollbar
 
-    " Window size
-    set lines=35 columns=115                 " Set the window size
+  " Window size
+  set lines=35 columns=115                 " Set the window size
 endif
 
 " }}}
@@ -188,49 +188,49 @@ set wildignore+=log/**,node_modules/**,target/**,tmp/**,*.rbc
 set tabline=%!MyTabLine()
 
 function! MyTabLine()
-    let s = ''
+  let s = ''
 
-    for i in range(tabpagenr('$'))
-        " select the highlighting
-        if i + 1 == tabpagenr()
-            let s .= '%#TabLineSel#'
-        else
-            let s .= '%#TabLine#'
-        endif
-
-        " set the tab page number (for mouse clicks)
-        let s .= '%' . (i + 1) . 'T'
-
-        let tabNum = i + 1
-        let s .= ' '. tabNum . ') '
-
-        " the label is made by MyTabLabel()
-        let s .= '%{MyTabLabel(' . (i + 1) . ')}'
-    endfor
-
-    " after the last tab fill with TabLineFill and reset tab page nr
-    let s .= '%#TabLineFill#%T'
-
-    " right-align the label to close the current tab page
-    if tabpagenr('$') > 1
-        let s .= '%=%#TabLine#%999X[X]'
+  for i in range(tabpagenr('$'))
+    " select the highlighting
+    if i + 1 == tabpagenr()
+      let s .= '%#TabLineSel#'
+    else
+      let s .= '%#TabLine#'
     endif
 
-    return s
+    " set the tab page number (for mouse clicks)
+    let s .= '%' . (i + 1) . 'T'
+
+    let tabNum = i + 1
+    let s .= ' '. tabNum . ') '
+
+    " the label is made by MyTabLabel()
+    let s .= '%{MyTabLabel(' . (i + 1) . ')}'
+  endfor
+
+  " after the last tab fill with TabLineFill and reset tab page nr
+  let s .= '%#TabLineFill#%T'
+
+  " right-align the label to close the current tab page
+  if tabpagenr('$') > 1
+    let s .= '%=%#TabLine#%999X[X]'
+  endif
+
+  return s
 endfunction
 
 function! MyTabLabel(n)
-    let buflist = tabpagebuflist(a:n)
-    let winnr = tabpagewinnr(a:n)
-    let label  = bufname(buflist[winnr - 1])
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  let label  = bufname(buflist[winnr - 1])
 
-    if label == ''
-        let label = 'Untitled'
-    endif
+  if label == ''
+    let label = 'Untitled'
+  endif
 
-    let label .= (getbufvar(buflist[winnr - 1], "&mod")?' + ':'   ')
+  let label .= (getbufvar(buflist[winnr - 1], "&mod")?' + ':'   ')
 
-    return fnamemodify(label, ":t")
+  return fnamemodify(label, ":t")
 endfunction
 
 " }}}
@@ -238,15 +238,15 @@ endfunction
 
 " Zoom / Restore window.
 function! s:ZoomToggle() abort
-    if exists('t:zoomed') && t:zoomed
-        execute t:zoom_winrestcmd
-        let t:zoomed = 0
-    else
-        let t:zoom_winrestcmd = winrestcmd()
-        resize
-        vertical resize
-        let t:zoomed = 1
-    endif
+  if exists('t:zoomed') && t:zoomed
+    execute t:zoom_winrestcmd
+    let t:zoomed = 0
+  else
+    let t:zoom_winrestcmd = winrestcmd()
+    resize
+    vertical resize
+    let t:zoomed = 1
+  endif
 endfunction
 
 command! ZoomToggle call s:ZoomToggle()
@@ -288,7 +288,7 @@ command! Finder call <SID>RevealInFinder()
 let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
 
 if matchstr(local_flow, "^\/\\w") == ''
-    let local_flow= getcwd() . "/" . local_flow
+  let local_flow= getcwd() . "/" . local_flow
 endif
 
 if executable(local_flow)
@@ -301,6 +301,7 @@ let g:flow#autoclose = 1
 " }}}
 " Custom Commands ------------------------------------------------- {{{
 
+" Helpful commands for handling sessions
 command! SaveSession Obsession .
 command! KillSession Obsession!
 command! OpenSession source ./Session.vim
@@ -525,7 +526,7 @@ set foldtext=FoldText()
 function! FoldText()
   let l:lpadding = &fdc
   redir => l:signs
-    execute 'silent sign place buffer='.bufnr('%')
+  execute 'silent sign place buffer='.bufnr('%')
   redir End
   let l:lpadding += l:signs =~ 'id=' ? 2 : 0
 
@@ -570,9 +571,9 @@ let g:prettier#autoformat = 0
 " --- ALE ----------------- {{{
 
 let g:ale_linters = {
-\  'javascript': ['eslint'],
-\  'typescript': ['tslint']
-\}
+      \  'javascript': ['eslint'],
+      \  'typescript': ['tslint']
+      \}
 
 " let g:ale_fix_on_save = 1
 let g:ale_sign_error = '>>'
@@ -613,16 +614,16 @@ let g:javascript_plugin_flow = 1
 
 function! s:all_files()
   return extend(
-  \ filter(copy(v:oldfiles),
-  \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
-  \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
+        \ filter(copy(v:oldfiles),
+        \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
+        \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
 endfunction
 
 command! FZFMru call fzf#run({
-  \ 'source':  reverse(s:all_files()),
-  \ 'sink':    'edit',
-  \ 'options': '-m -x +s',
-  \ 'down':    '40%' })
+      \ 'source':  reverse(s:all_files()),
+      \ 'sink':    'edit',
+      \ 'options': '-m -x +s',
+      \ 'down':    '40%' })
 
 function! s:GetRelativePath(targetFile)
   " When a file is chozen from FZF, the script gets the file path
@@ -684,27 +685,17 @@ command! -nargs=* RenameSymbol call CocAction('rename') <args>
 command! -nargs=* FixIt call CocAction('doQuickfix') <args>
 
 " Show the diagnostic message (usually an error)
-command! -nargs=* Error call CocAction('diagnosticInfo') <args>
+command! -nargs=* Diagnose call CocAction('diagnosticInfo') <args>
 
 " Use `[c` and `]c` for errors and whatnot
 nnoremap <silent> [c <Plug>(coc-diagnostic-prev)
 nnoremap <silent> ]c <Plug>(coc-diagnostic-next)
 
 " Shortcuts for jumping to definitions and viewing references
-nnoremap <silent> gd <Plug>(coc-definition)
-nnoremap <silent> gr <Plug>(coc-references)
+nnoremap <silent> gd :call CocAction('jumpImplementation')<cr>
+nnoremap <silent> gr :call CocAction('jumpReferences')<cr>
 
-" use <tab> for trigger completion and navigate to next complete item
-" function! s:check_back_space() abort
-"   let col = col('.') - 1
-"   return !col || getline('.')[col - 1]  =~ '\s'
-" endfunction
-
-" inoremap <silent><expr> <TAB>
-"       \ pumvisible() ? "\<C-n>" :
-"       \ <SID>check_back_space() ? "\<TAB>" :
-"       \ coc#refresh()
-
+" Show suggestions for Ctrl-Space
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use K for show documentation in preview window
@@ -727,19 +718,19 @@ endfunction
 
 " Syntax folding can be extremely slow so disable for long files
 augroup disable_syntax_folding
-    autocmd!
-    autocmd BufWinEnter *
-          \ if line2byte(line("$") + 1) > 500 |
-          \    setlocal foldmethod=indent |
-          \ endif
+  autocmd!
+  autocmd BufWinEnter *
+        \ if line2byte(line("$") + 1) > 500 |
+        \    setlocal foldmethod=indent |
+        \ endif
 augroup END
 
 " --- Return to Line ------ {{{
 
 " Make sure Vim returns to the same line when you reopen a file.
 augroup line_return
-    autocmd!
-    autocmd BufReadPost *
+  autocmd!
+  autocmd BufReadPost *
         \ if line("'\"") > 0 && line("'\"") <= line("$") |
         \     execute 'normal! g`"zvzz' |
         \ endif
@@ -749,9 +740,9 @@ augroup END
 " --- AutoSave/Read ------- {{{
 
 augroup autoSaveAndRead
-    autocmd!
-    autocmd TextChanged,InsertLeave,FocusLost * silent! wall
-    autocmd CursorHold * silent! checktime
+  autocmd!
+  autocmd TextChanged,InsertLeave,FocusLost * silent! wall
+  autocmd CursorHold * silent! checktime
 augroup END
 
 " }}}
@@ -759,8 +750,8 @@ augroup END
 
 " Only show cursorline in the current window and in normal mode.
 augroup cursor_line
-    autocmd!
-    autocmd WinEnter,InsertLeave * set cursorline
+  autocmd!
+  autocmd WinEnter,InsertLeave * set cursorline
 augroup END
 
 " }}}
@@ -768,70 +759,70 @@ augroup END
 
 " Resize panes when the window is resized
 augroup window_resize
-    autocmd!
-    autocmd VimResized * :wincmd =
+  autocmd!
+  autocmd VimResized * :wincmd =
 augroup END
 
 " }}}
 " --- Python -------------- {{{
 
 augroup ft_python
-    autocmd!
-    autocmd FileType python setlocal foldmethod=indent
+  autocmd!
+  autocmd FileType python setlocal foldmethod=indent
 augroup END
 
 " }}}
 " --- Vim ----------------- {{{
 
 augroup ft_vim
-    autocmd!
-    autocmd FileType vim setlocal foldmethod=marker
+  autocmd!
+  autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
 " }}}
 " --- CSS ----------------- {{{
 
 augroup ft_css
-    autocmd!
-    autocmd BufNewFile,BufRead *.less setlocal filetype=less
-    autocmd BufNewFile,BufRead *.scss setlocal filetype=sass
-    autocmd BufNewFile,BufRead *.sass setlocal filetype=sass
-    autocmd Filetype less,css,sass setlocal foldmethod=marker
-    autocmd Filetype less,css,sass setlocal foldmarker={,}
+  autocmd!
+  autocmd BufNewFile,BufRead *.less setlocal filetype=less
+  autocmd BufNewFile,BufRead *.scss setlocal filetype=sass
+  autocmd BufNewFile,BufRead *.sass setlocal filetype=sass
+  autocmd Filetype less,css,sass setlocal foldmethod=marker
+  autocmd Filetype less,css,sass setlocal foldmarker={,}
 augroup END
 
 " }}}
 " --- JSON ---------------- {{{
 
 augroup ft_json
-    autocmd!
-    autocmd BufNewFile,BufRead *.json setlocal filetype=json
-    autocmd FileType json setlocal foldmethod=syntax
+  autocmd!
+  autocmd BufNewFile,BufRead *.json setlocal filetype=json
+  autocmd FileType json setlocal foldmethod=syntax
 augroup END
 
 " }}}
 " --- Javascript ---------- {{{
 
 augroup ft_javascript
-    autocmd!
-    autocmd FileType javascript setlocal foldmethod=syntax
-    autocmd BufNewFile,BufRead .eslintrc setlocal filetype=JavaScript
-    autocmd BufNewFile,BufRead .babelrc setlocal filetype=JavaScript
+  autocmd!
+  autocmd FileType javascript setlocal foldmethod=syntax
+  autocmd BufNewFile,BufRead .eslintrc setlocal filetype=JavaScript
+  autocmd BufNewFile,BufRead .babelrc setlocal filetype=JavaScript
 augroup END
 
 augroup ft_typescript
-    autocmd!
-    autocmd FileType typescript setlocal foldmethod=syntax
-    autocmd FileType typescript UltiSnipsAddFiletypes javascript
+  autocmd!
+  autocmd FileType typescript setlocal foldmethod=syntax
+  autocmd FileType typescript UltiSnipsAddFiletypes javascript
 augroup END
 
 " }}}
 " --- Shell --------------- {{{
 
 augroup ft_zsh
-    autocmd!
-    autocmd BufNewFile,BufRead *aliases setlocal filetype=zsh
-    autocmd BufNewFile,BufRead *zsh* setlocal filetype=zsh
+  autocmd!
+  autocmd BufNewFile,BufRead *aliases setlocal filetype=zsh
+  autocmd BufNewFile,BufRead *zsh* setlocal filetype=zsh
 augroup END
 
 " }}}
@@ -840,13 +831,13 @@ augroup END
 
 " Remove trailing whitespace
 augroup remove_trailing_whitespace
-    autocmd!
-    autocmd BufWritePre * :%s/\s\+$//e
+  autocmd!
+  autocmd BufWritePre * :%s/\s\+$//e
 augroup end
 
 augroup reload_vimrc
-    autocmd!
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+  autocmd!
+  autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup end
 
 " }}}
@@ -861,26 +852,26 @@ augroup end
 " gives you one color of highlighting.  Now you can use <leader>N where N is
 " a number from 1-6 to highlight the current word in a specific color.
 function! HiInterestingWord(n)
-    " Save our location.
-    normal! mz
+  " Save our location.
+  normal! mz
 
-    " Yank the current word into the z register.
-    normal! "zyiw
+  " Yank the current word into the z register.
+  normal! "zyiw
 
-    " Calculate an arbitrary match ID.  Hopefully nothing else is using it.
-    let mid = 86750 + a:n
+  " Calculate an arbitrary match ID.  Hopefully nothing else is using it.
+  let mid = 86750 + a:n
 
-    " Clear existing matches, but don't worry if they don't exist.
-    silent! call matchdelete(mid)
+  " Clear existing matches, but don't worry if they don't exist.
+  silent! call matchdelete(mid)
 
-    " Construct a literal pattern that has to match at boundaries.
-    let pat = '\V\<' . escape(@z, '\') . '\>'
+  " Construct a literal pattern that has to match at boundaries.
+  let pat = '\V\<' . escape(@z, '\') . '\>'
 
-    " Actually match the words.
-    call matchadd("InterestingWord" . a:n, pat, 1, mid)
+  " Actually match the words.
+  call matchadd("InterestingWord" . a:n, pat, 1, mid)
 
-    " Move back to our original location.
-    normal! `z
+  " Move back to our original location.
+  normal! `z
 endfunction
 
 nnoremap <silent> <leader>1 :call HiInterestingWord(1)<cr>
