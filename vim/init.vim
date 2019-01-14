@@ -26,10 +26,15 @@ Plug 'tommcdo/vim-fubitive'
 Plug 'airblade/vim-gitgutter'
 
 " Editor Usability
+Plug 'janko-m/vim-test'
+Plug 'easymotion/vim-easymotion'
 Plug 'moll/vim-bbye'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
+Plug 'thiagoalessio/rainbow_levels.vim'
+Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
@@ -389,6 +394,10 @@ noremap H ^
 noremap L $
 vnoremap L g_
 
+" Easymotion mappings
+nmap s <Plug>(easymotion-bd-w)
+nmap S <Plug>(easymotion-bd-f)
+
 nnoremap ]q :cnext<cr>
 nnoremap [q :cprevious<cr>
 
@@ -480,15 +489,12 @@ nnoremap ; :
 " Lookup the word under the cursor
 nnoremap gK :Ag <C-R><C-W><cr>
 
-
-
-
-
-
-
-
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
+
+nnoremap <leader>T :TestNearest<cr>
+nnoremap <leader>S :TestFile<cr>
+nnoremap <leader>A :TestFile<cr>
 
 nnoremap <leader>= :wincmd =<cr>
 nnoremap <leader>c :checktime<cr>
@@ -692,7 +698,7 @@ nnoremap <silent> [c <Plug>(coc-diagnostic-prev)
 nnoremap <silent> ]c <Plug>(coc-diagnostic-next)
 
 " Shortcuts for jumping to definitions and viewing references
-nnoremap <silent> gd :call CocAction('jumpImplementation')<cr>
+nnoremap <silent> gd :call CocAction('jumpDefinition')<cr>
 nnoremap <silent> gr :call CocAction('jumpReferences')<cr>
 
 " Show suggestions for Ctrl-Space
