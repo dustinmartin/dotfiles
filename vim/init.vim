@@ -26,13 +26,14 @@ Plug 'tommcdo/vim-fubitive'
 Plug 'airblade/vim-gitgutter'
 
 " Editor Usability
-Plug 'janko-m/vim-test'
+Plug 'wellle/targets.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'moll/vim-bbye'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
 Plug 'thiagoalessio/rainbow_levels.vim'
+Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-obsession'
@@ -123,6 +124,8 @@ set splitbelow                           " Split horizontal windows below to the
 set autoread                             " Automatically reread changed files without asking me anything
 set suffixesadd+=.js                     " Help VIM find .js files when using gf
 set suffixesadd+=.jsx                    " Help VIM find .jsx files when using gf
+set suffixesadd+=.ts
+set suffixesadd+=.tsx
 set linebreak
 set showbreak=\ ↪\
 set ignorecase                           " Makes searches case insensitive if search string is all lower case
@@ -398,11 +401,11 @@ vnoremap L g_
 nmap s <Plug>(easymotion-bd-w)
 nmap S <Plug>(easymotion-bd-f)
 
-nnoremap ]q :cnext<cr>
-nnoremap [q :cprevious<cr>
+" nnoremap ]q :cnext<cr>
+" nnoremap [q :cprevious<cr>
 
-nnoremap ]l :lnext<cr>
-nnoremap [l :lprevious<cr>
+" nnoremap ]l :lnext<cr>
+" nnoremap [l :lprevious<cr>
 
 " Easily change the word under the cursor and repeat
 nnoremap c* *Ncgn
@@ -417,8 +420,8 @@ nnoremap <silent> <C-e> :e#<cr>
 inoremap <silent> <C-e> <esc>:e#<cr>
 
 " Move between open buffers.
-nnoremap <C-n> :bnext<cr>
-nnoremap <C-p> :bprev<cr>
+" nnoremap <C-n> :bnext<cr>
+" nnoremap <C-p> :bprev<cr>
 
 " Make it easy to jump between panes
 tnoremap <c-h> <C-\><C-N><C-w>h
@@ -487,14 +490,15 @@ vnoremap ; :
 nnoremap ; :
 
 " Lookup the word under the cursor
-nnoremap gK :Ag <C-R><C-W><cr>
+nnoremap K :Ag <C-R><C-W><cr>
+
+" Lookup the selection (visual mode)
+vnoremap K y:Ag <C-R>"<cr>
 
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
-nnoremap <leader>T :TestNearest<cr>
-nnoremap <leader>S :TestFile<cr>
-nnoremap <leader>A :TestFile<cr>
+nnoremap <leader>R :RainbowLevelsToggle<cr>
 
 nnoremap <leader>= :wincmd =<cr>
 nnoremap <leader>c :checktime<cr>
@@ -515,14 +519,15 @@ nnoremap <leader>x :Bdelete<cr>
 nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gd :Gdiff<cr>
 nnoremap <leader>gb :Gblame<cr>
+nnoremap <leader>gl :GV!<cr>
 
 " FZF
 nnoremap <leader>f :Files<cr>
-nnoremap <leader>r :FZFMru<cr>
+nnoremap <leader>r :History<cr>
 nnoremap <leader>b :Buffers<cr>
-nnoremap <leader>d :GFiles --modified<cr>
+nnoremap <leader>d :GFiles?<cr>
 nnoremap <leader>l :BLines<cr>
-nnoremap <leader>a :Ag<space>
+nnoremap <leader>a :Ag!<space>
 
 " }}}
 " Folding --------------------------------------------------------- {{{
@@ -581,7 +586,7 @@ let g:ale_linters = {
       \  'typescript': ['tslint']
       \}
 
-" let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 1
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
 let g:ale_statusline_format = ['X %d', '? %d', '']
@@ -624,12 +629,6 @@ function! s:all_files()
         \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
         \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
 endfunction
-
-command! FZFMru call fzf#run({
-      \ 'source':  reverse(s:all_files()),
-      \ 'sink':    'edit',
-      \ 'options': '-m -x +s',
-      \ 'down':    '40%' })
 
 function! s:GetRelativePath(targetFile)
   " When a file is chozen from FZF, the script gets the file path
@@ -705,7 +704,7 @@ nnoremap <silent> gr :call CocAction('jumpReferences')<cr>
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> gK :call <SID>show_documentation()<CR>
 
 " This function will show vim docs for vim files,
 " otherwise it'll use COC to find docs
@@ -814,6 +813,7 @@ augroup ft_javascript
   autocmd FileType javascript setlocal foldmethod=syntax
   autocmd BufNewFile,BufRead .eslintrc setlocal filetype=JavaScript
   autocmd BufNewFile,BufRead .babelrc setlocal filetype=JavaScript
+  autocmd BufNewFile,BufRead *.snap setlocal filetype=JavaScript
 augroup END
 
 augroup ft_typescript
@@ -847,51 +847,5 @@ augroup reload_vimrc
 augroup end
 
 " }}}
-
-" }}}
-" Highlight Words ------------------------------------------------- {{{
-
-" This mini-plugin provides a few mappings for highlighting words temporarily.
-"
-" Sometimes you're looking at a hairy piece of code and would like a certain
-" word or two to stand out temporarily.  You can search for it, but that only
-" gives you one color of highlighting.  Now you can use <leader>N where N is
-" a number from 1-6 to highlight the current word in a specific color.
-function! HiInterestingWord(n)
-  " Save our location.
-  normal! mz
-
-  " Yank the current word into the z register.
-  normal! "zyiw
-
-  " Calculate an arbitrary match ID.  Hopefully nothing else is using it.
-  let mid = 86750 + a:n
-
-  " Clear existing matches, but don't worry if they don't exist.
-  silent! call matchdelete(mid)
-
-  " Construct a literal pattern that has to match at boundaries.
-  let pat = '\V\<' . escape(@z, '\') . '\>'
-
-  " Actually match the words.
-  call matchadd("InterestingWord" . a:n, pat, 1, mid)
-
-  " Move back to our original location.
-  normal! `z
-endfunction
-
-nnoremap <silent> <leader>1 :call HiInterestingWord(1)<cr>
-nnoremap <silent> <leader>2 :call HiInterestingWord(2)<cr>
-nnoremap <silent> <leader>3 :call HiInterestingWord(3)<cr>
-nnoremap <silent> <leader>4 :call HiInterestingWord(4)<cr>
-nnoremap <silent> <leader>5 :call HiInterestingWord(5)<cr>
-nnoremap <silent> <leader>6 :call HiInterestingWord(6)<cr>
-
-hi def InterestingWord1 guifg=#000000 ctermfg=255 guibg=#00afff ctermbg=39
-hi def InterestingWord2 guifg=#000000 ctermfg=255 guibg=#008700 ctermbg=28
-hi def InterestingWord3 guifg=#000000 ctermfg=0 guibg=#8cffba ctermbg=220
-hi def InterestingWord4 guifg=#000000 ctermfg=255 guibg=#b88853 ctermbg=197
-hi def InterestingWord5 guifg=#000000 ctermfg=255 guibg=#ff9eb8 ctermbg=93
-hi def InterestingWord6 guifg=#000000 ctermfg=0 guibg=#ff2c4b ctermbg=254
 
 " }}}

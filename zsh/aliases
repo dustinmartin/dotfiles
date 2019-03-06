@@ -99,7 +99,7 @@ alias gun='g reset HEAD~1 --mixed'
 alias gungun='g reset "HEAD@{1}"'
 
 # Delete all merged branches
-alias gcl='g branch | grep -v "master" | xargs git branch -d'
+alias gcl='g branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
 
 # Commit
 alias gc='g commit -v -m'

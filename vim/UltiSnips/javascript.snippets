@@ -53,16 +53,17 @@ snippet pretty "JSON.stringify" b
 console.log('${1} >>>>>>>', JSON.stringify($1, null, 2));
 endsnippet
 
-# snippet time "console.log()" b
-# console.time( $0 );
-# console.timeEnd( $0 );
-# endsnippet
+snippet timer "hirestimer" b
+import timer from 'hirestime';
 
-# snippet time "console.time()"
-# console.time( $0 );
-# ${VISUAL}
-# console.timeEnd( $1 );
-# endsnippet
+const stopTimer = timer();
+const runTime = stopTimer();
+endsnippet
+
+snippet time "console.time()" b
+console.time('>>>> $1');
+console.timeEnd('>>>> $1');
+endsnippet
 
 snippet switch "switch" b
 switch ($1){
@@ -103,29 +104,13 @@ beforeEach(() => {
 });
 endsnippet
 
-snippet spec "spec test" b
-describe('$1', () => {
-
-	beforeEach(() => {
-		$2
-	});
-
-	it('', () => {
-		$3
-	});
-
-});
-endsnippet
-
 snippet ite "it - empty" b
-xit('$1', () => {
-	throw new Error('fail');
-});$2
+it.todo('$1');
 endsnippet
 
 snippet it "it - function" b
 it('$1', async () => {
-	${2:throw new Error('fail');}
+	$2
 });
 endsnippet
 

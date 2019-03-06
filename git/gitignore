@@ -63,3 +63,4 @@ elpa.old
 ######################
 .vim-bookmarks
 *.swp
+.projections.json

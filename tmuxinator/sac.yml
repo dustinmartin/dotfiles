@@ -1,6 +1,6 @@
 # /Users/dmartin2/.config/tmuxinator/cmt.yml
 
-name: CMT
+name: SAC
 root: ~/Projects/Atlassian/cmt
 
 windows:
