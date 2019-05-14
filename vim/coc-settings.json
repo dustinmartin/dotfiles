@@ -1,4 +1,4 @@
 {
   "coc.preferences.hoverTarget": "echo",
-  "coc.preferences.diagnostic.displayByAle": true
+  "coc.preferences.diagnostic.displayByAle": false
 }

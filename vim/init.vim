@@ -18,6 +18,7 @@ Plug 'tpope/vim-vinegar'
 " Completion and Snippets
 Plug 'SirVer/ultisnips'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'liuchengxu/vista.vim'
 
 " Version Control
 Plug 'tpope/vim-fugitive'
@@ -27,7 +28,10 @@ Plug 'airblade/vim-gitgutter'
 
 " Editor Usability
 Plug 'wellle/targets.vim'
+" Plug 'chaoren/vim-wordmotion'
+Plug 'andymass/vim-matchup'
 Plug 'easymotion/vim-easymotion'
+Plug 'rhysd/clever-f.vim'
 Plug 'moll/vim-bbye'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -583,7 +587,7 @@ let g:prettier#autoformat = 0
 
 let g:ale_linters = {
       \  'javascript': ['eslint'],
-      \  'typescript': ['tslint']
+      \  'typescript': ['eslint']
       \}
 
 let g:ale_fix_on_save = 1
@@ -692,13 +696,18 @@ command! -nargs=* FixIt call CocAction('doQuickfix') <args>
 " Show the diagnostic message (usually an error)
 command! -nargs=* Diagnose call CocAction('diagnosticInfo') <args>
 
-" Use `[c` and `]c` for errors and whatnot
-nnoremap <silent> [c <Plug>(coc-diagnostic-prev)
-nnoremap <silent> ]c <Plug>(coc-diagnostic-next)
+" Use `[c` and `]c` to view errors reported by COC
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
 " Shortcuts for jumping to definitions and viewing references
-nnoremap <silent> gd :call CocAction('jumpDefinition')<cr>
-nnoremap <silent> gr :call CocAction('jumpReferences')<cr>
+" nnoremap <silent> gd :call CocAction('jumpDefinition')<cr>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gh <Plug>(coc-diagnostic-info)
+" nnoremap <silent> gr :call CocAction('jumpReferences')<cr>
 
 " Show suggestions for Ctrl-Space
 inoremap <silent><expr> <c-space> coc#refresh()
