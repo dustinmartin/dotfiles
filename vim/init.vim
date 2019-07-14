@@ -35,8 +35,7 @@ Plug 'rhysd/clever-f.vim'
 Plug 'moll/vim-bbye'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale'
-Plug 'thiagoalessio/rainbow_levels.vim'
+" Plug 'w0rp/ale'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-projectionist'
@@ -53,7 +52,6 @@ Plug 'alvan/vim-closetag'
 " Language Support
 Plug 'sheerun/vim-polyglot'
 Plug 'moll/vim-node'
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'suy/vim-context-commentstring'
 
 " Color Schemes
@@ -502,8 +500,6 @@ vnoremap K y:Ag <C-R>"<cr>
 " }}}
 " Leader Mappings ------------------------------------------------- {{{
 
-nnoremap <leader>R :RainbowLevelsToggle<cr>
-
 nnoremap <leader>= :wincmd =<cr>
 nnoremap <leader>c :checktime<cr>
 nnoremap <leader>o :ZoomToggle<cr>
@@ -514,7 +510,7 @@ nnoremap <leader>t :tabnew<cr>
 " Refocus folds
 nnoremap <leader>z zMzvzazAzz
 
-nnoremap <Leader>p :PrettierAsync<cr>:w<cr>
+nnoremap <Leader>p :Prettier<cr>
 
 " Delete the current buffer without killing the pane
 nnoremap <leader>x :Bdelete<cr>
@@ -530,7 +526,7 @@ nnoremap <leader>f :Files<cr>
 nnoremap <leader>r :History<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>d :GFiles?<cr>
-nnoremap <leader>l :BLines<cr>
+" nnoremap <leader>l :BLines<cr>
 nnoremap <leader>a :Ag!<space>
 
 " }}}
@@ -585,19 +581,19 @@ let g:prettier#autoformat = 0
 " }}}
 " --- ALE ----------------- {{{
 
-let g:ale_linters = {
-      \  'javascript': ['eslint'],
-      \  'typescript': ['eslint']
-      \}
+" let g:ale_linters = {
+"       \  'javascript': ['eslint'],
+"       \  'typescript': ['eslint']
+"       \}
 
-let g:ale_fix_on_save = 1
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
-let g:ale_statusline_format = ['X %d', '? %d', '']
-let g:ale_echo_msg_format = '%linter% says %s'
-let g:ale_set_highlights = 0
-let g:ale_lint_delay = 1000
-let g:ale_set_loclist = 1
+" let g:ale_fix_on_save = 1
+" let g:ale_sign_error = '>>'
+" let g:ale_sign_warning = '--'
+" let g:ale_statusline_format = ['X %d', '? %d', '']
+" let g:ale_echo_msg_format = '%linter% says %s'
+" let g:ale_set_highlights = 0
+" let g:ale_lint_delay = 1000
+" let g:ale_set_loclist = 1
 
 " }}}
 " --- Airline ------------- {{{
@@ -683,6 +679,14 @@ let g:vim_markdown_conceal = 0
 " }}}
 " --- COC ----------------- {{{
 
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+let g:coc_global_extensions = [
+  \ 'coc-eslint', 'coc-prettier', 'coc-tsserver',
+  \ 'coc-css', 'coc-json', 'coc-ultisnips', 'coc-yaml',
+  \ 'coc-html'
+  \ ]
+
 " Allow tabbing through completion menu
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -707,7 +711,6 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gh <Plug>(coc-diagnostic-info)
-" nnoremap <silent> gr :call CocAction('jumpReferences')<cr>
 
 " Show suggestions for Ctrl-Space
 inoremap <silent><expr> <c-space> coc#refresh()

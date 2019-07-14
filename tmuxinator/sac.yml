@@ -1,7 +1,7 @@
 # /Users/dmartin2/.config/tmuxinator/cmt.yml
 
 name: SAC
-root: ~/Projects/Atlassian/cmt
+root: ~/Projects/Atlassian/sac-infrastructure
 
 windows:
   - Code:

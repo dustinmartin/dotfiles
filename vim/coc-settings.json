@@ -1,4 +1,4 @@
 {
-  "coc.preferences.hoverTarget": "echo",
-  "coc.preferences.diagnostic.displayByAle": false
+  "eslint.filetypes": ["javascript", "javascriptreact", "typescript"],
+  "eslint.autoFixOnSave": true
 }

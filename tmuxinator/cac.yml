@@ -1,0 +1,11 @@
+# /Users/dmartin2/.config/tmuxinator/dotfiles.yml
+
+name: CAC
+root: ~/Projects/Atlassian/cac
+
+windows:
+  - CAC:
+      layout: main-vertical
+      root: ~/Projects/Atlassian/cac
+      panes:
+        -
