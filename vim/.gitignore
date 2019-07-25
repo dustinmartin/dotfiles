@@ -1,5 +1,5 @@
-session
-undo
-swap
-sessions
-*.un~
+undo/*
+swap/*
+
+!undo/.gitkeep
+!swap/.gitkeep
