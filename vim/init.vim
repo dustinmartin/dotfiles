@@ -25,6 +25,7 @@ Plug 'junegunn/gv.vim'
 Plug 'tommcdo/vim-fubitive'
 
 " Editor Usability
+Plug 'mbbill/undotree'
 Plug 'wellle/targets.vim'
 Plug 'andymass/vim-matchup'
 Plug 'moll/vim-bbye'
