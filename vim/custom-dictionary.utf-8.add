@@ -16,3 +16,4 @@ axios
 url
 import
 export
+__mocks__

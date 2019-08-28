@@ -21,10 +21,11 @@ Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 " Version Control
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
 Plug 'tommcdo/vim-fubitive'
 
 " Editor Usability
+Plug 'unblevable/quick-scope'
+Plug 'rhysd/clever-f.vim'
 Plug 'mbbill/undotree'
 Plug 'wellle/targets.vim'
 Plug 'andymass/vim-matchup'
@@ -46,6 +47,7 @@ Plug 'junegunn/vim-peekaboo'
 
 " Language Support
 Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['markdown']
 Plug 'moll/vim-node'
 Plug 'suy/vim-context-commentstring'
 
@@ -123,6 +125,9 @@ set lazyredraw
 set synmaxcol=800
 set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 set grepformat=%f:%l:%m,%f:%l:%m
+
+" https://github.com/neoclide/coc.nvim/wiki/F.A.Q#linting-is-slow
+set updatetime=300
 
 set wildmenu
 set wildmode=full
@@ -301,6 +306,9 @@ command! BDA bufdo Bdelete
 " Remove \ (Windows line endings) from files
 command! RemoveM %s/\//g
 
+" Format the JSON in the current file
+command! FormatJSON %!python -m json.tool
+
 " Terminal commands
 command! -nargs=* TermHorizontal split | terminal <args>
 command! -nargs=* TermVertical vsplit | terminal <args>
@@ -444,7 +452,6 @@ nnoremap <leader>x :Bdelete<cr>
 nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gd :Gdiff<cr>
 nnoremap <leader>gb :Gblame<cr>
-nnoremap <leader>gl :GV!<cr>
 
 " FZF
 nnoremap <leader>f :Files<cr>
@@ -501,18 +508,26 @@ endfunction
 " }}}
 " Plugin Settings ------------------------------------------------- {{{
 
+" --- Clever-F ------------ {{{
+
+let g:clever_f_fix_key_direction = 1
+" let g:clever_f_ignore_case = 1
+let g:clever_f_smart_case = 1
+
+" }}}
 " --- Airline ------------- {{{
 
-let g:airline#extensions#whitespace#enabled = 0
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-let g:airline_detect_paste = 0
-let g:airline_section_b = ''
-let g:airline_section_x = ''
-let g:airline_section_y = ''
-let g:airline_section_z = airline#section#create(['%{fugitive#head()}'])
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+let g:airline#extensions#coc#enabled = 1
+" let g:airline#extensions#whitespace#enabled = 0
+" let g:airline_left_sep = ''
+" let g:airline_right_sep = ''
+" let g:airline_detect_paste = 0
+" let g:airline_section_b = ''
+" let g:airline_section_x = ''
+" let g:airline_section_y = ''
+" let g:airline_section_z = airline#section#create(['%{fugitive#head()}'])
+" let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+" let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 " }}}
 " --- Ultisnips ----------- {{{
@@ -572,10 +587,16 @@ let g:vim_markdown_conceal = 0
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 let g:coc_global_extensions = [
-  \ 'coc-eslint', 'coc-prettier', 'coc-tsserver', 'coc-git',
-  \ 'coc-css', 'coc-json', 'coc-ultisnips', 'coc-yaml',
-  \ 'coc-html'
-  \ ]
+      \ 'coc-eslint',
+      \ 'coc-prettier',
+      \ 'coc-tsserver', 
+      \ 'coc-git',
+      \ 'coc-css', 
+      \ 'coc-json', 
+      \ 'coc-ultisnips', 
+      \ 'coc-yaml',
+      \ 'coc-html'
+      \ ]
 
 " Allow tabbing through completion menu
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -677,6 +698,7 @@ augroup END
 
 augroup ft_vim
   autocmd!
+  autocmd BufNewFile,BufRead *.vim setlocal foldmethod=marker
   autocmd FileType vim setlocal foldmethod=marker
 augroup END
 

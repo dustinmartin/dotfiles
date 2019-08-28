@@ -10,8 +10,8 @@ alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias cat='bat --paging always'
 
 # Vim aliases
-alias vi='nvim'
-alias vim='nvim'
+alias vi='if jobs | grep -q nvim; then fg; else command nvim; fi'
+alias vim='if jobs | grep -q nvim; then fg; else command nvim; fi'
 
 alias day="dayone2 new "
 
@@ -118,6 +118,9 @@ alias gap='g add -p && g status'
 
 # Interactive rebase for squashing commits
 alias gir="g rebase -i origin/master"
+
+# Removes all new commits on a branch but keeps all the changes
+alias gclear="git reset $(git merge-base master $(git rev-parse --abbrev-ref HEAD))" 
 
 finder () {
   open .

@@ -12,7 +12,8 @@ dark () {
 }
 
 light () {
-  base16_harmonic-light
+  base16_one-light
+  # base16_harmonic-light
 }
 
 # Load fasd
@@ -22,7 +23,6 @@ export PATH="/Users/dmartin2/dotfiles/bin:$PATH"
 
 # Make sure Homebrew's packages before others
 export PATH="/usr/local/bin:$PATH"
-
 
 export PATH="/Users/dmartin2/Library/Python/2.7/bin:$PATH"
 
