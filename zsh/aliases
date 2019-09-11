@@ -9,11 +9,11 @@ alias preview="fzf --preview 'bat --color \"always\" {}'"
 
 alias cat='bat --paging always'
 
-# Vim aliases
+# Vim aliases that will open an already running instance of vim
+# in the background rather than starting a new instance. No more
+# guessing of 'fg' or 'vim'!
 alias vi='if jobs | grep -q nvim; then fg; else command nvim; fi'
 alias vim='if jobs | grep -q nvim; then fg; else command nvim; fi'
-
-alias day="dayone2 new "
 
 # Jump to a directory
 alias j='fasd_cd -d'
@@ -105,7 +105,7 @@ alias gcl='g branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d
 alias gc='g commit -v -m'
 
 # Add all and commit
-alias gca='g add -u && g add . && g commit -v -m'
+alias gca='g add -u && g add . && g commit -v'
 
 # Create new branch
 alias gcob='g checkout -b'
