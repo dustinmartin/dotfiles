@@ -10,5 +10,6 @@ import (
 func main() {
 	path := os.Args[1]
 	name := strings.TrimSuffix(path, filepath.Ext(path))
-	fmt.Println(name)
+	noIndex := strings.ReplaceAll(name, "/index", "")
+	fmt.Println(noIndex)
 }

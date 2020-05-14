@@ -54,8 +54,6 @@ export NVM_DIR="$HOME/.nvm"
 
 export NVM_SCRIPT="$NVM_DIR/nvm.sh"
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # place this after nvm initialization!
 # autoload -U add-zsh-hook
 # load-nvmrc() {

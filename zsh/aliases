@@ -12,8 +12,10 @@ alias cat='bat --paging always'
 # Vim aliases that will open an already running instance of vim
 # in the background rather than starting a new instance. No more
 # guessing of 'fg' or 'vim'!
-alias vi='if jobs | grep -q nvim; then fg; else command nvim; fi'
-alias vim='if jobs | grep -q nvim; then fg; else command nvim; fi'
+# alias vi='if jobs | grep -q nvim; then fg; else command nvim; fi'
+# alias vim='if jobs | grep -q nvim; then fg; else command nvim; fi'
+alias vi="nvim"
+alias vim="nvim"
 
 # Jump to a directory
 alias j='fasd_cd -d'
@@ -33,7 +35,7 @@ alias ls="exa -a --sort=type"
 alias ll="exa -la --sort=type --git"
 
 # Git
-alias g='git'
+alias g="git"
 
 # Shorten common commands
 alias gst='g status'
@@ -120,7 +122,9 @@ alias gap='g add -p && g status'
 alias gir="g rebase -i origin/master"
 
 # Removes all new commits on a branch but keeps all the changes
-alias gclear="git reset $(git merge-base master $(git rev-parse --abbrev-ref HEAD))" 
+gclear () {
+   git reset $(git merge-base master $(git rev-parse --abbrev-ref HEAD))
+}
 
 finder () {
   open .
