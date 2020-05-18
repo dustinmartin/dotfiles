@@ -1,6 +1,8 @@
 " Author: Dustin Martin <dm@dustinmartin.net>
 " Source: https://github.com/dustinmartin/dotfiles
 
+" source $HOME/.config/nvim/vim-plug/plugins.vim
+
 " Plugins --------------------------------------------------------- {{{
 
 " Install vim-plug if not yet installed
@@ -16,7 +18,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-vinegar'
 
 " Completion and Snippets
-Plug 'SirVer/ultisnips'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 " Version Control
@@ -84,7 +85,6 @@ set fileencoding=utf-8
 set fileformat=unix
 set fileformats=unix,mac,dos
 set hidden                               " Allow unsaved buffers to be hidden
-set nowrap                               " Turn word wrapping off. :set wrap turns it back on.
 set showtabline=1                        " Hide tabs
 set ruler                                " Turn on row,column dislay on status bar
 set whichwrap+=<,>,h,l,[,]               " Backspace and cursor keys wrap too
@@ -268,38 +268,38 @@ command! Finder call <SID>RevealInFinder()
 " Custom Commands ------------------------------------------------- {{{
 
 " Helpful commands for handling sessions
-command! SaveSession Obsession .
-command! KillSession Obsession!
-command! OpenSession source ./Session.vim
-command! SpellFile tabe ~/dotfiles/vim/custom-dictionary.utf-8.add
-command! SpellFileLocal tabe ~/.vim-local-dictionary.utf-8.add
-command! FixSyntax syntax sync fromstart
+" command! SaveSession Obsession .
+" command! KillSession Obsession!
+" command! OpenSession source ./Session.vim
+" command! SpellFile tabe ~/dotfiles/vim/custom-dictionary.utf-8.add
+" command! SpellFileLocal tabe ~/.vim-local-dictionary.utf-8.add
+" command! FixSyntax syntax sync fromstart
 
-command! CloseOthers %bd|e#
+" command! CloseOthers %bd|e#
 
 " Create commands for opening files in splits
 command! -bar -complete=file -nargs=1 Vedit vsplit|edit <args>
 command! -bar -complete=file -nargs=1 Hedit split|edit <args>
 
 " Trim whitespace
-command! Trim %s/\s\+$//e
+" command! Trim %s/\s\+$//e
 
 " Word wrap
-command! Wrap setlocal wrap! linebreak nolist
-command! WrapAll set wrap! linebreak nolist
+" command! Wrap setlocal wrap! linebreak nolist
+" command! WrapAll set wrap! linebreak nolist
 
 " Edit Vimrc
-command! Vimrc tabe $MYVIMRC
-command! Reload source $MYVIMRC
+" command! Vimrc tabe $MYVIMRC
+" command! Reload source $MYVIMRC
 
 " Close all buffers
-command! BDA bufdo Bdelete
+" command! BDA bufdo Bdelete
 
 " Remove \ (Windows line endings) from files
 command! RemoveM %s/\//g
 
 " Format the JSON in the current file
-command! FormatJSON %!python -m json.tool
+" command! FormatJSON %!python -m json.tool
 
 " Terminal commands
 command! -nargs=* TermHorizontal split | terminal <args>
@@ -516,8 +516,8 @@ autocmd! FileType which_key
 autocmd  FileType which_key set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
 
-let g:which_key_map['O'] = [ ':OpenSession'               , 'open session' ]
-let g:which_key_map['S'] = [ ':SaveSession'               , 'save session' ]
+let g:which_key_map['O'] = [ ':source ./Session.vim'      , 'open session' ]
+let g:which_key_map['S'] = [ ':Obsession .'               , 'save session' ]
 let g:which_key_map['a'] = [ ':Ag'                        , 'search text' ]
 let g:which_key_map['d'] = [ ':bd'                        , 'delete buffer' ]
 let g:which_key_map['e'] = [ ':let @/ = ""'               , 'no highlight' ]
@@ -526,6 +526,7 @@ let g:which_key_map['p'] = [ '<Plug>(coc-format)'         , 'format file' ]
 let g:which_key_map['t'] = [ ':tabnew'                    , 'new tab' ]
 let g:which_key_map['z'] = [ 'zMzvzazAzz'                 , 'focus fold' ]
 let g:which_key_map['b'] = [ ':Buffers'                   , 'search buffers' ]
+let g:which_key_map['w'] = [ ':w'                         , 'save file' ]
 
 let g:which_key_map.s = {
       \ 'name' : '+search' ,
@@ -572,18 +573,20 @@ let g:which_key_map.g = {
       \ 'V' : [':GV!'                                             , 'view buffer commits'],
       \ }
 
-let g:which_key_map.w = {
-      \ 'name' : '+windows' ,
-      \ 'x' : ['<C-W>c'            , 'close window']         ,
-      \ 'd' : [':bd'               , 'close buffer']         ,
-      \ 'a' : [':BDA'              , 'close all buffers']         ,
-      \ 'o' : [':CloseOthers'      , 'close other buffers']         ,
-      \ '=' : ['<C-W>='            , 'balance window panes']  ,
-      \ 'h' : ['<C-W>s'            , 'horizontal split']    ,
-      \ 'v' : ['<C-W>v'            , 'vertical split']    ,
-      \ 'w' : ['Windows'           , 'list windows']            ,
-      \ 'b' : [':Buffers'          , 'list buffers'],
+let g:which_key_map.B = {
+      \ 'name' : '+buffers' ,
+      \ 'x' : ['<C-W>c'                   , 'close window'],
+      \ 'd' : [':bd'                      , 'close buffer'],
+      \ 'a' : [':bufdo Bdelete'           , 'close all buffers'],
+      \ 'o' : [':%bd|e#'                  , 'close other buffers'],
+      \ '=' : ['<C-W>='                   , 'balance window panes'] ,
+      \ 'h' : ['<C-W>s'                   , 'horizontal split'],
+      \ 'v' : ['<C-W>v'                   , 'vertical split'],
+      \ 'w' : ['Windows'                  , 'list windows'],
+      \ 'b' : [':Buffers'                 , 'list buffers'],
       \ }
+
+
 
 let g:which_key_map.l = {
       \ 'name' : '+lsp' ,
@@ -601,7 +604,7 @@ let g:which_key_map.l = {
       \ 'F' : ['<Plug>(coc-format)'                  , 'format'],
       \ 'h' : ['<Plug>(coc-float-hide)'              , 'hide'],
       \ 'i' : ['<Plug>(coc-implementation)'          , 'implementation'],
-      \ 'I' : [':CocList diagnostics'                , 'diagnostics'],
+      \ 'I' : [':CocList diagnostics'                , 'list diagnostics'],
       \ 'j' : ['<Plug>(coc-float-jump)'              , 'float jump'],
       \ 'l' : ['<Plug>(coc-codelens-action)'         , 'code lens'],
       \ 'n' : ['<Plug>(coc-diagnostic-next)'         , 'next diagnostic'],
@@ -610,7 +613,7 @@ let g:which_key_map.l = {
       \ 'O' : [':CocList outline'                    , 'outline'],
       \ 'p' : ['<Plug>(coc-diagnostic-prev)'         , 'prev diagnostic'],
       \ 'P' : ['<Plug>(coc-diagnostic-prev-error)'   , 'prev error'],
-      \ 'q' : ['<Plug>(coc-fix-current)'             , 'quickfix'],
+      \ 'q' : [':CocAction quickfix'                 , 'quickfix'],
       \ 'r' : ['<Plug>(coc-rename)'                  , 'rename'],
       \ 'R' : ['<Plug>(coc-references)'              , 'references'],
       \ 's' : [':CocList -I symbols'                 , 'references'],
@@ -620,13 +623,20 @@ let g:which_key_map.l = {
       \ 'z' : [':CocDisable'                         , 'disable CoC'],
       \ 'Z' : [':CocEnable'                          , 'enable CoC'],
       \ }
-
+                    " CocAction('diagnosticInfo')
 let g:which_key_map.u = {
       \ 'name' : '+utils' ,
-      \ 'n' : [':set nonumber!'          , 'line numbers'],
-      \ 'r' : [':set norelativenumber!'  , 'relative line numbers'],
-      \ 'c' : [':checktime'              , 'checktime'],
-      \ 'v' : [':Reload'                 , 'reload vimrc'],
+      \ 'n' : [':set nonumber!'                      , 'line numbers'],
+      \ 'r' : [':set norelativenumber!'              , 'relative line numbers'],
+      \ 'c' : [':checktime'                          , 'checktime'],
+      \ '.' : [':tabe $MYVIMRC'                      , 'open vim config'],
+      \ ';' : [':source $MYVIMRC'                    , 'reload vim config'],
+      \ 'w' : [':setlocal wrap! linebreak nolist'    , 'wrap line (file)'],
+      \ 'W' : [':set wrap! linebreak nolist'         , 'wrap line (all)'],
+      \ 't' : [':%s/\s\+$//e'                        , 'trim whitespace'],
+      \ 'f' : [':syntax sync fromstart'              , 'fix syntax'],
+      \ 's' : [':Finder'                             , 'open in Finder'],
+      \ 'p' : [':%!python -m json.tool'              , 'format json'],
       \ }
 
 call which_key#register(',', "g:which_key_map")
@@ -848,11 +858,6 @@ call which_key#register('z', "g:which_key_z")
 let g:airline#extensions#coc#enabled = 1
 
 " }}}
-" --- Ultisnips ----------- {{{
-
-let g:UltiSnipsExpandTrigger="<c-j>"
-
-" }}}
 " --- FZF ----------------- {{{
 
 function! s:all_files()
@@ -902,8 +907,6 @@ let g:vim_markdown_conceal = 0
 " }}}
 " --- COC ----------------- {{{
 
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
 let g:coc_global_extensions = [
       \ 'coc-eslint',
       \ 'coc-prettier',
@@ -911,20 +914,36 @@ let g:coc_global_extensions = [
       \ 'coc-git',
       \ 'coc-css',
       \ 'coc-json',
-      \ 'coc-ultisnips',
+      \ 'coc-snippets',
       \ 'coc-yaml',
       \ 'coc-html'
       \ ]
+
+
+ " Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 " Allow tabbing through completion menu
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Rename the symbol under the cursor
-command! -nargs=* RenameSymbol call CocAction('rename') <args>
+" command! -nargs=* RenameSymbol call CocAction('rename') <args>
 
 " Do the suggested quickfix
-command! -nargs=* FixIt call CocAction('doQuickfix') <args>
+" command! -nargs=* FixIt call CocAction('doQuickfix') <args>
 
 " Show the diagnostic message (usually an error)
 command! -nargs=* Diagnose call CocAction('diagnosticInfo') <args>
@@ -1055,7 +1074,6 @@ augroup END
 augroup ft_typescript
   autocmd!
   autocmd FileType typescript setlocal foldmethod=syntax
-  autocmd FileType typescript UltiSnipsAddFiletypes javascript
 augroup END
 
 " }}}

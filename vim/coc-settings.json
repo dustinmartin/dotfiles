@@ -1,8 +1,19 @@
 {
   "eslint.autoFixOnSave": true,
   "eslint.filetypes": ["javascript", "javascriptreact", "typescript"],
-  "suggest.floatEnable": false,
-  "diagnostic.messageTarget": "echo",
-  "signature.target": "echo",
-  "coc.preferences.hoverTarget": "echo"
+  "codeLens.enable": true,
+  "snippets.extends": {
+    "javascriptreact": ["javascript"],
+    "typescript": ["javascript"]
+  },
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "markdown",
+    "javascript",
+    "graphql",
+    "html",
+    "yaml",
+    "json",
+    "python"
+  ]
 }
