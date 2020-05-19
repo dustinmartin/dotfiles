@@ -1,7 +1,3 @@
-snippet i "import" b
-import $1 from '$2'
-endsnippet
-
 snippet id "import" b
 import { $1 } from '$2'
 endsnippet
@@ -12,33 +8,6 @@ try {
 } catch (error) {
 	$2
 }
-endsnippet
-
-snippet tern "Tenary" w
-${0:condition} ? ${1:true} : ${1:false}
-endsnippet
-
-snippet mock "Mock" b
-const mocker = require('$1');
-
-module.exports = function(target) {
-	const fixtures = {
-		$2: {
-		}
-	};
-
-	const methods = {
-		$3: {
-			default: () => Promise.resolve(fixtures.$2)
-		}
-	};
-
-	return mocker.createMock(target, fixtures, methods);
-};
-endsnippet
-
-snippet line "line" b
-// -- ${0:Private} -------------------------------------- //
 endsnippet
 
 snippet log "logger.info()" b

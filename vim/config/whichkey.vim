@@ -29,6 +29,8 @@ let g:which_key_map['t'] = [ ':tabnew'                    , 'new tab' ]
 let g:which_key_map['z'] = [ 'zMzvzazAzz'                 , 'focus fold' ]
 let g:which_key_map['b'] = [ ':Buffers'                   , 'search buffers' ]
 let g:which_key_map['w'] = [ ':w'                         , 'save file' ]
+let g:which_key_map['.'] = [':tabe $MYVIMRC'              , 'open vim config']
+let g:which_key_map[';'] = [':source $MYVIMRC'            , 'reload vim config']
 
 let g:which_key_map.s = {
       \ 'name' : '+search' ,
@@ -131,8 +133,6 @@ let g:which_key_map.u = {
       \ 'n' : [':set nonumber!'                      , 'line numbers'],
       \ 'r' : [':set norelativenumber!'              , 'relative line numbers'],
       \ 'c' : [':checktime'                          , 'checktime'],
-      \ '.' : [':tabe $MYVIMRC'                      , 'open vim config'],
-      \ ';' : [':source $MYVIMRC'                    , 'reload vim config'],
       \ 'w' : [':setlocal wrap! linebreak nolist'    , 'wrap line (file)'],
       \ 'W' : [':set wrap! linebreak nolist'         , 'wrap line (all)'],
       \ 't' : [':%s/\s\+$//e'                        , 'trim whitespace'],

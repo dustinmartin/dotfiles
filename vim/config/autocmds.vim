@@ -81,4 +81,5 @@ augroup END
 augroup filetype_typescript
   autocmd!
   autocmd FileType typescript setlocal foldmethod=syntax
+  autocmd FileType typescript UltiSnipsAddFiletypes javascript
 augroup END

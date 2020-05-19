@@ -20,7 +20,7 @@ set mouse=a                              " Enable mouse
 set clipboard=unnamed                    " Default to the system clipboard
 set virtualedit=all                      " Allow the cursor to go in to invalid places in visual block mode
 set breakindent
-set shortmess+=IA                        " Skip the splash screen, do not show swap file warnings
+set shortmess+=cIA                        " Skip the splash screen, do not show swap file warnings
 set spelllang=en_us                      " Set the spell check dictionary
 set nowrap
 set number                               " Display line numbers
@@ -49,6 +49,9 @@ set synmaxcol=800
 set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 set grepformat=%f:%l:%m,%f:%l:%m
 set iskeyword+=-                      	" Treat dash separated words as a word text object
+
+" By default timeoutlen is 1000 ms
+set timeoutlen=500
 
 " https://github.com/neoclide/coc.nvim/wiki/F.A.Q#linting-is-slow
 set updatetime=300

@@ -9,3 +9,5 @@ source $HOME/dotfiles/vim/config/coc.vim
 source $HOME/dotfiles/vim/config/whichkey.vim
 source $HOME/dotfiles/vim/config/mappings.vim
 source $HOME/dotfiles/vim/config/commands.vim
+
+let g:UltiSnipsExpandTrigger="<c-j>"

@@ -1,44 +1,14 @@
 " List of coc extensions to install
 let g:coc_global_extensions = [
-      \ 'coc-eslint',
       \ 'coc-prettier',
-      \ 'coc-tsserver',
       \ 'coc-git',
-      \ 'coc-css',
-      \ 'coc-json',
-      \ 'coc-snippets',
-      \ 'coc-yaml',
-      \ 'coc-html'
+      \ 'coc-eslint',
+      \ 'coc-tsserver',
       \ ]
-
-
- " Use <C-l> for trigger snippet expand.
-imap <C-l> <Plug>(coc-snippets-expand)
-
-" Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
-
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-j>'
-
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
-
-" Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 " Allow tabbing through completion menu
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" Rename the symbol under the cursor
-" command! -nargs=* RenameSymbol call CocAction('rename') <args>
-
-" Do the suggested quickfix
-" command! -nargs=* FixIt call CocAction('doQuickfix') <args>
-
-" Show the diagnostic message (usually an error)
-" command! -nargs=* Diagnose call CocAction('diagnosticInfo') <args>
 
 " Use `[c` and `]c` to view errors reported by COC
 nmap <silent> [c <Plug>(coc-diagnostic-prev)

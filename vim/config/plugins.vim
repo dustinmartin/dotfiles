@@ -14,6 +14,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-vinegar'
 
 " Completion and Snippets
+Plug 'SirVer/ultisnips'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 " Version Control
