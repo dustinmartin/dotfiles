@@ -1,9 +1,8 @@
+set -e
+
 chsh -s /bin/zsh
 
-sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
-# Move the .zshrc file that oh-my-zsh creates
-mv ~/.zshrc ~/.zshrc.oh-my-zsh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Install Homebrew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -20,7 +19,6 @@ ln -s ~/dotfiles/vim ~/.config/nvim
 ln -s ~/dotfiles/alacritty ~/.config/alacritty
 ln -s ~/dotfiles/kitty ~/.config/kitty
 ln -s ~/dotfiles/git/gitignore ~/.gitignore
-ln -s ~/dotfiles/ssh/config ~/.ssh/config
 
 cat <<EOF > ~/.gitconfig
 [user]
@@ -30,7 +28,7 @@ cat <<EOF > ~/.gitconfig
 EOF
 
 cat <<EOF > ~/.zshrc
-export ZSH=/Users/dmartin2/.oh-my-zsh
+export ZSH=~/.oh-my-zsh
 
 ZSH_THEME="af-magic"
 

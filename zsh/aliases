@@ -23,6 +23,7 @@ alias v='f -e nvim'
 
 # Tmux
 alias tmux="TERM=screen-256color-bce tmux"
+alias mux="tmuxinator start"
 
 # Miscellaneous Helpers
 alias reload="source ~/.zshrc"

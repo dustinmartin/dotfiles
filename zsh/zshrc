@@ -45,8 +45,6 @@ export FZF_DEFAULT_COMMAND='rg --files'
 # Load FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-source ~/dotfiles/tmux/tmuxinator.zsh
-
 # Load NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

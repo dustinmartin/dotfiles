@@ -6,20 +6,6 @@ root: ~/dotfiles
 windows:
   - Vim:
       layout: main-vertical
-      root: ~/dotfiles/vim
+      root: ~/dotfiles
       panes:
-        - 
-  - Zsh:
-      layout: main-vertical
-      root: ~/dotfiles/zsh
-      panes:
-        - 
-  - Tmux:
-      layout: main-vertical
-      root: ~/dotfiles/tmux
-      panes:
-        - 
-  - Bin:
-      layout: main-vertical
-      root: ~/dotfiles/bin
         -
