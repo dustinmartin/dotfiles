@@ -2,8 +2,10 @@
 
 set -e
 
+
 audio_file=$1
-audio_file_name=$(basename -- "$audio_file" .m4b)
+extension="${audio_file##*.}"
+audio_file_name=$(basename -- "$audio_file" . "$extension")
 audio_file_directory=$(dirname "$audio_file")
 
 audio_length=$(audio-length "$audio_file")
@@ -15,16 +17,16 @@ part_two_start=$(($halfway-10))
 ffmpeg -y -i "$audio_file" -an -vcodec copy "$audio_file_directory/cover.jpg"
 
 # Split the book into part 1
-ffmpeg -y -i "$audio_file" -acodec copy -ss 0 -to "$part_one_end" "$audio_file_name, Part 1.m4b"
+ffmpeg -y -i "$audio_file" -acodec copy -ss 0 -to "$part_one_end" "$audio_file_name, Part 1.$extension"
 
 # Add the cover art to part 1
-mp4art -q --add "$audio_file_directory/cover.jpg" "$audio_file_name, Part 1.m4b"
+# mp4art -q --add "$audio_file_directory/cover.jpg" "$audio_file_name, Part 1.$extension"
 
 # Split the book into part 2
-ffmpeg -y -i "$audio_file" -acodec copy -ss "$part_two_start" -to "$audio_length" "$audio_file_name, Part 2.m4b"
+ffmpeg -y -i "$audio_file" -acodec copy -ss "$part_two_start" -to "$audio_length" "$audio_file_name, Part 2.$extension"
 
 # Add the cover art to part 2
-mp4art -q --add "$audio_file_directory/cover.jpg" "$audio_file_name, Part 2.m4b"
+# mp4art -q --add "$audio_file_directory/cover.jpg" "$audio_file_name, Part 2.$extension"
 
 # Delete the cover art file
 rm "$audio_file_directory/cover.jpg"

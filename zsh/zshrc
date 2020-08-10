@@ -19,12 +19,12 @@ light () {
 # Load fasd
 eval "$(fasd --init auto)"
 
-export PATH="/Users/dmartin2/dotfiles/bin:$PATH"
+export PATH="$HOME/dotfiles/bin:$PATH"
 
 # Make sure Homebrew's packages before others
 export PATH="/usr/local/bin:$PATH"
 
-export PATH="/Users/dmartin2/Library/Python/2.7/bin:$PATH"
+export PATH="$HOME/Library/Python/2.7/bin:$PATH"
 
 
 # Colorize man pages

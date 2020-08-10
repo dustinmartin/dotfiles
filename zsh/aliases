@@ -135,6 +135,29 @@ dockerstop () {
   docker kill $(docker ps -q)
 }
 
-dockerclean () {
-  docker rm $(docker ps -a -q) && docker rmi $(docker images -q)
+# dockerclean () {
+#   docker rm $(docker ps -a -q) && docker rmi $(docker images -q)
+# }
+
+# list all docker containers, with all statuses
+alias dpa="docker ps -a"
+
+ # connect to docker shell
+function dockershell {
+    if [ -n "$2" ]; then
+        docker exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -it  $1 /bin/bash -c ${*:2}
+    else
+        docker exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -it $1 /bin/bash
+    fi
+}
+
+# stop and remove all docker containers
+function dockerclean {
+    COUNT=$(dpa | tail -n +2 | wc -l);
+    echo "Clearing ${COUNT// /} Docker processes"
+    for name in $(dpa | awk '{print $NF}'| tail -n +2); do
+        docker stop $name;
+        docker rm $name;
+    done | uniq -c
+    echo "Done"
 }

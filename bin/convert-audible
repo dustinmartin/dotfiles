@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+set -e
+
+aax-to-mp3 --aac --authcode $AUTHCODE -t ~/Desktop $1

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Combines all the mp3s in the current directory
+
+set -e
+
+shopt -s nullglob
+
+mp3FileList=(*.mp3)
+
+fileString=$( IFS='|'; echo "${mp3FileList[*]}|" )
+
+ffmpeg -i "concat:${fileString}" -acodec copy combined.mp3
