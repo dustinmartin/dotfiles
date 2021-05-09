@@ -2,7 +2,6 @@
 
 set -e
 
-
 audio_file=$1
 extension="${audio_file##*.}"
 audio_file_name=$(basename -- "$audio_file" . "$extension")

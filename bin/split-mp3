@@ -2,12 +2,6 @@
 
 set -e
 
-echo "Work in progress"
-
-exit
-
-# look at use mp3splt
-
 audio_file=$1
 extension="${audio_file##*.}"
 audio_file_name=$(basename -- "$audio_file" . "$extension")
