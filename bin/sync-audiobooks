@@ -1,0 +1,5 @@
+set -e
+
+rsync -avzP ~/OpenAudible/books/*.m4b /Volumes/Dustin/Media/Audiobooks/Audible/M4Bs
+
+rsync -avzP ~/OpenAudible/aax/*.AAX /Volumes/Dustin/Media/Audiobooks/Audible/Originals

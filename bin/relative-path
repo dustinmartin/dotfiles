@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 
 const path = require('path');
+
+if (!process.argv[2] || !process.argv[3]) {
+  console.log('Must provide two arguments.')
+  process.exit();
+}
+
 const relativePath = path.normalize(
   path.relative(process.argv[2], process.argv[3]),
 );
