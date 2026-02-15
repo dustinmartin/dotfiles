@@ -1,55 +1,37 @@
+#!/bin/bash
 set -e
 
-# chsh -s /bin/zsh
+# Neovim
+ln -sf ~/dotfiles/vim ~/.config/nvim
 
-# sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# # Install Homebrew
-# /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
-# # Install Homebrew apps and utils
-# brew tap Homebrew/bundle
-# brew bundle
-
-# Create Projects folder
-mkdir -p "$HOME/Projects"
-mkdir -p "$HOME/.config"
-
-ln -s ~/dotfiles/vim ~/.config/nvim
-# ln -s ~/dotfiles/alacritty ~/.config/alacritty
-# ln -s ~/dotfiles/kitty ~/.config/kitty
-ln -s ~/dotfiles/git/gitignore ~/.gitignore
-
-cat <<EOF > ~/.gitconfig
+# Git
+ln -sf ~/dotfiles/git/gitignore ~/.gitignore
+if [ ! -f ~/.gitconfig ]; then
+  cat <<EOF > ~/.gitconfig
 [user]
   email = <EMAIL HERE>
 [include]
   path = ~/dotfiles/git/gitconfig
 EOF
+  echo "Created ~/.gitconfig — update your email in it."
+fi
 
-cat <<EOF > ~/.zshrc
-export ZSH=~/.oh-my-zsh
-
-ZSH_THEME="af-magic"
-
-plugins=(
-  git
-)
-
-source $ZSH/oh-my-zsh.sh
-
-source ~/dotfiles/zsh/zshrc
-EOF
-
+# Tmux
 cat <<EOF > ~/.tmux.conf
 source ~/dotfiles/tmux/tmux.conf
 EOF
 
-# Fish shell
+# Fish
 mkdir -p "$HOME/.config/fish/conf.d"
 mkdir -p "$HOME/.config/fish/functions"
+
 ln -sf ~/dotfiles/fish/conf.d/dotfiles.fish ~/.config/fish/conf.d/dotfiles.fish
 for f in ~/dotfiles/fish/functions/*.fish; do
   ln -sf "$f" "$HOME/.config/fish/functions/$(basename "$f")"
 done
 
+echo ""
+echo "Done. Manual steps:"
+echo "  1. Set fish as default shell: chsh -s $(which fish)"
+echo "  2. Install tools: brew install zoxide starship ripgrep neovim tmux fnm"
+echo "  3. Generate SSH key: ssh-keygen -t ed25519"
