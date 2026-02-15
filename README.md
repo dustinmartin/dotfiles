@@ -4,12 +4,8 @@
 
 Install the following before running the install script:
 
-### Fish Shell
-
 ```
-sudo apt-add-repository ppa:fish-shell/release-3
-sudo apt update
-sudo apt install fish
+brew install fish starship zoxide ripgrep fzf neovim tmux fnm
 ```
 
 Set Fish as the default shell:
@@ -18,22 +14,10 @@ Set Fish as the default shell:
 chsh -s $(which fish)
 ```
 
-### Starship Prompt
+Install a Nerd Font (required for icons):
 
 ```
-curl -sS https://starship.rs/install.sh | sh
-```
-
-### Zoxide
-
-```
-curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-```
-
-### Neovim
-
-```
-sudo apt install neovim
+brew install --cask font-jetbrains-mono-nerd-font
 ```
 
 ## Installation
@@ -44,7 +28,7 @@ cd ~/dotfiles
 ./install.sh
 ```
 
-This will symlink the Fish config, git config, tmux config, and Neovim config into the right places.
+This will symlink the Fish config, git config, tmux config, Ghostty config, and Neovim config into the right places.
 
 ## SSH Key
 
@@ -56,5 +40,5 @@ Follow the instructions [here](https://help.github.com/articles/generating-a-new
 - **vim/** - Neovim configuration (symlinked to `~/.config/nvim`)
 - **git/** - Shared gitconfig and global gitignore
 - **tmux/** - Tmux configuration
+- **ghostty/** - Ghostty terminal configuration
 - **bin/** - Custom scripts added to PATH
-- **zsh/** - Legacy Zsh config
