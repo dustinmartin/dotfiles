@@ -1,5 +1,2 @@
-undo/*
-swap/*
-
-!undo/.gitkeep
-!swap/.gitkeep
+# Lazy.nvim and plugin data are stored in stdpath('data'), not here.
+# Nothing to ignore except this comment — kept for future use.
