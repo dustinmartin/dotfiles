@@ -45,3 +45,11 @@ cat <<EOF > ~/.tmux.conf
 source ~/dotfiles/tmux/tmux.conf
 EOF
 
+# Fish shell
+mkdir -p "$HOME/.config/fish/conf.d"
+mkdir -p "$HOME/.config/fish/functions"
+ln -sf ~/dotfiles/fish/conf.d/dotfiles.fish ~/.config/fish/conf.d/dotfiles.fish
+for f in ~/dotfiles/fish/functions/*.fish; do
+  ln -sf "$f" "$HOME/.config/fish/functions/$(basename "$f")"
+done
+
