@@ -389,13 +389,14 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     lazy = false,
     build = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter').install({
+    main = 'nvim-treesitter',
+    opts = {
+      ensure_installed = {
         'bash', 'c', 'css', 'diff', 'fish', 'html', 'javascript',
         'json', 'lua', 'luadoc', 'markdown', 'markdown_inline',
         'query', 'regex', 'tsx', 'typescript', 'vim', 'vimdoc', 'yaml',
-      })
-    end,
+      },
+    },
   },
 
   -- Auto close/rename HTML/JSX tags
