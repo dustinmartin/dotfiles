@@ -34,9 +34,10 @@ done
 mkdir -p "$HOME/.config/ghostty"
 ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
 
-echo ""
-echo "Done. Manual steps:"
-echo "  1. Set fish as default shell: chsh -s $(which fish)"
-echo "  2. Install tools: brew install zoxide starship ripgrep fzf neovim tmux fnm"
-echo "  3. Install fonts: brew install --cask font-jetbrains-mono-nerd-font"
-echo "  4. Generate SSH key: ssh-keygen -t ed25519"
+# Homebrew packages
+echo "Installing Homebrew packages..."
+brew install zoxide starship ripgrep fzf neovim tmux fnm tree-sitter
+brew install --cask font-jetbrains-mono-nerd-font
+chsh -s $(which fish)
+
+echo "Done"

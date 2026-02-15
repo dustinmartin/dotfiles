@@ -9,6 +9,9 @@ if status is-interactive
     zoxide init fish | source
     starship init fish | source
 
+    # Vim
+    abbr -a -- vim nvim
+
     # Navigation
     abbr -a -- .. 'cd ..'
     abbr -a -- ... 'cd ../..'
