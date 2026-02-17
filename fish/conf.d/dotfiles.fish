@@ -72,4 +72,7 @@ if status is-interactive
     # Git - undo
     abbr -a -- gun 'git reset HEAD~1 --mixed'
     abbr -a -- gungun 'git reset HEAD@{1}'
+
+    # Rovo
+    abbr -a -- rovo 'acli rovodev run'
 end
