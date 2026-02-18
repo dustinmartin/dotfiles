@@ -8,6 +8,7 @@ if status is-interactive
     # Tool initialization
     zoxide init fish | source
     starship init fish | source
+    fnm env | source
 
     # Vim
     abbr -a -- vim nvim
