@@ -1,3 +1,6 @@
+# fnm must run in all shells (including non-interactive) so tools like Claude Code can find node/npm
+fnm env | source
+
 if status is-interactive
     # Editor
     set -gx EDITOR nvim
@@ -8,7 +11,6 @@ if status is-interactive
     # Tool initialization
     zoxide init fish | source
     starship init fish | source
-    fnm env | source
 
     # Vim
     abbr -a -- vim nvim
