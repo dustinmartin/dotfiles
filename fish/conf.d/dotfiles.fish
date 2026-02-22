@@ -1,3 +1,10 @@
+# Homebrew
+if test -d /home/linuxbrew/.linuxbrew
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv fish)"
+else if test -d /opt/homebrew
+    eval "$(/opt/homebrew/bin/brew shellenv fish)"
+end
+
 # fnm must run in all shells (including non-interactive) so tools like Claude Code can find node/npm
 fnm env | source
 
