@@ -14,6 +14,7 @@ if status is-interactive
 
     # PATH
     fish_add_path ~/dotfiles/bin
+    test -d ~/Projects/screensaver/bin; and fish_add_path ~/Projects/screensaver/bin
 
     # Tool initialization
     zoxide init fish | source
