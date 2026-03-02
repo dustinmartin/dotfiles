@@ -1,10 +1,10 @@
 name: dev
-root: ~/Projects/whatever
+root: ~/Projects
 
 windows:
   - code:
       layout: main-vertical
       panes:
-        - vim .
+        - nvim .
         - claude
         -

@@ -21,6 +21,9 @@ cat <<EOF > ~/.tmux.conf
 source ~/dotfiles/tmux/tmux.conf
 EOF
 
+# Tmuxinator
+ln -sf ~/dotfiles/tmuxinator ~/.config/tmuxinator
+
 # Fish
 mkdir -p "$HOME/.config/fish/conf.d"
 mkdir -p "$HOME/.config/fish/functions"
@@ -36,7 +39,7 @@ ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
 
 # Homebrew packages
 echo "Installing Homebrew packages..."
-brew install zoxide starship ripgrep fzf neovim tmux fnm tree-sitter
+brew install zoxide starship ripgrep fzf neovim tmux tmuxinator fnm tree-sitter
 brew install --cask font-jetbrains-mono-nerd-font
 chsh -s $(which fish)
 

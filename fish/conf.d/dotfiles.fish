@@ -84,6 +84,9 @@ if status is-interactive
     abbr -a -- gun 'git reset HEAD~1 --mixed'
     abbr -a -- gungun 'git reset HEAD@{1}'
 
+    # Tmuxinator
+    abbr -a -- mux tmuxinator
+
     # Rovo
-    abbr -a -- rovo 'acli rovodev run'
+    abbr -a -- rovo 'acli rovodev tui'
 end
