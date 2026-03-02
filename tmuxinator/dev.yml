@@ -1,0 +1,10 @@
+name: dev
+root: ~/Projects/whatever
+
+windows:
+  - code:
+      layout: main-vertical
+      panes:
+        - vim .
+        - claude
+        -
