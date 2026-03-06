@@ -664,12 +664,27 @@ require('lazy').setup({
   {
     'stevearc/oil.nvim',
     cmd = { 'Oil' },
-    opts = {
-      default_file_explorer = true,
-      view_options = {
-        show_hidden = true,
-      },
-    },
+    config = function()
+      require('oil').setup({
+        default_file_explorer = true,
+        view_options = {
+          show_hidden = true,
+        },
+      })
+
+      -- vim-tmux-navigator's global <C-h/j/k/l> maps get overridden by Oil's
+      -- own <C-h> binding inside Oil buffers. Set buffer-local maps to restore
+      -- tmux pane navigation when inside an Oil buffer.
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'oil',
+        callback = function(event)
+          vim.keymap.set('n', '<C-h>', '<cmd>TmuxNavigateLeft<CR>',  { buffer = event.buf, desc = 'Navigate left' })
+          vim.keymap.set('n', '<C-j>', '<cmd>TmuxNavigateDown<CR>',  { buffer = event.buf, desc = 'Navigate down' })
+          vim.keymap.set('n', '<C-k>', '<cmd>TmuxNavigateUp<CR>',    { buffer = event.buf, desc = 'Navigate up' })
+          vim.keymap.set('n', '<C-l>', '<cmd>TmuxNavigateRight<CR>', { buffer = event.buf, desc = 'Navigate right' })
+        end,
+      })
+    end,
     keys = {
       { '-', '<cmd>Oil<CR>', desc = 'Open parent directory' },
     },
