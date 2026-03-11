@@ -29,6 +29,9 @@ if status is-interactive
     abbr -a -- j z
     abbr -a -- reload 'exec fish'
 
+    # Listing
+    alias ls 'eza -la'
+
     # Docker
     abbr -a -- dpa 'docker ps -a'
 
@@ -56,7 +59,7 @@ if status is-interactive
 
     # Git - committing
     abbr -a -- gc 'git commit -v -m'
-    abbr -a -- gca 'git add -u && git add . && git commit -v'
+    abbr -a -- gca 'git add -u && git add . && git commit -m'
     abbr -a -- gam 'git commit --amend --no-edit'
     abbr -a -- gwip 'git commit --no-verify -m WIP'
     abbr -a -- gwipa 'git add -A && git commit --no-verify -m WIP'

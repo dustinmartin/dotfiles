@@ -3,3 +3,6 @@ font-size = 18
 theme = Catppuccin Mocha
 window-padding-x = 4
 window-padding-y = 4
+
+# Make mouse wheel scrolling less sensitive.
+mouse-scroll-multiplier = 0.8
