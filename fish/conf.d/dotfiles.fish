@@ -30,7 +30,9 @@ if status is-interactive
     abbr -a -- reload 'exec fish'
 
     # Listing
-    alias ls 'eza -la'
+    if command -q eza
+        alias ls 'eza -a --icons --grid'
+    end
 
     # Docker
     abbr -a -- dpa 'docker ps -a'

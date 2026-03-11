@@ -39,7 +39,7 @@ ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
 
 # Homebrew packages
 echo "Installing Homebrew packages..."
-brew install zoxide starship ripgrep fzf neovim tmux tmuxinator fnm tree-sitter
+brew install zoxide starship ripgrep fzf neovim tmux tmuxinator fnm tree-sitter eza
 brew install --cask font-jetbrains-mono-nerd-font
 chsh -s $(which fish)
 

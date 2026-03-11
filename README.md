@@ -5,7 +5,7 @@
 Install the following before running the install script:
 
 ```
-brew install fish starship zoxide ripgrep fzf neovim tmux fnm
+brew install fish starship zoxide ripgrep fzf neovim tmux fnm eza
 ```
 
 Set Fish as the default shell:
