@@ -432,9 +432,51 @@ local function fast_files_command()
   return build_fd_command() or build_rg_files_command()
 end
 
+local function build_rg_exclude_opts()
+  local opts = {}
+  for _, exclude in ipairs(picker_excludes) do
+    opts[#opts + 1] = string.format([[--glob="!%s"]], exclude)
+    opts[#opts + 1] = string.format([[--glob="!%s/**"]], exclude)
+  end
+  return table.concat(opts, ' ')
+end
+
 local function in_git_repo(path)
   vim.fn.system({ 'git', '-C', path, 'rev-parse', '--is-inside-work-tree' })
   return vim.v.shell_error == 0
+end
+
+local function find_repo_root()
+  local root = find_picker_root()
+  if not in_git_repo(root) then
+    return root
+  end
+
+  local git_root = vim.fn.systemlist({ 'git', '-C', root, 'rev-parse', '--show-toplevel' })[1]
+  if vim.v.shell_error == 0 and git_root and git_root ~= '' then
+    return git_root
+  end
+
+  return root
+end
+
+local function grep_opts_for(cwd)
+  local fzf = require('fzf-lua')
+  local rg_opts = fzf.defaults.grep.rg_opts
+  local exclude_opts = build_rg_exclude_opts()
+
+  if exclude_opts ~= '' then
+    if rg_opts:match('%s%-e%s*$') then
+      rg_opts = rg_opts:gsub('%s%-e%s*$', ' ' .. exclude_opts .. ' -e')
+    else
+      rg_opts = rg_opts .. ' ' .. exclude_opts
+    end
+  end
+
+  return {
+    cwd = cwd,
+    rg_opts = rg_opts,
+  }
 end
 
 local function open_project_files()
@@ -449,6 +491,18 @@ local function open_project_files()
   end
 
   fzf.files(opts)
+end
+
+local function open_project_live_grep()
+  require('fzf-lua').live_grep(grep_opts_for(find_picker_root()))
+end
+
+local function open_repo_live_grep()
+  require('fzf-lua').live_grep(grep_opts_for(find_repo_root()))
+end
+
+local function grep_project_cword()
+  require('fzf-lua').grep_cword(grep_opts_for(find_picker_root()))
 end
 
 local function open_project_git_files()
@@ -565,10 +619,11 @@ require('lazy').setup({
   -- for files, grep, buffers, help, diagnostics, git history, and LSP symbols.
   -- Keymaps:
   --   ,f = fast project files (nearest project/package root)
-  --   ,a = live grep   ,b = buffers   ,sh = help tags
-  --   ,sg = fast git-aware project files   ,sc = git commits
-  --   ,s/ = fuzzy search current buffer    ,sd = workspace diagnostics
-  --   ,sr = resume last picker             ,sw = grep word under cursor
+  --   ,a = live grep in current project    ,sa = live grep repo-wide
+  --   ,b = buffers   ,sh = help tags       ,sg = fast git-aware project files
+  --   ,sc = git commits  ,s/ = fuzzy search current buffer
+  --   ,sd = workspace diagnostics          ,sr = resume last picker
+  --   ,sw = grep word under cursor in current project
   -- https://github.com/ibhagwan/fzf-lua
   {
     'ibhagwan/fzf-lua',
@@ -594,16 +649,38 @@ require('lazy').setup({
 
       pcall(fzf.register_ui_select)
 
+      -- ,f finds files from the nearest project/package root instead of the full monorepo.
       vim.keymap.set('n', '<leader>f', open_project_files, { desc = 'Fast project files' })
-      vim.keymap.set('n', '<leader>a', fzf.live_grep, { desc = 'Live grep' })
+
+      -- ,a runs live grep scoped to the nearest project/package root.
+      vim.keymap.set('n', '<leader>a', open_project_live_grep, { desc = 'Live grep (project)' })
+
+      -- ,sa runs live grep across the full repository root when you want global search.
+      vim.keymap.set('n', '<leader>sa', open_repo_live_grep, { desc = 'Live grep (repo)' })
+
+      -- ,b lists open buffers so you can jump between already-open files quickly.
       vim.keymap.set('n', '<leader>b', fzf.buffers, { desc = 'Buffers' })
+
+      -- ,sh searches Neovim/Vim help tags.
       vim.keymap.set('n', '<leader>sh', fzf.helptags, { desc = 'Search help' })
+
+      -- ,sg lists git-tracked/untracked files from the nearest project root.
       vim.keymap.set('n', '<leader>sg', open_project_git_files, { desc = 'Fast git project files' })
+
+      -- ,sc searches git commit history.
       vim.keymap.set('n', '<leader>sc', fzf.git_commits, { desc = 'Search git commits' })
+
+      -- ,s/ fuzzy-searches lines in the current buffer only.
       vim.keymap.set('n', '<leader>s/', fzf.blines, { desc = 'Search in buffer' })
+
+      -- ,sd searches workspace diagnostics such as errors and warnings.
       vim.keymap.set('n', '<leader>sd', fzf.diagnostics_workspace, { desc = 'Search diagnostics' })
+
+      -- ,sr reopens the most recent fzf-lua picker.
       vim.keymap.set('n', '<leader>sr', fzf.resume, { desc = 'Search resume' })
-      vim.keymap.set('n', '<leader>sw', fzf.grep_cword, { desc = 'Search current word' })
+
+      -- ,sw greps for the word under the cursor within the nearest project root.
+      vim.keymap.set('n', '<leader>sw', grep_project_cword, { desc = 'Search current word (project)' })
     end,
   },
 
