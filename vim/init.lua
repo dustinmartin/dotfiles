@@ -140,8 +140,17 @@ vim.opt.gdefault = true
 -- :h virtualedit — https://neovim.io/doc/user/options.html#'virtualedit'
 vim.opt.virtualedit = 'block'
 
--- Start with all folds open (99 = effectively no folding on open). You can
--- still manually fold with zc/zo/za, but files aren't collapsed by default.
+-- Use Treesitter's syntax tree to define fold regions for structured languages
+-- like JavaScript and TSX. This makes fold commands such as za/zc/zo work on
+-- functions, blocks, JSX, etc. instead of requiring manual folds.
+-- :h foldmethod — https://neovim.io/doc/user/options.html#'foldmethod'
+-- :h foldexpr — https://neovim.io/doc/user/options.html#'foldexpr'
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+-- Start with all folds open (99 = effectively no folding on open) even though
+-- fold regions now exist. You can still close/toggle them on demand with zc/za,
+-- or collapse everything with zM.
 -- :h foldlevelstart — https://neovim.io/doc/user/options.html#'foldlevelstart'
 vim.opt.foldlevelstart = 99
 
