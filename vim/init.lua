@@ -178,6 +178,70 @@ vim.opt.iskeyword:append('-')
 -- :h termguicolors — https://neovim.io/doc/user/options.html#'termguicolors'
 vim.opt.termguicolors = true
 
+-- Render the top tabline using the immediate parent directory plus filename for
+-- the active buffer in each tab (for example: `src/init.lua`). This avoids
+-- Neovim's default shortened labels, which can be hard to read when several
+-- similarly named files are open.
+local function escape_tab_label(text)
+  return text:gsub('%%', '%%%%')
+end
+
+local function buffer_label(bufnr)
+  local name = vim.api.nvim_buf_get_name(bufnr)
+  local buftype = vim.bo[bufnr].buftype
+  local filetype = vim.bo[bufnr].filetype
+
+  if name == '' then
+    if buftype == 'quickfix' then
+      return '[Quickfix]'
+    end
+    if filetype ~= '' then
+      return '[' .. filetype .. ']'
+    end
+    return '[No Name]'
+  end
+
+  if buftype == 'terminal' then
+    local terminal_name = vim.fn.fnamemodify(name, ':t')
+    return terminal_name ~= '' and terminal_name or '[Terminal]'
+  end
+
+  local filename = vim.fn.fnamemodify(name, ':t')
+  local parent = vim.fn.fnamemodify(name, ':h:t')
+
+  if parent == '' or parent == '.' or parent == '/' then
+    return filename
+  end
+
+  return parent .. '/' .. filename
+end
+
+local function tab_label(tabnr)
+  local winnr = vim.fn.tabpagewinnr(tabnr)
+  local bufnr = vim.fn.tabpagebuflist(tabnr)[winnr]
+  return buffer_label(bufnr)
+end
+
+function _G.dotfiles_tabline()
+  local parts = {}
+  local current_tab = vim.fn.tabpagenr()
+  local last_tab = vim.fn.tabpagenr('$')
+
+  for tabnr = 1, last_tab do
+    local highlight = tabnr == current_tab and '%#TabLineSel#' or '%#TabLine#'
+    parts[#parts + 1] = highlight
+    parts[#parts + 1] = '%' .. tabnr .. 'T'
+    parts[#parts + 1] = ' '
+    parts[#parts + 1] = escape_tab_label(tab_label(tabnr))
+    parts[#parts + 1] = ' '
+  end
+
+  parts[#parts + 1] = '%#TabLineFill#%T'
+  return table.concat(parts)
+end
+
+vim.opt.tabline = '%!v:lua.dotfiles_tabline()'
+
 -- [[ Keymaps ]]
 -- :h vim.keymap.set() — https://neovim.io/doc/user/lua.html#vim.keymap.set()
 
@@ -279,6 +343,117 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- [[ Fast file picker helpers ]]
+-- Prefer the nearest project/package root instead of always searching the full
+-- monorepo. This keeps file pickers much faster when working inside a subproject.
+local picker_root_markers = {
+  'pnpm-workspace.yaml',
+  'turbo.json',
+  'nx.json',
+  'lerna.json',
+  'package.json',
+  'go.work',
+  'Cargo.toml',
+  'pyproject.toml',
+  '.git',
+}
+
+local picker_excludes = {
+  '.git',
+  'node_modules',
+  'dist',
+  'build',
+  'coverage',
+  '.next',
+  '.nuxt',
+  '.turbo',
+  '.cache',
+}
+
+local function find_picker_root()
+  local bufname = vim.api.nvim_buf_get_name(0)
+  local start = bufname ~= '' and vim.fs.dirname(bufname) or vim.fn.getcwd()
+  local cwd = vim.fn.getcwd()
+
+  local function search(path)
+    if not path or path == '' then
+      return nil
+    end
+
+    local match = vim.fs.find(picker_root_markers, { path = path, upward = true })[1]
+    if match then
+      return vim.fs.dirname(match)
+    end
+  end
+
+  return search(start) or search(cwd) or start or cwd
+end
+
+local function build_fd_command()
+  if vim.fn.executable('fd') ~= 1 then
+    return nil
+  end
+
+  local cmd = { 'fd', '--type', 'f', '--strip-cwd-prefix', '--hidden', '--follow' }
+  for _, exclude in ipairs(picker_excludes) do
+    table.insert(cmd, '--exclude')
+    table.insert(cmd, exclude)
+  end
+
+  return table.concat(cmd, ' ')
+end
+
+local function build_rg_files_command()
+  if vim.fn.executable('rg') ~= 1 then
+    return nil
+  end
+
+  local cmd = { 'rg', '--files', '--hidden', '--follow' }
+  for _, exclude in ipairs(picker_excludes) do
+    table.insert(cmd, '-g')
+    table.insert(cmd, string.format('"!%s"', exclude))
+    table.insert(cmd, '-g')
+    table.insert(cmd, string.format('"!%s/**"', exclude))
+  end
+
+  return table.concat(cmd, ' ')
+end
+
+local function fast_files_command()
+  return build_fd_command() or build_rg_files_command()
+end
+
+local function in_git_repo(path)
+  vim.fn.system({ 'git', '-C', path, 'rev-parse', '--is-inside-work-tree' })
+  return vim.v.shell_error == 0
+end
+
+local function open_project_files()
+  local fzf = require('fzf-lua')
+  local opts = {
+    cwd = find_picker_root(),
+  }
+
+  local cmd = fast_files_command()
+  if cmd then
+    opts.cmd = cmd
+  end
+
+  fzf.files(opts)
+end
+
+local function open_project_git_files()
+  local root = find_picker_root()
+  if not in_git_repo(root) then
+    return open_project_files()
+  end
+
+  require('fzf-lua').files({
+    cwd = root,
+    cmd = 'git ls-files --cached --others --exclude-standard',
+  })
+end
+
 -- [[ Bootstrap lazy.nvim ]]
 -- lazy.nvim is a plugin manager for Neovim. This block auto-installs it on first
 -- run by cloning the repo into the Neovim data directory (~/.local/share/nvim/lazy/),
@@ -375,16 +550,44 @@ require('lazy').setup({
     },
   },
 
-  -- Fuzzy finder for files, text, buffers, git history, and more. Opens a
-  -- floating window where you can type to filter results interactively.
+  -- Fast fuzzy finder optimized for large repos/monorepos. Uses external tools
+  -- like fd/rg/git ls-files for candidate generation and keeps file previews
+  -- hidden by default to reduce picker overhead.
+  -- Keymaps:
+  --   ,f = fast project files (nearest project/package root)
+  --   ,sg = fast git-aware project files
+  -- https://github.com/ibhagwan/fzf-lua
+  {
+    'ibhagwan/fzf-lua',
+    event = 'VimEnter',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      require('fzf-lua').setup({
+        winopts = {
+          height = 0.85,
+          width = 0.80,
+          preview = {
+            hidden = 'hidden',
+          },
+        },
+        files = {
+          cwd_prompt = false,
+        },
+      })
+    end,
+  },
+
+  -- Fuzzy finder for text, buffers, git history, help, diagnostics, and more.
   -- Dependencies:
   --   plenary.nvim — utility library required by Telescope
   --   telescope-fzf-native.nvim — compiled C sorter for much faster fuzzy matching
   --   telescope-ui-select.nvim — replaces vim.ui.select() with Telescope picker
   -- Keymaps:
-  --   ,f = find files   ,a = live grep (search text across project)
+  --   ,a = live grep (search text across project)
   --   ,b = open buffers  ,sh = search help tags
-  --   ,sg = git files    ,sc = git commits   ,s/ = fuzzy find in current buffer
+  --   ,sc = git commits  ,s/ = fuzzy find in current buffer
   --   ,sd = diagnostics  ,sr = resume last search  ,sw = grep word under cursor
   -- https://github.com/nvim-telescope/telescope.nvim
   {
@@ -414,11 +617,12 @@ require('lazy').setup({
       pcall(require('telescope').load_extension, 'ui-select')
 
       local builtin = require('telescope.builtin')
-      vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = 'Find files' })
+      -- vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = 'Find files' })
+      vim.keymap.set('n', '<leader>f', open_project_files, { desc = 'Fast project files' })
       vim.keymap.set('n', '<leader>a', builtin.live_grep, { desc = 'Live grep' })
       vim.keymap.set('n', '<leader>b', builtin.buffers, { desc = 'Buffers' })
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = 'Search help' })
-      vim.keymap.set('n', '<leader>sg', builtin.git_files, { desc = 'Search git files' })
+      vim.keymap.set('n', '<leader>sg', open_project_git_files, { desc = 'Fast git project files' })
       vim.keymap.set('n', '<leader>sc', builtin.git_commits, { desc = 'Search git commits' })
       vim.keymap.set('n', '<leader>s/', builtin.current_buffer_fuzzy_find, { desc = 'Search in buffer' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = 'Search diagnostics' })
@@ -605,8 +809,43 @@ require('lazy').setup({
     config = function()
       -- Minimal statusline at the bottom of the screen showing mode, filename,
       -- file progress, diagnostics, etc. Uses Nerd Font icons if available.
+      -- Override just the filename section so it matches the tabline's
+      -- `parent/file` format.
       -- https://github.com/echasnovski/mini.statusline
-      require('mini.statusline').setup({ use_icons = vim.g.have_nerd_font })
+      local statusline = require('mini.statusline')
+      statusline.setup({
+        use_icons = vim.g.have_nerd_font,
+        content = {
+          active = function()
+            local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
+            local git = statusline.section_git({ trunc_width = 75 })
+            local diff = statusline.section_diff({ trunc_width = 75 })
+            local diagnostics = statusline.section_diagnostics({ trunc_width = 75 })
+            local lsp = statusline.section_lsp({ trunc_width = 75 })
+            local filename = buffer_label(vim.api.nvim_get_current_buf())
+            local fileinfo = statusline.section_fileinfo({ trunc_width = 120 })
+            local location = statusline.section_location({ trunc_width = 75 })
+            local search = statusline.section_searchcount({ trunc_width = 75 })
+
+            return statusline.combine_groups({
+              { hl = mode_hl, strings = { mode } },
+              { hl = 'MiniStatuslineDevinfo', strings = { git, diff, diagnostics, lsp } },
+              '%<',
+              { hl = 'MiniStatuslineFilename', strings = { filename } },
+              '%=',
+              { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
+              { hl = mode_hl, strings = { search, location } },
+            })
+          end,
+          inactive = function()
+            local filename = buffer_label(vim.api.nvim_get_current_buf())
+            return statusline.combine_groups({
+              '%<',
+              { hl = 'MiniStatuslineInactive', strings = { filename } },
+            })
+          end,
+        },
+      })
 
       -- Add/delete/change surrounding pairs (brackets, quotes, tags, etc.).
       -- sa = add surround, sd = delete surround, sr = replace surround.

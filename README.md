@@ -2,23 +2,7 @@
 
 ## Prerequisites
 
-Install the following before running the install script:
-
-```
-brew install fish starship zoxide ripgrep fzf neovim tmux fnm eza
-```
-
-Set Fish as the default shell:
-
-```
-chsh -s $(which fish)
-```
-
-Install a Nerd Font (required for icons):
-
-```
-brew install --cask font-jetbrains-mono-nerd-font
-```
+- [Homebrew](https://brew.sh/)
 
 ## Installation
 
@@ -28,7 +12,7 @@ cd ~/dotfiles
 ./install.sh
 ```
 
-This will symlink the Fish config, git config, tmux config, Ghostty config, and Neovim config into the right places.
+The install script installs the required Homebrew packages and casks, sets Fish as the default shell, and symlinks the Fish config, git config, tmux config, Ghostty config, and Neovim config into the right places.
 
 ## SSH Key
 

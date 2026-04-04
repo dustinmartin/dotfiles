@@ -94,4 +94,5 @@ if status is-interactive
 
     # Rovo
     abbr -a -- rovo 'acli rovodev tui'
+    abbr -a -- srovo 'safehouse --append-profile ~/.config/safehouse/rovodev.sb --enable=shell-init acli rovodev tui --yolo'
 end
