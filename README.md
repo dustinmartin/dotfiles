@@ -12,7 +12,7 @@ cd ~/dotfiles
 ./install.sh
 ```
 
-The install script installs the required Homebrew packages and casks, sets Fish as the default shell, and symlinks the Fish config, git config, tmux config, Ghostty config, and Neovim config into the right places.
+The install script uses Homebrew to install the required packages and casks, then symlinks the Fish config, git config, tmux config, Ghostty config, and Neovim config into the right places. Optional steps such as cask installs or switching the default shell will warn and continue if they fail.
 
 ## SSH Key
 

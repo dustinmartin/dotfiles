@@ -1,3 +1,6 @@
 plugged
 *.spl
 *.log
+
+# Local-only Tmuxinator session overrides
+/tmuxinator/*.local.yml
