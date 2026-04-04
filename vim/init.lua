@@ -561,10 +561,14 @@ require('lazy').setup({
 
   -- Fast fuzzy finder optimized for large repos/monorepos. Uses external tools
   -- like fd/rg/git ls-files for candidate generation and keeps file previews
-  -- hidden by default to reduce picker overhead.
+  -- hidden by default to reduce picker overhead. This is the primary picker UI
+  -- for files, grep, buffers, help, diagnostics, git history, and LSP symbols.
   -- Keymaps:
   --   ,f = fast project files (nearest project/package root)
-  --   ,sg = fast git-aware project files
+  --   ,a = live grep   ,b = buffers   ,sh = help tags
+  --   ,sg = fast git-aware project files   ,sc = git commits
+  --   ,s/ = fuzzy search current buffer    ,sd = workspace diagnostics
+  --   ,sr = resume last picker             ,sw = grep word under cursor
   -- https://github.com/ibhagwan/fzf-lua
   {
     'ibhagwan/fzf-lua',
@@ -573,7 +577,9 @@ require('lazy').setup({
       'nvim-tree/nvim-web-devicons',
     },
     config = function()
-      require('fzf-lua').setup({
+      local fzf = require('fzf-lua')
+
+      fzf.setup({
         winopts = {
           height = 0.85,
           width = 0.80,
@@ -585,58 +591,19 @@ require('lazy').setup({
           cwd_prompt = false,
         },
       })
-    end,
-  },
 
-  -- Fuzzy finder for text, buffers, git history, help, diagnostics, and more.
-  -- Dependencies:
-  --   plenary.nvim — utility library required by Telescope
-  --   telescope-fzf-native.nvim — compiled C sorter for much faster fuzzy matching
-  --   telescope-ui-select.nvim — replaces vim.ui.select() with Telescope picker
-  -- Keymaps:
-  --   ,a = live grep (search text across project)
-  --   ,b = open buffers  ,sh = search help tags
-  --   ,sc = git commits  ,s/ = fuzzy find in current buffer
-  --   ,sd = diagnostics  ,sr = resume last search  ,sw = grep word under cursor
-  -- https://github.com/nvim-telescope/telescope.nvim
-  {
-    'nvim-telescope/telescope.nvim',
-    event = 'VimEnter',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make',
-        cond = function()
-          return vim.fn.executable('make') == 1
-        end,
-      },
-      'nvim-telescope/telescope-ui-select.nvim',
-    },
-    config = function()
-      require('telescope').setup({
-        extensions = {
-          ['ui-select'] = {
-            require('telescope.themes').get_dropdown(),
-          },
-        },
-      })
+      pcall(fzf.register_ui_select)
 
-      pcall(require('telescope').load_extension, 'fzf')
-      pcall(require('telescope').load_extension, 'ui-select')
-
-      local builtin = require('telescope.builtin')
-      -- vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = 'Find files' })
       vim.keymap.set('n', '<leader>f', open_project_files, { desc = 'Fast project files' })
-      vim.keymap.set('n', '<leader>a', builtin.live_grep, { desc = 'Live grep' })
-      vim.keymap.set('n', '<leader>b', builtin.buffers, { desc = 'Buffers' })
-      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = 'Search help' })
+      vim.keymap.set('n', '<leader>a', fzf.live_grep, { desc = 'Live grep' })
+      vim.keymap.set('n', '<leader>b', fzf.buffers, { desc = 'Buffers' })
+      vim.keymap.set('n', '<leader>sh', fzf.helptags, { desc = 'Search help' })
       vim.keymap.set('n', '<leader>sg', open_project_git_files, { desc = 'Fast git project files' })
-      vim.keymap.set('n', '<leader>sc', builtin.git_commits, { desc = 'Search git commits' })
-      vim.keymap.set('n', '<leader>s/', builtin.current_buffer_fuzzy_find, { desc = 'Search in buffer' })
-      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = 'Search diagnostics' })
-      vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = 'Search resume' })
-      vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = 'Search current word' })
+      vim.keymap.set('n', '<leader>sc', fzf.git_commits, { desc = 'Search git commits' })
+      vim.keymap.set('n', '<leader>s/', fzf.blines, { desc = 'Search in buffer' })
+      vim.keymap.set('n', '<leader>sd', fzf.diagnostics_workspace, { desc = 'Search diagnostics' })
+      vim.keymap.set('n', '<leader>sr', fzf.resume, { desc = 'Search resume' })
+      vim.keymap.set('n', '<leader>sw', fzf.grep_cword, { desc = 'Search current word' })
     end,
   },
 
@@ -670,11 +637,11 @@ require('lazy').setup({
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          map('<leader>ld', require('telescope.builtin').lsp_definitions, 'Go to definition')
+          map('<leader>ld', require('fzf-lua').lsp_definitions, 'Go to definition')
           map('<leader>lr', vim.lsp.buf.rename, 'Rename')
           map('<leader>la', vim.lsp.buf.code_action, 'Code action', { 'n', 'x' })
           map('<leader>lf', function() require('conform').format({ async = true, lsp_fallback = true }) end, 'Format')
-          map('<leader>ls', require('telescope.builtin').lsp_document_symbols, 'Document symbols')
+          map('<leader>ls', require('fzf-lua').lsp_document_symbols, 'Document symbols')
 
           -- When the cursor rests on a symbol, highlight all other references to it
           -- in the buffer. Clears when the cursor moves. Only activates if the LSP
