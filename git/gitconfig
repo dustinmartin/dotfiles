@@ -5,6 +5,7 @@
   ui = true
 [push]
   default = simple
+  autoSetupRemote = true
 [credential]
   helper = osxkeychain
 [core]
@@ -13,6 +14,7 @@
   templatedir = ~/.git_template
 [rebase]
   autoStash = true
+  updateRefs = true
 [core]
   pager = diff-so-fancy | less --tabs=4 -RFX
 [pager]
@@ -42,3 +44,11 @@
   tool = nvimdiff2
 [difftool "nvimdiff2"]
   cmd = nvim -d $LOCAL $REMOTE
+[fetch]
+  prune = true
+[status]
+  aheadBehind = false
+[rerere]
+  enabled = true
+[feature]
+  manyFiles = true

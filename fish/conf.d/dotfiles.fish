@@ -18,6 +18,7 @@ if status is-interactive
 
     # Tool initialization
     zoxide init fish | source
+    # set -gx STARSHIP_CONFIG ~/dotfiles/starship.toml
     starship init fish | source
 
     # Vim
@@ -39,54 +40,82 @@ if status is-interactive
 
     # Git - basics
     abbr -a -- g git
-    abbr -a -- gs 'git status -sb'
+    # Short status without ahead/behind counts to stay fast in large repos.
+    abbr -a -- gs 'git status -sb --no-ahead-behind'
     abbr -a -- gst 'git status'
-    abbr -a -- gd 'git diff --word-diff'
+    # Readable code-review diff with moved-code highlighting and better hunk grouping.
+    abbr -a -- gd 'git diff --color-moved=zebra --diff-algorithm=histogram'
+    # Commit graph with stats and relative dates for quick history inspection.
     abbr -a -- gl 'git log --graph --stat --abbrev-commit --date=relative'
 
     # Git - fetch/pull/push
     abbr -a -- gf 'git fetch'
     abbr -a -- gpl 'git pull'
     abbr -a -- gpu 'git push'
-    abbr -a -- gup 'git pull --rebase origin master'
-    abbr -a -- gum 'git pull origin master'
+    # Rebase the current branch onto the repo's default branch from origin.
+    abbr -a -- gup 'git pull --rebase origin (git_default_branch)'
+    # Merge the repo's default branch from origin into the current branch.
+    abbr -a -- gum 'git pull origin (git_default_branch)'
+    # Push the current branch and set its upstream on origin.
     abbr -a -- gpb 'git push --set-upstream origin (git rev-parse --abbrev-ref HEAD)'
+    # Force-push the current branch with lease protection and set upstream.
     abbr -a -- gpbf 'git push --set-upstream --force-with-lease origin (git rev-parse --abbrev-ref HEAD)'
 
     # Git - staging
     abbr -a -- ga 'git add'
-    abbr -a -- gaa 'git add -u && git add . && git status'
+    # Stage all tracked and untracked changes, then show status.
+    abbr -a -- gaa 'git add -A && git status'
+    # Interactively choose hunks to stage, then show status.
     abbr -a -- gap 'git add -p && git status'
-    abbr -a -- gua 'git reset HEAD --'
+    # Unstage files while leaving working tree changes intact.
+    abbr -a -- gua 'git restore --staged'
 
     # Git - committing
-    abbr -a -- gc 'git commit -v -m'
-    abbr -a -- gca 'git add -u && git add . && git commit -m'
+    # Open the commit editor with the verbose diff included below the message.
+    abbr -a -- gc 'git commit -v'
+    # Commit with an inline message instead of opening the editor.
+    abbr -a -- gcm 'git commit -v -m'
+    # Stage everything and then open the commit editor.
+    abbr -a -- gca 'git add -A && git commit -v'
+    # Amend the previous commit without changing its message.
     abbr -a -- gam 'git commit --amend --no-edit'
+    # Make a no-verify WIP commit without staging new files automatically.
     abbr -a -- gwip 'git commit --no-verify -m WIP'
+    # Stage everything and make a no-verify WIP commit.
     abbr -a -- gwipa 'git add -A && git commit --no-verify -m WIP'
 
     # Git - branching
+    # Switch to another branch using Git's newer branch-specific command.
     abbr -a -- gco 'git checkout'
-    abbr -a -- gcob 'git checkout -b'
+    # Create and switch to a new branch in one step.
+    abbr -a -- gcob 'git switch -c'
+    # Pick a local branch from an fzf list with recency and commit context.
     abbr -a -- gb show_branches
+    # Force-delete a local branch.
     abbr -a -- gdb 'git branch -D'
-    abbr -a -- gcl "git branch --merged | grep -vE '(^\*|master|dev)' | xargs git branch -d"
+    # Delete local branches already merged into the default branch.
+    abbr -a -- gcl git_delete_merged_branches
 
     # Git - rebasing/merging
     abbr -a -- grb 'git rebase'
     abbr -a -- grbc 'git rebase --continue'
     abbr -a -- grba 'git rebase --abort'
-    abbr -a -- gir 'git rebase -i origin/master'
+    # Start an interactive rebase onto the repo's default branch.
+    abbr -a -- gir 'git rebase -i origin/(git_default_branch)'
     abbr -a -- gm 'git merge'
 
     # Git - stash
+    # Stash the current working tree changes.
     abbr -a -- gsp 'git stash push'
+    # Stash only the hunks you choose interactively.
     abbr -a -- gspi 'git stash push --patch'
+    # Apply and drop the most recent stash entry.
     abbr -a -- gspp 'git stash pop'
 
     # Git - undo
+    # Undo the last commit but keep its changes unstaged in the working tree.
     abbr -a -- gun 'git reset HEAD~1 --mixed'
+    # Jump back to the previous HEAD position after a reset or checkout move.
     abbr -a -- gungun 'git reset HEAD@{1}'
 
     # Tmuxinator

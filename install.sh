@@ -36,6 +36,7 @@ mkdir -p "$HOME/.config/fish/conf.d"
 mkdir -p "$HOME/.config/fish/functions"
 mkdir -p "$HOME/.config/ghostty"
 mkdir -p "$HOME/.config/tmuxinator"
+mkdir -p "$HOME/.config/starship"
 success "Config directories ready"
 
 formulae=(fish git zoxide starship ripgrep fd fzf neovim tmux tmuxinator fnm tree-sitter eza)
@@ -87,6 +88,10 @@ success "Fish config linked"
 info "Linking Ghostty config"
 ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
 success "Ghostty config linked"
+
+info "Linking Starship config"
+ln -sf ~/dotfiles/startship/config.toml ~/.config/starship.toml
+success "Starship config linked"
 
 info "Configuring default shell"
 fish_path="$(command -v fish || true)"
