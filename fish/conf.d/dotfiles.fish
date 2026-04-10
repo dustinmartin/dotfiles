@@ -75,8 +75,8 @@ if status is-interactive
     abbr -a -- gc 'git commit -v'
     # Commit with an inline message instead of opening the editor.
     abbr -a -- gcm 'git commit -v -m'
-    # Stage everything and then open the commit editor.
-    abbr -a -- gca 'git add -A && git commit -v'
+    # Stage everything and then commit
+    abbr -a -- gca 'git add -A && git commit -m'
     # Amend the previous commit without changing its message.
     abbr -a -- gam 'git commit --amend --no-edit'
     # Make a no-verify WIP commit without staging new files automatically.
