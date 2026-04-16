@@ -574,6 +574,35 @@ require("lazy").setup({
 		end,
 	},
 
+	-- Rich Markdown preview/rendering inside Neovim. Markview enhances headings,
+	-- lists, code blocks, tables, checkboxes, links, and more directly in the
+	-- editing buffer instead of opening an external preview window.
+	-- lazy = false follows the plugin's recommendation so previews are available
+	-- promptly when opening Markdown files. Treesitter parsers for markdown and
+	-- markdown_inline are already installed below.
+	-- Keymaps:
+	--   ,mp = toggle rendering for the current buffer
+	--   ,ms = split preview (when supported by the plugin)
+	--   ,mh = run Markview health checks
+	-- https://github.com/OXY2DEV/markview.nvim
+	{
+		"OXY2DEV/markview.nvim",
+		lazy = false,
+		opts = {
+			preview = {
+				modes = { "n", "no", "c" },
+				hybrid_modes = { "n" },
+			},
+		},
+		config = function(_, opts)
+			require("markview").setup(opts)
+			vim.keymap.set("n", "<leader>mp", "<cmd>Markview toggle<CR>", { desc = "Markdown preview toggle" })
+			vim.keymap.set("n", "<leader>ms", "<cmd>Markview splitToggle<CR>", { desc = "Markdown preview split" })
+			vim.keymap.set("n", "<leader>mh", "<cmd>checkhealth markview<CR>", { desc = "Markview health" })
+		end,
+	},
+
+
 	-- Shows git status indicators in the sign column (gutter) next to line numbers.
 	-- + = added line, ~ = changed line, _ = deleted line below, ‾ = deleted line above.
 	-- on_attach sets up buffer-local keymaps when gitsigns activates:
