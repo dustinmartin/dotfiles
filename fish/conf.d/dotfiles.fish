@@ -120,8 +120,4 @@ if status is-interactive
 
     # Tmuxinator
     abbr -a -- mux tmuxinator
-
-    # Rovo
-    abbr -a -- rovo 'acli rovodev tui'
-    abbr -a -- srovo 'safehouse --append-profile ~/.config/safehouse/rovodev.sb --enable=shell-init acli rovodev tui --yolo'
 end
