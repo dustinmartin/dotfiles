@@ -3,7 +3,9 @@ root: <%= ENV["PWD"] %>
 
 windows:
   - agents:
-      layout: even-horizontal
+      # Codex and Claude side-by-side above a full-width shell pane.
+      layout: fba7,200x60,0,0[200x39,0,0{99x39,0,0,0,100x39,100,0,1},200x20,0,40,2]
       panes:
         - codex
         - claude
+        -
