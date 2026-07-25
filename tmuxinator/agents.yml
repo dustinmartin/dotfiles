@@ -1,0 +1,9 @@
+name: agents
+root: <%= ENV["PWD"] %>
+
+windows:
+  - agents:
+      layout: even-horizontal
+      panes:
+        - codex
+        - claude

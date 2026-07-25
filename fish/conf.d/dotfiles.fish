@@ -119,5 +119,5 @@ if status is-interactive
     abbr -a -- gungun 'git reset HEAD@{1}'
 
     # Tmuxinator
-    abbr -a -- mux tmuxinator
+    abbr -a -- mux 'tmuxinator start --append'
 end
