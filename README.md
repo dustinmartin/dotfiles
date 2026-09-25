@@ -12,7 +12,7 @@ cd ~/dotfiles
 ./install.sh
 ```
 
-The install script uses Homebrew to install the required packages and casks, then symlinks the Fish config, git config, tmux config, Ghostty config, and Neovim config into the right places. Optional steps such as cask installs or switching the default shell will warn and continue if they fail.
+The install script uses Homebrew to install the required packages and casks, then symlinks the Fish config, git config, tmux config, Ghostty config, Herdr config, and Neovim config into the right places. Optional steps such as cask installs or switching the default shell will warn and continue if they fail.
 
 ## SSH Key
 
@@ -25,4 +25,5 @@ Follow the instructions [here](https://help.github.com/articles/generating-a-new
 - **git/** - Shared gitconfig and global gitignore
 - **tmux/** - Tmux configuration
 - **ghostty/** - Ghostty terminal configuration
+- **herdr/** - Herdr configuration (symlinked to `~/.config/herdr/config.toml`)
 - **bin/** - Custom scripts added to PATH

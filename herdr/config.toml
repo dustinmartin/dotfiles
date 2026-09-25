@@ -1,0 +1,18 @@
+onboarding = false
+[ui]
+agent_panel_sort = "spaces"
+
+show_agent_labels_on_pane_borders = true
+status_indicators = "dots"
+[keys]
+split_vertical = "prefix+|"
+
+[theme]
+name = "dracula"
+auto_switch = false
+
+[ui.sound]
+enabled = false
+
+[ui.toast]
+delivery = "system"
