@@ -1,0 +1,30 @@
+# Herdr UI overrides. Saved changes reload automatically.
+# Unset keys inherit config-gpui.toml; tables merge key by key.
+
+# New installs start with the roomy rounded sidebar. Remove this line for
+# the managed default, or pick another layout listed in config-gpui.toml.
+layout = "comfortable-rounded"
+theme = "Catppuccin Mocha"
+contrast = "standard"
+status_icons = "outline"
+edge_rail = false
+
+[backdrop]
+opacity = 1.0
+
+[terminal]
+padding_x = 10
+padding_y = 10
+size = 16.0
+
+[sidebar]
+size = 16.0
+
+[tabs]
+size = 14.0
+
+[ui]
+size = 14.0
+
+[status_bar]
+report_issue = "hidden"

@@ -4,3 +4,6 @@ plugged
 
 # Local-only Tmuxinator session overrides
 /tmuxinator/*.local.yml
+
+# Herdr writes lock files beside its symlinked config
+/herdr/.*-lock

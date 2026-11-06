@@ -92,6 +92,7 @@ success "Ghostty config linked"
 
 info "Linking Herdr config"
 ln -sf "$HOME/dotfiles/herdr/config.toml" "$HOME/.config/herdr/config.toml"
+ln -sf "$HOME/dotfiles/herdr/config-gpui.local.toml" "$HOME/.config/herdr/config-gpui.local.toml"
 success "Herdr config linked"
 
 info "Linking Starship config"

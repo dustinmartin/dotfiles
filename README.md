@@ -25,5 +25,5 @@ Follow the instructions [here](https://help.github.com/articles/generating-a-new
 - **git/** - Shared gitconfig and global gitignore
 - **tmux/** - Tmux configuration
 - **ghostty/** - Ghostty terminal configuration
-- **herdr/** - Herdr configuration (symlinked to `~/.config/herdr/config.toml`)
+- **herdr/** - Herdr configuration (`config.toml` and the Herdr UI's `config-gpui.local.toml`, symlinked into `~/.config/herdr/`), plus `navigate.sh` for Vim-aware Ctrl-h/j/k/l pane navigation
 - **bin/** - Custom scripts added to PATH

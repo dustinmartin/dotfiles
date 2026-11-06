@@ -333,6 +333,27 @@ vim.keymap.set("n", "<leader>r", "<cmd>Wrap<CR>", { desc = "Toggle word wrap" })
 -- but more convenient).
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
+-- Ctrl-h/j/k/l move between Neovim splits and on into the neighbouring tmux or
+-- Herdr pane at the edge. In tmux, vim-tmux-navigator does it. In Herdr,
+-- ~/dotfiles/herdr/navigate.sh passes these keys through while Neovim is in
+-- front, so at an edge split we ask Herdr to move focus instead.
+local function navigate(wincmd, direction)
+	if vim.env.TMUX then
+		vim.cmd("TmuxNavigate" .. direction:sub(1, 1):upper() .. direction:sub(2))
+		return
+	end
+	local win = vim.api.nvim_get_current_win()
+	vim.cmd.wincmd(wincmd)
+	if vim.api.nvim_get_current_win() == win and vim.env.HERDR_PANE_ID then
+		vim.system({ vim.env.HERDR_BIN_PATH or "herdr", "pane", "focus", "--direction", direction, "--pane", vim.env.HERDR_PANE_ID })
+	end
+end
+for wincmd, direction in pairs({ h = "left", j = "down", k = "up", l = "right" }) do
+	vim.keymap.set("n", "<C-" .. wincmd .. ">", function()
+		navigate(wincmd, direction)
+	end, { desc = "Navigate " .. direction })
+end
+
 -- Opens all diagnostics (errors, warnings, etc.) for the current buffer in the
 -- location list window so you can navigate through them with :lnext / :lprev.
 -- :h vim.diagnostic.setloclist() — https://neovim.io/doc/user/diagnostic.html#vim.diagnostic.setloclist()
@@ -555,8 +576,15 @@ require("lazy").setup({
 	-- Seamless navigation between tmux panes and Neovim splits using Ctrl-h/j/k/l.
 	-- Without this, Ctrl-h/j/k/l only works within Neovim; this plugin makes the
 	-- same keys also move into adjacent tmux panes. Requires a matching tmux plugin.
+	-- Its own maps are off; the Ctrl-h/j/k/l maps in Keymaps call it inside tmux
+	-- and hand off to Herdr outside it.
 	-- https://github.com/christoomey/vim-tmux-navigator
-	{ "christoomey/vim-tmux-navigator" },
+	{
+		"christoomey/vim-tmux-navigator",
+		init = function()
+			vim.g.tmux_navigator_no_mappings = 1
+		end,
+	},
 
 	-- Catppuccin colorscheme — a warm, pastel theme. "mocha" is the dark variant.
 	-- priority = 1000 ensures it loads before other plugins so colors are available.
@@ -1013,36 +1041,17 @@ require("lazy").setup({
 				},
 			})
 
-			-- vim-tmux-navigator's global <C-h/j/k/l> maps get overridden by Oil's
-			-- own <C-h> binding inside Oil buffers. Set buffer-local maps to restore
-			-- tmux pane navigation when inside an Oil buffer.
+			-- The global <C-h/j/k/l> navigate maps get overridden by Oil's own
+			-- <C-h> binding inside Oil buffers. Set buffer-local maps to restore
+			-- split/pane navigation when inside an Oil buffer.
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = "oil",
 				callback = function(event)
-					vim.keymap.set(
-						"n",
-						"<C-h>",
-						"<cmd>TmuxNavigateLeft<CR>",
-						{ buffer = event.buf, desc = "Navigate left" }
-					)
-					vim.keymap.set(
-						"n",
-						"<C-j>",
-						"<cmd>TmuxNavigateDown<CR>",
-						{ buffer = event.buf, desc = "Navigate down" }
-					)
-					vim.keymap.set(
-						"n",
-						"<C-k>",
-						"<cmd>TmuxNavigateUp<CR>",
-						{ buffer = event.buf, desc = "Navigate up" }
-					)
-					vim.keymap.set(
-						"n",
-						"<C-l>",
-						"<cmd>TmuxNavigateRight<CR>",
-						{ buffer = event.buf, desc = "Navigate right" }
-					)
+					for wincmd, direction in pairs({ h = "left", j = "down", k = "up", l = "right" }) do
+						vim.keymap.set("n", "<C-" .. wincmd .. ">", function()
+							navigate(wincmd, direction)
+						end, { buffer = event.buf, desc = "Navigate " .. direction })
+					end
 				end,
 			})
 		end,

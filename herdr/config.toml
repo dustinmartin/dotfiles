@@ -7,6 +7,32 @@ status_indicators = "dots"
 [keys]
 split_vertical = "prefix+|"
 
+# Ctrl-h/j/k/l move between panes, passing through to (n)vim when it is in
+# front so it can move between its splits first (see navigate.sh).
+[[keys.command]]
+key = "ctrl+h"
+type = "shell"
+command = "\"$HOME/dotfiles/herdr/navigate.sh\" left"
+description = "focus pane left (vim-aware)"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "shell"
+command = "\"$HOME/dotfiles/herdr/navigate.sh\" down"
+description = "focus pane down (vim-aware)"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "shell"
+command = "\"$HOME/dotfiles/herdr/navigate.sh\" up"
+description = "focus pane up (vim-aware)"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "shell"
+command = "\"$HOME/dotfiles/herdr/navigate.sh\" right"
+description = "focus pane right (vim-aware)"
+
 [theme]
 name = "nord"
 auto_switch = false
