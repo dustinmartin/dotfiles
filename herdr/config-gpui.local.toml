@@ -8,6 +8,7 @@ theme = "Catppuccin Mocha"
 contrast = "standard"
 status_icons = "outline"
 edge_rail = false
+show_network_quality = true
 
 [backdrop]
 opacity = 1.0
@@ -18,7 +19,10 @@ padding_y = 10
 size = 16.0
 
 [sidebar]
-size = 16.0
+size = 14.0
+select = "row"
+
+[sidebar.hosts]
 
 [tabs]
 size = 14.0
@@ -28,3 +32,8 @@ size = 14.0
 
 [status_bar]
 report_issue = "hidden"
+shortcuts = "icon"
+theme = "hidden"
+
+[code]
+license_accepted = true

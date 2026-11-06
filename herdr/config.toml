@@ -4,6 +4,7 @@ agent_panel_sort = "spaces"
 
 show_agent_labels_on_pane_borders = true
 status_indicators = "dots"
+tab_bar_position = "bottom"
 [keys]
 split_vertical = "prefix+|"
 
@@ -42,3 +43,8 @@ enabled = false
 
 [ui.toast]
 delivery = "system"
+
+[ui.sidebar]
+
+[ui.sidebar.agents]
+rows = [["state_icon", "machine", "workspace", "tab"], ["agent"]]

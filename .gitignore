@@ -1,6 +1,7 @@
 plugged
 *.spl
 *.log
+.DS_Store
 
 # Local-only Tmuxinator session overrides
 /tmuxinator/*.local.yml
