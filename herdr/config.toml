@@ -8,7 +8,7 @@ status_indicators = "dots"
 split_vertical = "prefix+|"
 
 [theme]
-name = "dracula"
+name = "nord"
 auto_switch = false
 
 [ui.sound]
